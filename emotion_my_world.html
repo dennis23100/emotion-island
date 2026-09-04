@@ -216,22 +216,70 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   // Firebase 免費方案上限 100 個同時連線，即時監聽會佔用名額，
   // REST 是無狀態 HTTP，不計入連線數。
   const REST_BASE = 'https://score-calculation-ef584-default-rtdb.firebaseio.com';
-  const restMode = (function(){
+
+  // Firebase 免費方案上限 100 個同時連線。唯讀頁預設不佔名額，
+  // 但只要目前連線數還在額度內，就升級成即時同步 —— 讓前面的觀看者
+  // 也能看到即時進度；額度用完的人才留在 REST 輪詢。
+  // 上限設 80，保留約 20 個名額給投影、各組編輯與填分頁。
+  const LIVE_LIMIT = 80;
+  const isReadOnlyView = (function () {
     const q = new URLSearchParams(location.search);
     return Boolean(room) && (q.get('view') === '1' || q.get('mode') === 'gallery');
   })();
-  function restPoll(path, ms, cb) {
-    let stopped = false, timer = 0;
+  let restMode = isReadOnlyView;
+  const restSubs = [];
+
+  function restSubscribe(path, ms, norm, cb) {
+    const sub = { path: path, norm: norm, cb: cb, stopped: false, timer: 0 };
     const tick = function () {
-      fetch(REST_BASE + '/' + path + '.json', {cache: 'no-store'})
+      fetch(REST_BASE + '/' + path + '.json', { cache: 'no-store' })
         .then(function (r) { return r.json(); })
-        .then(function (v) { if (!stopped) cb(v); })
+        .then(function (v) { if (!sub.stopped) cb(norm(v), { mode: 'rest', room: room }); })
         .catch(function () {})
-        .then(function () { if (!stopped) timer = setTimeout(tick, ms); });
+        .then(function () { if (!sub.stopped) sub.timer = setTimeout(tick, ms); });
     };
+    sub.stop = function () { sub.stopped = true; clearTimeout(sub.timer); };
+    restSubs.push(sub);
     tick();
-    listeners.push(function () { stopped = true; clearTimeout(timer); });
+    listeners.push(sub.stop);
+    return sub;
   }
+
+  function loadScript(src) {
+    return new Promise(function (res, rej) {
+      const el = document.createElement('script');
+      el.src = src; el.async = false;
+      el.onload = res; el.onerror = rej;
+      document.head.appendChild(el);
+    });
+  }
+
+  function tryUpgradeRealtime() {
+    fetch(REST_BASE + '/rooms/' + room + '/presence.json?shallow=true', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (v) {
+        const n = v ? Object.keys(v).length : 0;
+        if (n >= LIVE_LIMIT) { global.__emotionLiveMode = false; return; }
+        return loadScript('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js')
+          .then(function () { return loadScript('https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js'); })
+          .then(function () {
+            restMode = false;
+            if (!ensureFirebase()) { restMode = true; global.__emotionLiveMode = false; return; }
+            restSubs.forEach(function (sub) {
+              if (sub.stopped) return;
+              sub.stop();
+              const ref = db.ref(sub.path);
+              const h = function (snap) { sub.cb(sub.norm(snap.val()), { mode: 'firebase', room: room }); };
+              ref.on('value', h);
+              listeners.push(function () { ref.off('value', h); });
+            });
+            global.__emotionLiveMode = true;
+          });
+      })
+      .catch(function () { global.__emotionLiveMode = false; });
+  }
+  if (isReadOnlyView) setTimeout(tryUpgradeRealtime, 400);
+
   function isFirebaseMode() { return Boolean(room && global.firebase); }
   function ensureFirebase() {
     if (restMode) return false;   // 唯讀模式不建立即時連線
@@ -310,7 +358,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   }
 
   function watchAll(cb) {
-    if (restMode) { restPoll(basePath(), 25000, function (v) { cb(normalizeAll(v), {mode:'rest', room:room}); }); return; }
+    if (restMode) { restSubscribe(basePath(), 25000, normalizeAll, cb); return; }
     if (ensureFirebase()) {
       const ref=db.ref(basePath());
       const handler=snap=>cb(normalizeAll(snap.val()), {mode:'firebase', room});
@@ -324,7 +372,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
     listeners.push(()=>{clearInterval(timer);global.removeEventListener('storage',ev);global.removeEventListener('emotion-v3-local-change',ev);});
   }
   function watchGroup(id, cb) {
-    if (restMode) { restPoll(basePath() + '/' + id, 20000, function (v) { cb(normalizeGroup(v, id), {mode:'rest', room:room}); }); return; }
+    if (restMode) { restSubscribe(basePath() + '/' + id, 20000, function (v) { return normalizeGroup(v, id); }, cb); return; }
     if (ensureFirebase()) {
       const ref=db.ref(`${basePath()}/${id}`);
       const handler=snap=>cb(normalizeGroup(snap.val(),id),{mode:'firebase',room});

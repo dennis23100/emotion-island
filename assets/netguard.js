@@ -4,12 +4,14 @@
  * 超過之後「新的連線嘗試」會被伺服器拒絕，已連上的人不受影響，
  * 只要有人離開釋放名額，等待中的連線就會自動接上。
  *
- * 這個模組做兩件事：
- *   1. 連不上資料庫超過一段時間 -> 明確告知，而不是讓使用者看到空島
- *   2. 統計目前佔用連線的裝置數，接近上限時提前警告
+ * 依頁面型態顯示不同提示：
  *
- * 只在「真的建立即時連線」的頁面生效。唯讀／群島參觀走 REST，
- * 不佔連線，也就不需要這個模組。
+ *   唯讀／群島參觀（走 REST，不佔連線）
+ *     - 一進入就說明目前是唯讀模式、重新整理可看到最新進度，12 秒後自動收起
+ *
+ *   即時連線頁（大世界、可編輯小世界、快速填分）
+ *     - 連不上資料庫超過 15 秒 -> 明確告知，而不是讓使用者看到空島
+ *     - 統計佔用連線的裝置數，達 WARN_AT 時提前警告
  */
 (function () {
   'use strict';
@@ -41,7 +43,8 @@
       'border:1px solid rgba(255,196,120,.5);box-shadow:0 12px 34px rgba(0,0,0,.4);' +
       'backdrop-filter:blur(10px);display:flex;gap:10px;align-items:flex-start}' +
       '.ng-bar.warn{background:rgba(96,74,20,.90);border-color:rgba(255,229,156,.55)}' +
-      '.ng-bar b{color:#ffe59c}' +
+      '.ng-bar.info{background:rgba(20,38,78,.90);border-color:rgba(156,236,255,.45)}' +
+      '.ng-bar b{color:#ffe59c}.ng-bar.info b{color:#9cecff}' +
       '.ng-x{margin-left:auto;flex:none;cursor:pointer;border:0;background:transparent;' +
       'color:rgba(255,255,255,.75);font-size:15px;line-height:1;padding:2px 4px}' +
       '.ng-x:hover{color:#fff}' +
@@ -63,25 +66,53 @@
     document.body.appendChild(banner);
   }
 
-  function show(html, warn) {
+  function show(html, kind) {
     if (dismissed) return;
     ui();
     bannerText.innerHTML = html;
-    banner.classList.toggle('warn', !!warn);
+    banner.classList.toggle('warn', kind === 'warn');
+    banner.classList.toggle('info', kind === 'info');
     banner.style.display = 'flex';
   }
   function hide() {
     if (banner) banner.style.display = 'none';
   }
 
-  /* 等頁面自己初始化 Firebase；唯讀模式不會初始化，這裡就靜靜結束 */
-  var waited = 0;
-  var poll = setInterval(function () {
-    waited += 400;
-    var ready = window.firebase && firebase.apps && firebase.apps.length > 0;
-    if (ready) { clearInterval(poll); start(); }
-    else if (waited >= SDK_WAIT) { clearInterval(poll); }
-  }, 400);
+  /* 唯讀／群島參觀：頁面會先確認連線是否還有名額。
+       有名額 -> 升級成即時同步，跟一般頁面一樣不用提示
+       已額滿 -> 留在 REST 輪詢，這時才說明並提醒重新整理 */
+  var q = new URLSearchParams(location.search);
+  var readOnly = q.get('view') === '1' || q.get('mode') === 'gallery';
+  if (readOnly) {
+    var t0 = Date.now();
+    var decide = setInterval(function () {
+      if (window.__emotionLiveMode === true) {
+        clearInterval(decide);
+        waitForSdk();                    // 已升級成即時，照常監看連線與人數
+      } else if (window.__emotionLiveMode === false) {
+        clearInterval(decide);
+        show('<div>由於人數過多，所以現在是唯讀模式。' +
+             '如果組內有最新的進度，可以重新整理網頁，就可以看到最新的進度喔～</div>', 'info');
+        setTimeout(function () { if (!dismissed) hide(); }, 14000);
+      } else if (Date.now() - t0 > SDK_WAIT) {
+        clearInterval(decide);
+      }
+    }, 300);
+    return;
+  }
+
+  waitForSdk();
+
+  /* 等頁面自己初始化 Firebase */
+  function waitForSdk() {
+    var waited = 0;
+    var poll = setInterval(function () {
+      waited += 400;
+      var ready = window.firebase && firebase.apps && firebase.apps.length > 0;
+      if (ready) { clearInterval(poll); start(); }
+      else if (waited >= SDK_WAIT) { clearInterval(poll); }
+    }, 400);
+  }
 
   function start() {
     var db;
@@ -123,7 +154,7 @@
       if (n >= WARN_AT && !crowdShown) {
         crowdShown = true;
         show('<div><b>目前有 ' + n + ' 台裝置連線中</b>（免費方案上限 ' + LIMIT +
-             ' 台）。再增加可能會有人連不上。建議每組只用一台裝置編輯，其他人改看投影或群島參觀（唯讀不佔名額）。</div>', true);
+             ' 台）。再增加可能會有人連不上。建議每組只用一台裝置編輯，其他人改看投影或群島參觀（唯讀不佔名額）。</div>', 'warn');
       } else if (n < WARN_AT - 5 && crowdShown) {
         crowdShown = false;
         hide();
