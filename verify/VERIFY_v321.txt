@@ -1,0 +1,7 @@
+v3.2.1 OCEAN WAVE FIX verification
+- emotion_my_world.html byte-identical to v3.2: PASS
+- emotion_score.html byte-identical to v3.2: PASS
+- main-world inline JavaScript syntax: PASS
+- point-like glint term removed: PASS
+- continuous 3-layer ocean crest shader present: PASS
+- island growth / leaderboard / world navigation code not intentionally modified: PASS

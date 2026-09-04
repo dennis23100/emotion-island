@@ -1,0 +1,21 @@
+v3.3 RESONANCE ASCENSION VERIFY
+
+PASS  v3.3 label
+PASS  full altitude formula
+PASS  dynamic curve refresh
+PASS  connection halo
+PASS  floating waterfalls
+PASS  water shadow
+PASS  land root rises
+PASS  no old low-rise formula
+PASS  world guide preserved
+PASS  ranking preserved
+PASS  admin preserved
+PASS  emotion_my_world.html byte-identical
+PASS  emotion_score.html byte-identical
+PASS  duplicate DOM ids
+ALT    0 pt -> nodeY -1.150, top -0.450, rockBottom -6.700
+ALT  400 pt -> nodeY -0.142, top  0.558, rockBottom -5.692
+ALT  800 pt -> nodeY  2.075, top  2.775, rockBottom -3.475
+ALT 1200 pt -> nodeY  4.292, top  4.992, rockBottom -1.258
+ALT 1600 pt -> nodeY  5.300, top  6.000, rockBottom -0.250

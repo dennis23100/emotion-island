@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>情緒不孤島｜共感大世界 v3.3.1</title>
+<title>情緒不孤島｜共感大世界 v3.1</title>
 <style>
 :root{
   --ink:#fffdf8;--muted:rgba(241,247,255,.74);--line:rgba(255,255,255,.14);
@@ -36,14 +36,14 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
 </script>
 <div id="stage"></div>
 <div class="hud">
-  <section class="brand" id="brand"><button class="brand-toggle" id="brandToggle" aria-label="收合標題">‹</button><small>EMOTION IS NOT AN ISLAND · EXACT EIGHT WORLDS v3.3.1</small><h1>情緒不孤島</h1><p>八座世界從海中甦醒，分數越高，整座島會真正離開海面；共感地脈與光流也會跟著升起，直到在空中重新連回中央聖山。</p></section>
+  <section class="brand" id="brand"><button class="brand-toggle" id="brandToggle" aria-label="收合標題">‹</button><small>EMOTION IS NOT AN ISLAND · GRAND WORLD v3.1</small><h1>情緒不孤島</h1><p>八座世界從雲海甦醒，情緒水脈匯向中央共感聖山。世界導覽只負責前往小世界；排行榜則獨立呈現即時名次。</p></section>
   <div class="top-actions"><button class="btn primary" id="guideBtn">世界導覽</button><button class="btn ranking" id="rankingBtn">🏆 排行榜</button><button class="btn" id="tourBtn">◌ 電影巡航</button><button class="btn" id="fxToggleMain">✨ 光影</button><button class="btn" id="adminBtn">管理</button></div>
   <aside class="world-drawer" id="worldDrawer"><h2>世界導覽</h2><div class="sub">選擇想前往的小世界。這裡只負責導覽，不顯示分數與名次。</div><div id="worldNav"></div></aside>
   <aside class="rank-drawer" id="rankDrawer"><h2>即時排行榜</h2><div class="sub">排行與世界導覽完全分開。這裡顯示目前八組的即時分數。</div><div id="rankPodium" class="rank-podium"></div><div id="rankList" class="rank-list"></div></aside>
   <div class="guide-flare">拖曳旋轉 · 滾輪縮放 · 右鍵拖曳平移</div>
-  <div class="world-title"><b>共感世界</b>　八座世界一開始沉在海中、彼此不相連。分數越高，島嶼越往上升；埋在海底的共感地脈會從兩端逐段露出，直到重新連回中央聖山。</div>
+  <div class="world-title"><b>共感世界</b>　八座世界的光路會隨成長逐漸顯現；當所有世界都甦醒，中央聖山也會變得更加璀璨。</div>
   <div class="view-controls"><button class="btn mini" id="resetView" title="重置視角">↺</button></div>
-  <div class="cinematic-vignette"></div><div class="horizon-glow"></div><div class="film-grain"></div><div class="spectacle-badge" id="spectacleBadge">潮汐甦醒 · TIDAL AWAKENING</div>
+  <div class="cinematic-vignette"></div><div class="horizon-glow"></div><div class="film-grain"></div><div class="spectacle-badge" id="spectacleBadge">共感聖山 · GRAND PARADISE</div>
 </div>
 <div class="admin-modal" id="adminModal"><div class="admin-box"><h2>主辦方管理</h2><p>輸入密碼後可以重置八組分數，或完整重製八組小世界。</p><input id="adminPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="管理密碼"><div class="admin-error" id="adminError"></div><div class="admin-actions"><button class="btn" id="adminCancel">取消</button><button class="btn" id="adminResetScores">重置分數</button><button class="btn danger" id="adminWorldStep">重製世界</button></div><div id="worldConfirm" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12)"><p><b>第二次確認：</b>這會刪除八組的小世界名稱、小精靈、庫存與全部佈置。請輸入「重製世界」。</p><input id="worldConfirmText" autocomplete="off" placeholder="輸入：重製世界"><div class="admin-actions"><button class="btn danger" id="adminResetWorld">永久重製八組世界</button></div></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'"></script>
@@ -54,7 +54,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-<script>(function(){var room=(new URLSearchParams(location.search)).get('room');if(!room)return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\/script>');})();</script>
+<script>(function(){var room=(new URLSearchParams(location.search)).get('room');if(!room)return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\\/script>');})();</script>
 <script>
 (function (global) {
   'use strict';
@@ -407,8 +407,8 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
 const D=window.EmotionData,stage=document.getElementById('stage');
 if(!window.THREE){window.__emotionBootError('3D 引擎尚未載入。','THREE missing');return;}
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.55));renderer.setSize(innerWidth,innerHeight);renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.98;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;stage.appendChild(renderer.domElement);
-const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x435a7d,.00335);
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.55));renderer.setSize(innerWidth,innerHeight);renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.94;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;stage.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x6d6a8f,.0044);
 const camera=new THREE.PerspectiveCamera(41,innerWidth/innerHeight,.1,260);const worldLook=new THREE.Vector3(0,4.6,-2);
 const BLOOM_LAYER=1;let bloomComposer=null,finalComposer=null,bloomPass=null,cinematicAvailable=false;let cinematicEnabled=localStorage.getItem('emotionIslandMainFx')!=='off';
 function markGlow(o){if(!o)return o;o.traverse&&o.traverse(x=>{if(x.layers)x.layers.enable(BLOOM_LAYER)});if(o.layers)o.layers.enable(BLOOM_LAYER);return o}
@@ -433,25 +433,7 @@ function torii(color=0xc2605c,scale=1){const g=new THREE.Group();for(const x of[
 function makeBridge(len=3.5,w=.75){const g=new THREE.Group();for(let i=0;i<7;i++){const p=new THREE.Mesh(new THREE.BoxGeometry(w,.10,len/7*.92),toon(0xb47b55));p.position.z=-len/2+(i+.5)*len/7;p.position.y=Math.sin(i/6*Math.PI)*.12;g.add(p)}for(const x of[-w*.55,w*.55])for(let i=0;i<5;i++){const post=new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,.55,6),toon(0x70483c));post.position.set(x,.27,-len/2+i*len/4);g.add(post)}return g}
 function pathStrip(points,color=0xe7c181,width=.62){const g=new THREE.Group();for(let i=0;i<points.length-1;i++){const a=points[i],b=points[i+1],dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz),m=new THREE.Mesh(new THREE.BoxGeometry(width,.06,len),toon(color));m.position.set((a[0]+b[0])/2,.04,(a[1]+b[1])/2);m.rotation.y=Math.atan2(dx,dz);g.add(m)}return g}
 function addWaterfall(parent,x,y,z,w,h,color=0xb7efff,rotY=0){const g=new THREE.Group();const core=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.60,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));core.position.y=-h/2;g.add(markGlow(core));for(let i=0;i<4;i++){const s=new THREE.Mesh(new THREE.PlaneGeometry(.035,h*.92),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));s.position.set((i-1.5)*w*.18,-h*.5,0.01);g.add(markGlow(s))}g.position.set(x,y,z);g.rotation.y=rotY;parent.add(g);return g}
-function curveTube(a,b,lift,color,opacity=.18,radius=.075){
-  const curve=new THREE.CatmullRomCurve3([a.clone(),a.clone().lerp(b,.32),a.clone().lerp(b,.68),b.clone()],false,'centripetal',.35);
-  const coreMat=new THREE.MeshBasicMaterial({color,transparent:true,opacity,depthWrite:false,blending:THREE.AdditiveBlending});
-  const haloMat=new THREE.MeshBasicMaterial({color,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});
-  const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,72,radius,8,false),coreMat);scene.add(markGlow(mesh));
-  const halo=new THREE.Mesh(new THREE.TubeGeometry(curve,72,radius*2.55,8,false),haloMat);scene.add(markGlow(halo));
-  const pulse=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex('#ffffff','#a6eaff'),transparent:true,opacity:.72,blending:THREE.AdditiveBlending,depthWrite:false}));pulse.scale.set(.5,.5,1);scene.add(markGlow(pulse));
-  return{curve,mesh,halo,pulse,strength:0,lift,lastOuterY:1e9,lastRatio:-1};
-}
-function refreshConnectionCurve(C,a,b,lift=C.lift){
-  const span=a.distanceTo(b),p1=a.clone().lerp(b,.22),p2=a.clone().lerp(b,.52),p3=a.clone().lerp(b,.80);
-  p1.y=Math.max(a.y,p1.y)+lift*.46;
-  p2.y=Math.max(a.y,b.y)+lift*(.72+Math.min(.28,span*.006));
-  p3.y=Math.max(b.y,p3.y)+lift*.30;
-  C.curve=new THREE.CatmullRomCurve3([a.clone(),p1,p2,p3,b.clone()],false,'centripetal',.32);
-  const g1=new THREE.TubeGeometry(C.curve,72,.075,8,false),g2=new THREE.TubeGeometry(C.curve,72,.19,8,false);
-  C.mesh.geometry.dispose();C.halo.geometry.dispose();C.mesh.geometry=g1;C.halo.geometry=g2;
-  C.lastOuterY=a.y;
-}
+function curveTube(a,b,lift,color,opacity=.18,radius=.075){const mid=a.clone().lerp(b,.5);mid.y+=lift;const curve=new THREE.CatmullRomCurve3([a,mid,b]);const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,48,radius,8,false),new THREE.MeshBasicMaterial({color,transparent:true,opacity,depthWrite:false,blending:THREE.AdditiveBlending}));scene.add(markGlow(mesh));const pulse=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex('#ffffff','#a6eaff'),transparent:true,opacity:.72,blending:THREE.AdditiveBlending,depthWrite:false}));pulse.scale.set(.5,.5,1);scene.add(markGlow(pulse));return{curve,mesh,pulse,strength:0}}
 
 // SKY — anime sunset with blue-violet zenith and warm horizon.
 const sky=new THREE.Mesh(new THREE.SphereGeometry(150,48,30),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,uniforms:{},vertexShader:'varying vec3 v;void main(){v=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec3 v;void main(){float y=v.y*.5+.5;vec3 c0=vec3(.035,.075,.24);vec3 c1=vec3(.11,.19,.48);vec3 c2=vec3(.56,.37,.70);vec3 c3=vec3(.98,.55,.48);vec3 c=mix(c3,c2,smoothstep(.05,.25,y));c=mix(c,c1,smoothstep(.28,.55,y));c=mix(c,c0,smoothstep(.62,.98,y));float halo=exp(-pow((y-.29)*7.0,2.0));c+=vec3(.12,.07,.15)*halo;gl_FragColor=vec4(c,1.0);}'}));scene.add(sky);
@@ -464,80 +446,8 @@ const starGeo=new THREE.BufferGeometry(),starArr=new Float32Array(650*3);for(let
 // Distant mountain layers.
 for(let layer=0;layer<3;layer++){const count=24-layer*3,rad=57+layer*16;for(let i=0;i<count;i++){const a=i/count*Math.PI*2+(layer*.23),h=9+((i*7+layer*5)%8)*1.2,w=4.5+(i%4)*.7,col=[0x44527e,0x56578c,0x6b5b91][layer];const m=new THREE.Mesh(new THREE.ConeGeometry(w,h,5+(i%3)),toon(col,{transparent:true,opacity:.42-layer*.08,depthWrite:false}));m.position.set(Math.cos(a)*rad,-1+h*.44,Math.sin(a)*rad);m.rotation.y=a*.7;scene.add(m)}}
 const clouds=[cloud(-44,24,-58,3.4,0xf0d8ea,.63),cloud(35,29,-68,3.8,0xdde5ff,.62),cloud(3,35,-95,4.8,0xe6e5f4,.52),cloud(57,18,-26,2.3,0xd6e9f5,.58),cloud(-54,17,28,2.4,0xf5e1d7,.55),cloud(-18,12,44,1.7,0xdbe7ef,.46),cloud(29,13,39,1.8,0xe9d6e8,.42)];
-// Water plane — v3.2 stylized ocean: multi-directional GPU waves, luminous ripple lines and caustic-like glints.
-const WATER_Y=-.42;
-const wg=new THREE.PlaneGeometry(180,180,88,88);wg.rotateX(-Math.PI/2);
-const waterMat=new THREE.ShaderMaterial({
-  transparent:true,side:THREE.DoubleSide,depthWrite:true,
-  uniforms:{uTime:{value:0}},
-  vertexShader:`
-    uniform float uTime;
-    varying vec2 vUv;
-    varying vec3 vWorld;
-    varying float vWave;
-    void main(){
-      vUv=uv;
-      vec3 p=position;
-      float w1=sin(p.x*.135+uTime*.78)*.12;
-      float w2=sin((p.x+p.z)*.092-uTime*.56)*.095;
-      float w3=cos(p.z*.185+uTime*.44)*.050;
-      float w4=sin((p.x-p.z)*.245+uTime*.92)*.026;
-      float w=w1+w2+w3+w4;
-      p.y+=w;
-      vWave=w;
-      vec4 world=modelMatrix*vec4(p,1.0);
-      vWorld=world.xyz;
-      gl_Position=projectionMatrix*viewMatrix*world;
-    }`,
-  fragmentShader:`
-    uniform float uTime;
-    varying vec2 vUv;
-    varying vec3 vWorld;
-    varying float vWave;
-    float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
-    float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
-    float crestBand(float s,float lo,float hi){return smoothstep(lo,hi,s);}
-    void main(){
-      vec2 p=vWorld.xz;
-      float n=noise(p*.055+vec2(uTime*.018,-uTime*.012));
-
-      // v3.2.1: continuous anime-style ocean crests.  These are long curved ribbons,
-      // not point highlights, so the sea reads as waves instead of white glitter.
-      float bend1=sin(p.y*.105-uTime*.23)*1.18+sin(p.y*.031+uTime*.11)*.58;
-      float bend2=sin(p.x*.082+uTime*.17)*.92;
-      float s1=.5+.5*sin(p.x*.205+p.y*.050+bend1+uTime*.48+n*.30);
-      float s2=.5+.5*sin((p.x*.115-p.y*.235)+bend2-uTime*.37+n*.22);
-      float s3=.5+.5*sin(p.x*.390+p.y*.135+sin(p.y*.070-uTime*.18)*.72+uTime*.61);
-      float crest1=crestBand(s1,.930,.997);
-      float crest2=crestBand(s2,.958,.998)*.28;
-      float crest3=crestBand(s3,.980,.999)*.10;
-      float swellLines=min(1.0,crest1+crest2+crest3);
-
-      // Sparse soft trough bands add motion without creating circular dots.
-      float trough=.5+.5*sin(p.x*.082+p.y*.032+sin(p.y*.055+uTime*.12)*.65+uTime*.21);
-      float longSwell=smoothstep(.18,.82,trough);
-      float crest=smoothstep(.055,.23,vWave);
-
-      vec3 deep=vec3(.008,.065,.18);
-      vec3 mid=vec3(.015,.27,.43);
-      vec3 aqua=vec3(.035,.50,.60);
-      vec3 c=mix(deep,mid,.43+.20*longSwell);
-      c=mix(c,aqua,.08+.13*crest);
-
-      float sunset=exp(-pow((vUv.x-.22)*6.2,2.0))*exp(-pow((vUv.y-.39)*3.7,2.0));
-      c+=vec3(.77,.24,.38)*sunset*.11;
-
-      // Cyan wave crests only — deliberately no white dot/glint term.
-      c+=vec3(.045,.42,.56)*crest1*.22;
-      c+=vec3(.060,.50,.64)*crest2*.13;
-      c+=vec3(.080,.58,.69)*crest3*.07;
-      gl_FragColor=vec4(c,.975);
-    }`
-});
-const water=new THREE.Mesh(wg,waterMat);water.position.y=WATER_Y;scene.add(water);
-// Visible surface ripples: cheap additive rings, deliberately avoiding expensive full-scene reflection passes.
-function makeSeaRipple(x,z,r,color=0xa9efff,opacity=.12){const ring=new THREE.Mesh(new THREE.RingGeometry(r,r+.055,96),new THREE.MeshBasicMaterial({color,transparent:true,opacity,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));ring.rotation.x=-Math.PI/2;ring.position.set(x,WATER_Y+.055,z);scene.add(markGlow(ring));return ring}
-const hubRipples=[makeSeaRipple(0,0,18.6,0xa8ecff,.075),makeSeaRipple(0,0,20.2,0xffd1da,.040)];
+// Water plane.
+const wg=new THREE.PlaneGeometry(180,180,50,50);wg.rotateX(-Math.PI/2);const wb=Float32Array.from(wg.attributes.position.array);const waterMat=new THREE.ShaderMaterial({transparent:true,side:THREE.DoubleSide,uniforms:{uTime:{value:0}},vertexShader:'uniform float uTime;varying vec2 vUv;void main(){vUv=uv;vec3 p=position;p.y+=sin(p.x*.10+uTime*.70)*.10+cos(p.z*.11-uTime*.55)*.08;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);}',fragmentShader:'uniform float uTime;varying vec2 vUv;void main(){float band=.5+.5*sin(vUv.y*8.0+uTime*.08);float glint=pow(max(0.0,.5+.5*sin(vUv.x*55.0+uTime)*cos(vUv.y*37.0-uTime*.65)),18.0);vec3 deep=vec3(.018,.12,.28);vec3 mid=vec3(.035,.43,.58);vec3 c=mix(deep,mid,.43+.19*band);float sunset=exp(-pow((vUv.x-.22)*7.0,2.0))*exp(-pow((vUv.y-.38)*4.2,2.0));float ribbon=.5+.5*sin(vUv.x*18.0-vUv.y*13.0+uTime*.18);c+=vec3(.75,.31,.42)*sunset*.18;c+=vec3(.18,.68,.84)*ribbon*.035;c+=vec3(.52,.88,1.0)*glint*.20;gl_FragColor=vec4(c,.95);}'});const water=new THREE.Mesh(wg,waterMat);water.position.y=-.42;scene.add(water);
 // Mist bands near the horizon.
 for(let i=0;i<6;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(58,9),new THREE.MeshBasicMaterial({color:i%2?0xd8d7ef:0xcce7f4,transparent:true,opacity:.035,depthWrite:false,side:THREE.DoubleSide}));const a=i/6*Math.PI*2;m.position.set(Math.cos(a)*45,5.5+((i%2)*2),Math.sin(a)*45);m.rotation.y=-a+Math.PI/2;scene.add(m)}
 
@@ -570,11 +480,22 @@ for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r=7.1+(i%2)*.8,l=lantern(i%3===0?0x
 // Crown / celestial rings above the world tree.
 const crown=new THREE.Mesh(new THREE.TorusGeometry(6.1,.075,8,90),new THREE.MeshBasicMaterial({color:0xbff5ff,transparent:true,opacity:.42,depthWrite:false,blending:THREE.AdditiveBlending}));crown.rotation.x=Math.PI/2;crown.position.set(.4,14.0,-7.5);hub.add(markGlow(crown));const crown2=new THREE.Mesh(new THREE.TorusGeometry(4.6,.045,8,80),new THREE.MeshBasicMaterial({color:0xffdfae,transparent:true,opacity:.30,depthWrite:false,blending:THREE.AdditiveBlending}));crown2.rotation.set(Math.PI/2.25,.2,.18);crown2.position.set(.4,12.7,-7.5);hub.add(markGlow(crown2));
 
-// v3.3.1 EXACT EIGHT WORLDS
-// IMPORTANT: the only outer islands in the main world are the eight score-driven group islands below.
-// Decorative floating realms were removed because they visually read as extra group islands.
-// Depth is now carried by clouds, mountains, star-river, light shafts and foreground framing instead.
-
+// GRAND SPECTACLE PASS — stronger silhouette, depth and JRPG-style wonder.
+const spectacle=new THREE.Group();scene.add(spectacle);
+function floatingRealm(x,y,z,r,grass,rockCol,treeCol,blossom=false,variant=0){
+  const g=new THREE.Group();g.position.set(x,y,z);spectacle.add(g);const h=r*1.78;
+  const body=new THREE.Mesh(warpedCylinderGeometry(r,r*.22,h,24,71+variant*5,.075),toon(rockCol));body.position.y=-h*.52;body.castShadow=body.receiveShadow=true;g.add(body);
+  const lip=new THREE.Mesh(warpedCylinderGeometry(r*1.02,r*.98,.42,28,82+variant*7,.045),toon(grass));lip.position.y=.08;g.add(lip);
+  const top=new THREE.Mesh(new THREE.CircleGeometry(r*.90,34),toon(tint(grass,0,.04,.055)));top.rotation.x=-Math.PI/2;top.position.y=.31;g.add(top);
+  for(let i=0;i<7;i++){const a=i/7*Math.PI*2+(variant*.45),tr=tree(treeCol,blossom,.48+(i%3)*.08);tr.position.set(Math.cos(a)*r*.57,.32,Math.sin(a)*r*.46);g.add(tr)}
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(r*.84,.045,7,64),new THREE.MeshBasicMaterial({color:variant%2?0xffd8b0:0x9cefff,transparent:true,opacity:.20,depthWrite:false,blending:THREE.AdditiveBlending}));rim.rotation.x=Math.PI/2;rim.position.y=.39;g.add(markGlow(rim));
+  const falls=[];for(let i=0;i<2;i++){const fx=(i?1:-1)*r*.38,fw=.28+r*.09,fall=addWaterfall(g,fx,.18,r*.52,fw,h*.74,variant%2?0xd8f8ff:0xc9f3ff,(i?-.08:.08));falls.push(fall)}
+  g.userData.baseY=y;g.userData.phase=variant*.83;return g;
+}
+const realmLeft=floatingRealm(-20.5,7.1,-8.0,4.2,0x72926e,0x3a4a61,0x4f8e66,true,1);
+const realmRight=floatingRealm(20.8,8.3,-10.0,4.5,0x5f8775,0x34475f,0x4b8a70,false,2);
+const realmHigh=floatingRealm(.5,17.8,-19.0,3.2,0x6f8c7a,0x35465d,0x5b9b74,false,3);
+const highTemple=temple(0xf0d09c,0x785a78,.62);highTemple.position.set(.4,.32,-.15);realmHigh.add(highTemple);const highGate=torii(0xc56a67,.70);highGate.position.set(-1.55,.32,1.05);highGate.rotation.y=.35;realmHigh.add(highGate);
 // Suspended sky bridge across the upper terraces.
 const upperBridge=makeBridge(9.2,.95);upperBridge.position.set(-.1,4.55,-4.75);upperBridge.rotation.y=Math.PI/2;hub.add(upperBridge);
 // Vertical halo behind the sacred tree and a calm world-heart crystal.
@@ -591,81 +512,26 @@ const starRiverPulses=[];for(let i=0;i<6;i++){const sp=new THREE.Sprite(new THRE
 const lightShafts=[];for(let i=0;i<4;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(7.5+i*1.8,54),new THREE.MeshBasicMaterial({color:i%2?0xffd2c7:0xffe0b6,transparent:true,opacity:.025+i*.009,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));m.position.set(-31+i*5.1,16,-38-i*3.8);m.rotation.set(-.18,-.22+i*.035,-.30+i*.04);scene.add(markGlow(m));lightShafts.push(m)}
 // Pools of light beneath the main waterfalls make the sanctuary read from far away.
 const fallPools=[];[[-4.9,1.19,-4.0,1.35],[4.35,1.18,-4.4,1.5],[0,1.17,-7.2,1.20]].forEach((p,i)=>{const disc=new THREE.Mesh(new THREE.RingGeometry(.35,p[3],40),new THREE.MeshBasicMaterial({color:i===1?0xbff7ff:0xd8f8ff,transparent:true,opacity:.16,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));disc.rotation.x=-Math.PI/2;disc.position.set(p[0],p[1],p[2]);hub.add(markGlow(disc));fallPools.push(disc)});
-const waterfallSpray=[];[[-4.9,1.45,-4.0],[4.35,1.45,-4.4],[0,1.42,-7.2]].forEach((p,k)=>{for(let j=0;j<12;j++){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex('#ffffff','#a9edff'),transparent:true,opacity:.12,blending:THREE.AdditiveBlending,depthWrite:false}));sp.position.set(p[0]+(Math.random()-.5)*1.0,p[1]+Math.random()*.5,p[2]+(Math.random()-.5)*.75);sp.scale.set(.16+.08*Math.random(),.16+.08*Math.random(),1);sp.userData={base:new THREE.Vector3(p[0],p[1],p[2]),phase:Math.random()*10,speed:.45+Math.random()*.45,side:(Math.random()-.5)};hub.add(markGlow(sp));waterfallSpray.push(sp)}});
 
-// TIDAL AWAKENING helpers.
-function moonTideShrine(){
-  const g=new THREE.Group();
-  const pool=new THREE.Mesh(new THREE.CircleGeometry(2.15,40),new THREE.MeshPhongMaterial({color:0x405c91,emissive:0x18294c,emissiveIntensity:.16,transparent:true,opacity:.92,shininess:120}));pool.rotation.x=-Math.PI/2;pool.position.y=.04;pool.scale.z=.72;g.add(pool);
-  const poolRim=new THREE.Mesh(new THREE.TorusGeometry(1.92,.055,8,64),new THREE.MeshBasicMaterial({color:0x9fdcff,transparent:true,opacity:.45,depthWrite:false,blending:THREE.AdditiveBlending}));poolRim.rotation.x=Math.PI/2;poolRim.position.y=.08;poolRim.scale.z=.72;g.add(markGlow(poolRim));
-  const pedestal=new THREE.Mesh(new THREE.CylinderGeometry(.58,.78,.42,12),toon(0x6d6687));pedestal.position.set(0,.28,-.18);g.add(pedestal);
-  const cres=new THREE.Mesh(new THREE.TorusGeometry(.86,.14,10,60,Math.PI*1.50),new THREE.MeshPhongMaterial({color:0xd6e8ff,emissive:0x698ed8,emissiveIntensity:.42,shininess:90}));cres.position.set(0,1.20,-.16);cres.rotation.z=Math.PI*.23;g.add(markGlow(cres));
-  const pearl=new THREE.Mesh(new THREE.SphereGeometry(.24,16,12),new THREE.MeshBasicMaterial({color:0xf6f2ff,transparent:true,opacity:.92}));pearl.position.set(.12,1.14,-.12);g.add(markGlow(pearl));
-  return g;
-}
-function smooth01(x){x=D.clamp(x,0,1);return x*x*(3-2*x)}
-function createLandBridge(index,a,b){
-  const meta=D.GROUPS[index],mid=a.clone().lerp(b,.5);mid.y=WATER_Y;mid.x+=Math.sin(index*1.73)*1.15;mid.z+=Math.cos(index*1.31)*.85;
-  const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(a.x,WATER_Y,a.z),mid,new THREE.Vector3(b.x,WATER_Y,b.z)]);
-  const group=new THREE.Group();scene.add(group);const pieces=[];const count=14;
-  const rockCols=[0x33465c,0x594454,0x334d43,0x5d4b43,0x313b59,0x564758,0x2e4b54,0x44485e];
-  const grassCols=[0x4e7a6c,0x6c8d6a,0x4d845b,0x7d995f,0x55746b,0x759265,0x4a8271,0x657c5f];
-  for(let j=0;j<count;j++){
-    const u=(j+.5)/count,p=curve.getPoint(u),tan=curve.getTangent(u),piece=new THREE.Group();
-    const width=.60+Math.sin((j+index)*1.77)*.09;
-    const side=new THREE.Mesh(warpedCylinderGeometry(width,width*.72,1.34,12,111+index*17+j,.055),toon(rockCols[index]));side.position.y=-.68;side.scale.z=1.42;side.castShadow=side.receiveShadow=true;piece.add(side);
-    const cap=new THREE.Mesh(warpedCylinderGeometry(width*.98,width,.16,12,151+index*13+j,.035),toon(tint(grassCols[index],0,.03,.045)));cap.position.y=.03;cap.scale.z=1.42;piece.add(cap);
-    if(j%3===1){const peb=rock(tint(rockCols[index],0,0,.08),.22);peb.position.set(width*.15,.18,0);piece.add(peb)}
-    piece.position.set(p.x,WATER_Y-2.7,p.z);piece.rotation.y=Math.atan2(tan.x,tan.z);piece.visible=false;group.add(piece);
-    pieces.push({piece,u,targetY:WATER_Y-2.7,phase:(j+index*.7)*.6});
-  }
-  return{group,pieces,index,curve};
-}
 // GROUP WORLD NODES — scenic landmarks, not eight labeled cupcakes.
 const nodePositions=[new THREE.Vector3(-18,0,-13),new THREE.Vector3(-28,0,-1),new THREE.Vector3(-21,0,15),new THREE.Vector3(-7,0,23),new THREE.Vector3(14,0,20),new THREE.Vector3(28,0,8),new THREE.Vector3(25,0,-8),new THREE.Vector3(12,0,-20)];
 const nodeScales=[1.0,.92,1.02,.90,.96,.88,.95,.98];
-function nodeIsland(index){const meta=D.GROUPS[index],pos=nodePositions[index],g=new THREE.Group();g.position.set(pos.x,-3.15,pos.z);scene.add(g);const rockCol=[0x39465e,0x5a445a,0x3c5448,0x645149,0x343d5a,0x5b4a5e,0x304e59,0x464a61][index],grassCol=[0x527c6f,0x6c8d6a,0x4e855b,0x7e9a5f,0x55746b,0x759365,0x4a8371,0x657d5f][index];const base=new THREE.Mesh(warpedCylinderGeometry(4.6,2.5,6.0,20,8.2+index,.12),toon(rockCol));base.position.y=-2.55;base.castShadow=base.receiveShadow=true;g.add(base);const cap=new THREE.Mesh(warpedCylinderGeometry(4.55,4.4,.72,22,12.6+index,.07),toon(grassCol));cap.position.y=.32;g.add(cap);const meadow=new THREE.Mesh(new THREE.CircleGeometry(4.05,28),toon(tint(grassCol,0,.05,.08)));meadow.rotation.x=-Math.PI/2;meadow.position.y=.70;g.add(meadow);const rim=new THREE.Mesh(new THREE.TorusGeometry(3.95,.065,8,60),new THREE.MeshBasicMaterial({color:meta.color,transparent:true,opacity:.18,depthWrite:false,blending:THREE.AdditiveBlending}));rim.rotation.x=Math.PI/2;rim.position.y=.78;g.add(markGlow(rim));
+function nodeIsland(index){const meta=D.GROUPS[index],pos=nodePositions[index],g=new THREE.Group();g.position.copy(pos);scene.add(g);const rockCol=[0x39465e,0x5a445a,0x3c5448,0x645149,0x343d5a,0x5b4a5e,0x304e59,0x464a61][index],grassCol=[0x527c6f,0x6c8d6a,0x4e855b,0x7e9a5f,0x55746b,0x759365,0x4a8371,0x657d5f][index];const base=new THREE.Mesh(warpedCylinderGeometry(4.6,2.5,6.0,20,8.2+index,.12),toon(rockCol));base.position.y=-2.55;base.castShadow=base.receiveShadow=true;g.add(base);const cap=new THREE.Mesh(warpedCylinderGeometry(4.55,4.4,.72,22,12.6+index,.07),toon(grassCol));cap.position.y=.32;g.add(cap);const meadow=new THREE.Mesh(new THREE.CircleGeometry(4.05,28),toon(tint(grassCol,0,.05,.08)));meadow.rotation.x=-Math.PI/2;meadow.position.y=.70;g.add(meadow);const rim=new THREE.Mesh(new THREE.TorusGeometry(3.95,.065,8,60),new THREE.MeshBasicMaterial({color:meta.color,transparent:true,opacity:.18,depthWrite:false,blending:THREE.AdditiveBlending}));rim.rotation.x=Math.PI/2;rim.position.y=.78;g.add(markGlow(rim));
   if(index===0){const dome=new THREE.Mesh(new THREE.SphereGeometry(.82,16,12,0,Math.PI*2,0,Math.PI/2),toon(0x31435f));dome.position.set(0,1.1,-.4);g.add(dome);const ring=new THREE.Mesh(new THREE.TorusGeometry(1.15,.04,7,40),new THREE.MeshBasicMaterial({color:0xaee8ff,transparent:true,opacity:.65}));ring.rotation.x=Math.PI/2;ring.position.set(0,1.15,-.4);g.add(markGlow(ring));for(let i=0;i<3;i++){const p=pine(0x314d50,.58);p.position.set(-2.0+i*2.0,.72,1.5);g.add(p)}}
   if(index===1){for(let i=0;i<7;i++){const tr=tree(0x78a96f,true,.58);tr.position.set(Math.cos(i*.9)*2.6,.72,Math.sin(i*.9)*2.1);g.add(tr)}const t=torii(0xc96d71,.92);t.position.set(0,.72,-1.4);g.add(t)}
   if(index===2){const big=tree(0x4f9562,false,1.28);big.position.set(0,.72,-.2);g.add(big);for(let i=0;i<8;i++){const p=pine(0x315744,.48);p.position.set(Math.cos(i*.8)*2.8,.72,Math.sin(i*.8)*2.2);g.add(p)}}
   if(index===3){const shrine=temple(0xe0ba77,0x9a654d,.63);shrine.position.set(0,.72,-.1);g.add(shrine);for(let i=0;i<5;i++){const l=lantern(0xffd38f,.65);l.position.set(-2+i,.72,1.7+Math.sin(i)*.2);g.add(l)}}
-  if(index===4){const moonShrine=moonTideShrine();moonShrine.position.set(0,.72,.15);moonShrine.scale.setScalar(.92);g.add(moonShrine);for(let i=0;i<4;i++){const l=lantern(i%2?0xc6d9ff:0x9fe7ff,.56);l.position.set(-1.9+i*1.25,.72,1.75+Math.sin(i)*.15);g.add(l)}}
+  if(index===4){const pool=new THREE.Mesh(new THREE.CircleGeometry(2.1,30),new THREE.MeshPhongMaterial({color:0x5f6e9f,transparent:true,opacity:.86,shininess:100}));pool.rotation.x=-Math.PI/2;pool.position.set(0,.75,.2);g.add(pool);const cres=new THREE.Mesh(new THREE.TorusGeometry(1.25,.12,8,40,Math.PI*1.4),new THREE.MeshBasicMaterial({color:0xc8ddff,transparent:true,opacity:.7}));cres.rotation.x=Math.PI/2;cres.position.set(0,.88,.2);g.add(markGlow(cres))}
   if(index===5){for(let i=0;i<18;i++){const f=new THREE.Mesh(new THREE.SphereGeometry(.11,7,5),toon(i%3===0?0xffb7cf:(i%3===1?0xffd98f:0xc7ddff)));f.position.set(Math.cos(i*1.71)*(1.3+(i%4)*.45),.83,Math.sin(i*1.71)*(1.1+(i%3)*.48));g.add(f)}const pav=temple(0xf0c88f,0xb45f70,.42);pav.position.set(0,.72,-.7);g.add(pav)}
   if(index===6){for(let i=0;i<12;i++){const cr=new THREE.Mesh(new THREE.OctahedronGeometry(.28+(i%3)*.12,0),toon(i%2?0x65d8dc:0x92c7ff,{emissive:i%2?0x173b41:0x203858,emissiveIntensity:.14}));cr.position.set(Math.cos(i*.75)*(1.4+(i%3)*.55),.85+(i%3)*.15,Math.sin(i*.75)*(1.1+(i%4)*.42));g.add(cr)}}
   if(index===7){const altar=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.8,.34,12),toon(0x69617f));altar.position.set(0,.88,-.2);g.add(altar);const orb=new THREE.Mesh(new THREE.IcosahedronGeometry(.48,1),new THREE.MeshBasicMaterial({color:0xd6e9ff,transparent:true,opacity:.82}));orb.position.set(0,1.45,-.2);g.add(markGlow(orb));for(let i=0;i<5;i++){const tr=tree(0x66885d,false,.52);tr.position.set(Math.cos(i*1.25)*2.4,.72,Math.sin(i*1.25)*1.9);g.add(tr)}}
-  g.scale.setScalar(nodeScales[index]);return{g,rim,index,targetY:-3.15,scoreRatio:0,basePos:pos.clone()}
+  g.scale.setScalar(nodeScales[index]);return{g,rim,index,targetY:-2.4,scoreRatio:0,basePos:pos.clone()}
 }
 const nodes=[];for(let i=0;i<8;i++)nodes.push(nodeIsland(i));
-if(nodes.length!==8) throw new Error(`Main world must contain exactly 8 group islands, got ${nodes.length}`);
-// Ocean rings stay on sea level while islands rise through them.
-const nodeRipples=nodePositions.map((p,i)=>makeSeaRipple(p.x,p.z,4.65*nodeScales[i],D.GROUPS[i].color,.055));
-// v3.3 ASCENSION FX — once an island leaves the sea, its shadow and hanging waterfalls make the height unmistakable.
-function softDiscTexture(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,5,64,64,62);g.addColorStop(0,'rgba(1,11,28,.62)');g.addColorStop(.52,'rgba(2,18,38,.34)');g.addColorStop(1,'rgba(2,18,38,0)');x.fillStyle=g;x.fillRect(0,0,128,128);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
-const islandShadowTex=softDiscTexture();
-function makeAscensionFX(index){
-  const p=nodePositions[index],meta=D.GROUPS[index],shadow=new THREE.Mesh(new THREE.PlaneGeometry(9.2*nodeScales[index],7.1*nodeScales[index]),new THREE.MeshBasicMaterial({map:islandShadowTex,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));shadow.rotation.x=-Math.PI/2;shadow.position.set(p.x,WATER_Y+.025,p.z);scene.add(shadow);
-  const dir=p.clone().sub(new THREE.Vector3(Math.sign(p.x)*7.5,0,Math.sign(p.z)*5.4));dir.y=0;dir.normalize();
-  const streams=[];const count=index%3===0?2:1;
-  for(let k=0;k<count;k++){const side=new THREE.Vector3(-dir.z,0,dir.x).multiplyScalar((k-(count-1)/2)*.72);const x=p.x+dir.x*2.55*nodeScales[index]+side.x,z=p.z+dir.z*2.55*nodeScales[index]+side.z;
-    const m=new THREE.Mesh(new THREE.CylinderGeometry(.045,.075,1,7),new THREE.MeshBasicMaterial({color:0xbceeff,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));m.position.set(x,WATER_Y,z);m.visible=false;scene.add(markGlow(m));streams.push(m)
-  }
-  const splash=new THREE.Mesh(new THREE.RingGeometry(.18,.78,42),new THREE.MeshBasicMaterial({color:meta.accent||meta.color,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));splash.rotation.x=-Math.PI/2;splash.position.set(streams[0].position.x,WATER_Y+.035,streams[0].position.z);scene.add(markGlow(splash));
-  return{shadow,streams,splash,index,strength:0}
-}
-const ascensionFX=nodePositions.map((_,i)=>makeAscensionFX(i));
-
-// Terrain roots: invisible at score 0, then the buried land itself rises from both ends until it reconnects.
-const landBridges=[];
-// Light / water-root connections remain secondary; they start fully invisible and only awaken after progress begins.
-const connections=[];for(let i=0;i<8;i++){
-  const center=nodePositions[i].clone(),target=new THREE.Vector3(Math.sign(center.x)*7.5,1.35,Math.sign(center.z)*5.4);
-  const dir=target.clone().sub(center);dir.y=0;dir.normalize();
-  const edge=center.clone().add(dir.multiplyScalar(3.55*nodeScales[i]));edge.y=WATER_Y-.15;
-  landBridges.push(createLandBridge(i,edge,target));
-  const C=curveTube(edge,target,3.35,D.GROUPS[i].color,0,.075);C.index=i;C.edgeXZ=edge.clone();C.hubAnchor=target.clone();connections.push(C)
-}
+// Light / water-root connections. Their visibility is driven by progress but no score is shown.
+const connections=[];for(let i=0;i<8;i++){const a=nodePositions[i].clone();a.y=.65;const target=new THREE.Vector3(Math.sign(a.x)*7.5,1.35,Math.sign(a.z)*5.4);const C=curveTube(a,target,3.6,D.GROUPS[i].color,.05,.075);C.index=i;connections.push(C)}
 // Shared lower land mass hints that every island was always connected beneath the water.
-const under=new THREE.Mesh(warpedCylinderGeometry(37,43,7.5,36,62,.045),toon(0x142c3c,{transparent:true,opacity:.42}));under.position.y=-10.6;under.scale.z=.82;scene.add(under);
+const under=new THREE.Mesh(warpedCylinderGeometry(37,43,7.5,36,62,.045),toon(0x1e394b,{transparent:true,opacity:.86}));under.position.y=-8.8;under.scale.z=.82;scene.add(under);
 // Foreground framing rocks and trees, far enough not to block orbit.
 const frame=new THREE.Group();scene.add(frame);[[-29,0,32,3.4],[-21,0,37,2.8],[26,0,35,3.0],[34,0,27,3.7]].forEach((p,i)=>{const r=rock(i%2?0x263b53:0x31465b,p[3]);r.position.set(p[0],-1.0,p[2]);frame.add(r);const tr=tree(i%2?0x355d55:0x416b57,false,1.5+p[3]*.13);tr.position.set(p[0]+(i%2?1.2:-1.4),-.2,p[2]-1);frame.add(tr)});
 // Fireflies and birds.
@@ -682,20 +548,7 @@ function iconFor(i){return ['✦','✿','♣','☀','☾','❀','◆','✧'][i]}
 function openWorld(i){const id=String(i+1),params=new URLSearchParams(),code=D.groupRoomCode(id);if(code)params.set('room',code);else{if(D.room)params.set('room',D.room);params.set('group',id)}params.set('from','main');location.href='emotion_my_world.html?'+params.toString()}
 function renderGuide(){worldNav.innerHTML='';for(let i=0;i<8;i++){const g=groups[String(i+1)]||{},m=D.GROUPS[i],row=document.createElement('div');row.className='world-card';row.innerHTML='<div class="orb" style="--orb:'+m.accent+'33;color:'+m.accent+'">'+iconFor(i)+'</div><div><div class="label">'+m.label+' · '+m.theme+'</div><div class="name">'+((g.worldName||m.theme).replace(/[<>]/g,''))+'</div></div><button type="button">前往</button>';row.querySelector('button').onclick=()=>openWorld(i);worldNav.appendChild(row)}}
 function renderRanking(){const ranked=D.ranking(groups),medals=['🥇','🥈','🥉'],classes=['first','',''];rankPodium.innerHTML='';const order=[1,0,2];for(const idx of order){const r=ranked[idx];if(!r)continue;const m=D.GROUPS[Number(r.id)-1],g=groups[r.id]||{},card=document.createElement('div');card.className='podium-card '+(classes[idx]||'');card.style.setProperty('--glow',m.accent+'55');card.innerHTML='<div class="crown">'+medals[idx]+'</div><div class="place">第 '+(idx+1)+' 名</div><div class="group">'+m.label+'</div><div class="score">'+Number(r.score).toLocaleString()+' pt</div>';rankPodium.appendChild(card)}rankList.innerHTML='';ranked.forEach((r,idx)=>{if(idx<3)return;const m=D.GROUPS[Number(r.id)-1],g=groups[r.id]||{},row=document.createElement('div');row.className='rank-row';row.innerHTML='<div class="rank-no">#'+(idx+1)+'</div><div><div class="rank-name">'+m.label+' · '+m.theme+'</div><div class="rank-world">'+((g.worldName||m.theme).replace(/[<>]/g,''))+'</div></div><div class="rank-score">'+Number(r.score).toLocaleString()+' pt</div>';rankList.appendChild(row)})}
-function updateWorldState(){const ratios=[];for(let i=0;i<8;i++){const g=groups[String(i+1)]||{},r=D.clamp((Number(g.progressScore)||0)/1600,0,1),rise=smooth01(r);ratios[i]=r;nodes[i].scoreRatio=r;
-    // v3.3: score controls actual altitude. 0 pt = only the top grazes the sea; 1600 pt = the entire rock body clears the ocean.
-    nodes[i].targetY=-1.15+rise*6.45;nodes[i].rim.material.opacity=r<.045?0:.055+rise*.29;
-    // Connections now climb with the island and become STRONGER, not weaker, as the world completes.
-    const C=connections[i],linkWake=smooth01((r-.10)/.90),outerY=nodes[i].targetY+.78,hubY=1.46;
-    C.strength=r;C.mesh.material.opacity=r<.10?0:.10+linkWake*.58;C.halo.material.opacity=r<.18?0:.025+linkWake*.17;C.pulse.material.opacity=r>.22?.22+linkWake*.64:0;
-    const outer=new THREE.Vector3(C.edgeXZ.x,outerY,C.edgeXZ.z),hub=C.hubAnchor.clone();hub.y=hubY;refreshConnectionCurve(C,outer,hub,3.0+rise*1.35);C.lastRatio=r;
-    // The buried land is a real rising causeway: first both ends emerge, then the middle closes. At full score it rises with the island instead of staying on sea level.
-    const islandRootY=nodes[i].targetY+.12,hubRootY=1.03;
-    landBridges[i].pieces.forEach(seg=>{const endDistance=Math.min(seg.u,1-seg.u)*2.0,threshold=.08+endDistance*.64,reveal=smooth01((r-(threshold-.10))/.30);seg.piece.visible=reveal>.015;const joinedY=THREE.MathUtils.lerp(islandRootY,hubRootY,seg.u)+Math.sin(Math.PI*seg.u)*(.20+rise*.70);seg.targetY=(WATER_Y-2.55)+(joinedY-(WATER_Y-2.55))*reveal+Math.sin(seg.phase)*.026;});
-    // Surface ripple is strongest while breaking free from the sea, then fades when the island is clearly airborne.
-    nodeRipples[i].material.opacity=.018+(1-rise)*.085+Math.sin(r*Math.PI)*.020;
-    const fx=ascensionFX[i],air=smooth01((r-.38)/.62);fx.strength=air;fx.shadow.material.opacity=.015+air*.105;fx.shadow.scale.setScalar(1+air*.18);fx.splash.material.opacity=air*.16;
-  }const avg=ratios.reduce((a,b)=>a+b,0)/Math.max(1,ratios.length);grandHeart.material.opacity=.50+avg*.38;grandHeart.scale.setScalar(.90+avg*.30);heartGlow.material.opacity=.12+avg*.34;grandHalo.material.opacity=.07+avg*.22;grandHalo2.material.opacity=.08+avg*.27;renderGuide();renderRanking()}
+function updateWorldState(){const ratios=[];for(let i=0;i<8;i++){const g=groups[String(i+1)]||{},r=D.clamp((Number(g.progressScore)||0)/1600,0,1);ratios[i]=r;nodes[i].scoreRatio=r;nodes[i].targetY=-2.4+r*3.2;nodes[i].rim.material.opacity=.08+r*.30;connections[i].strength=r;connections[i].mesh.material.opacity=.025+Math.pow(r,1.8)*.38;connections[i].pulse.material.opacity=r>.12?.32+r*.5:0}const avg=ratios.reduce((a,b)=>a+b,0)/Math.max(1,ratios.length);grandHeart.material.opacity=.54+avg*.34;grandHeart.scale.setScalar(.92+avg*.26);heartGlow.material.opacity=.14+avg*.30;grandHalo.material.opacity=.10+avg*.18;grandHalo2.material.opacity=.12+avg*.23;renderGuide();renderRanking()}
 D.watchAll((all)=>{groups=all;updateWorldState()});renderGuide();renderRanking();
 // Admin.
 const adminModal=document.getElementById('adminModal'),adminPw=document.getElementById('adminPassword'),adminErr=document.getElementById('adminError'),worldConfirm=document.getElementById('worldConfirm'),worldConfirmText=document.getElementById('worldConfirmText');document.getElementById('adminBtn').onclick=()=>{adminPw.value='';adminErr.textContent='';worldConfirm.style.display='none';worldConfirmText.value='';adminModal.classList.add('show');setTimeout(()=>adminPw.focus(),60)};document.getElementById('adminCancel').onclick=()=>adminModal.classList.remove('show');adminModal.addEventListener('click',e=>{if(e.target===adminModal)adminModal.classList.remove('show')});function validAdmin(){if(adminPw.value!=='184179'){adminErr.textContent='密碼不正確';return false}return true}document.getElementById('adminResetScores').onclick=async()=>{if(!validAdmin())return;adminErr.textContent='重置分數中…';const r=await D.resetAllScores();if(r.ok){adminErr.textContent='八組分數與可用分數已歸零；小世界佈置保留。';setTimeout(()=>adminModal.classList.remove('show'),900)}else adminErr.textContent='重置失敗，請再試一次'};document.getElementById('adminWorldStep').onclick=()=>{if(!validAdmin())return;worldConfirm.style.display='block';worldConfirmText.focus();adminErr.textContent=''};document.getElementById('adminResetWorld').onclick=async()=>{if(!validAdmin())return;if(worldConfirmText.value.trim()!=='重製世界'){adminErr.textContent='第二次確認文字不正確';return}adminErr.textContent='正在重製八組小世界…';const r=await D.resetAllWorlds();if(r.ok){adminErr.textContent='八組已完整恢復初始狀態。';setTimeout(()=>adminModal.classList.remove('show'),900)}else adminErr.textContent='重製失敗，請再試一次'};
@@ -708,18 +561,8 @@ const fxBtn=document.getElementById('fxToggleMain');function syncFx(){fxBtn.text
 initCinematic();syncFx();
 // Animation.
 let last=0;function animate(t){requestAnimationFrame(animate);const dt=Math.min(.05,Math.max(.001,last?(t-last)/1000:1/60));last=t;if(autoTour&&!dragging){tourClock+=dt;const a=tourClock*.060;targetYaw=-.25+a;targetPitch=.38+.07*Math.sin(a*.72);targetDistance=46+3.5*Math.sin(a*.43);targetPanX=1.0*Math.sin(a*.30);targetPanZ=-1.5+1.1*Math.cos(a*.35)}const e=1-Math.exp(-8.6*dt),pe=1-Math.exp(-10.5*dt),ze=1-Math.exp(-8.0*dt);orbitYaw+=(targetYaw-orbitYaw)*e;orbitPitch+=(targetPitch-orbitPitch)*e;orbitDistance+=(targetDistance-orbitDistance)*ze;panX+=(targetPanX-panX)*pe;panZ+=(targetPanZ-panZ)*pe;const targetLook=worldLook.clone().add(new THREE.Vector3(panX,0,panZ));const cp=Math.cos(orbitPitch),desire=targetLook.clone().add(new THREE.Vector3(Math.sin(orbitYaw)*cp*orbitDistance,Math.sin(orbitPitch)*orbitDistance,Math.cos(orbitYaw)*cp*orbitDistance));camera.position.lerp(desire,.065);camLook.lerp(targetLook,.07);camera.lookAt(camLook);
-  clouds.forEach((c,i)=>{c.position.x=c.userData.baseX+Math.sin(t*.00007+i)*2.4});crown.rotation.z=t*.00008;crown2.rotation.z=-t*.000055;grandHalo.rotation.z=Math.sin(t*.00008)*.025;grandHalo2.rotation.z=-t*.000018;grandHeart.rotation.y=t*.00018;grandHeart.rotation.x=.18+Math.sin(t*.00033)*.08;heartGlow.scale.setScalar(1+Math.sin(t*.0012)*.035);starRiverPulses.forEach((sp,i)=>{const u=(t*.000022+i/starRiverPulses.length)%1;sp.position.copy(starRiverCurve.getPoint(u));const pulse=.74+.18*Math.sin(t*.0015+i);sp.scale.set(pulse,pulse,1)});starRiverDots.forEach((m,i)=>{m.material.opacity=.34+.20*(.5+.5*Math.sin(t*.0011+i*.72))});fallPools.forEach((m,i)=>{m.material.opacity=.10+.07*(.5+.5*Math.sin(t*.0014+i));m.rotation.z=t*.000035*(i%2?1:-1)});
-  nodes.forEach((N,i)=>{N.g.position.y+=(N.targetY-N.g.position.y)*.045;N.g.rotation.y=Math.sin(t*.00011+i*.8)*.025;
-    const fx=ascensionFX[i],top=N.g.position.y+.44,h=Math.max(.12,top-WATER_Y),air=fx.strength;
-    fx.streams.forEach((m,k)=>{m.visible=air>.025&&h>.35;m.position.y=WATER_Y+h*.5;m.scale.y=h;m.material.opacity=air*(.25+k*.045)*( .86+.14*Math.sin(t*.0015+i+k));});
-    const sp=1+.08*Math.sin(t*.0012+i*.7);fx.splash.scale.set(sp,sp,1);fx.splash.rotation.z=t*.000045*(i%2?1:-1);
-    const C=connections[i];if(Math.abs((N.g.position.y+.78)-C.lastOuterY)>.14){const outer=new THREE.Vector3(C.edgeXZ.x,N.g.position.y+.78,C.edgeXZ.z),hub=C.hubAnchor.clone();hub.y=1.46;refreshConnectionCurve(C,outer,hub,3.0+smooth01(N.scoreRatio)*1.35)}
-  });
-  landBridges.forEach((B,i)=>B.pieces.forEach((seg,j)=>{seg.piece.position.y+=(seg.targetY-seg.piece.position.y)*.060;seg.piece.rotation.z=Math.sin(t*.00032+seg.phase)*.004}));
-  nodeRipples.forEach((r,i)=>{const pulse=1+.025*Math.sin(t*.0010+i*.85);r.scale.set(pulse,pulse,1);r.rotation.z=t*.000006*(i%2?1:-1)});hubRipples.forEach((r,i)=>{const pulse=1+.018*Math.sin(t*.00072+i*1.6);r.scale.set(pulse,pulse*(i?0.82:0.78),1);r.material.opacity=(i?.035:.060)+.018*(.5+.5*Math.sin(t*.001+i))});
-  connections.forEach((C,i)=>{const u=(t*.000052+i*.13)%1;C.pulse.position.copy(C.curve.getPoint(u));const s=.34+C.strength*.62;C.pulse.scale.set(s,s,1);C.halo.material.opacity*=.9997;});
-  waterfallSpray.forEach((sp,i)=>{const d=sp.userData,age=((t*.001*d.speed+d.phase)%1);sp.position.set(d.base.x+d.side*age*1.2,d.base.y+.15+age*1.05,d.base.z+Math.sin(d.phase+age*5.0)*.28);sp.material.opacity=.16*(1-age);const sc=.12+age*.22;sp.scale.set(sc,sc,1)});
-  birds.forEach((b,i)=>{const a=t*.000075+i/9*Math.PI*2,r=18+i*.82;b.position.set(Math.cos(a)*r,10+i*.42,Math.sin(a)*r-3);b.rotation.y=-a});motes.forEach((m,i)=>{m.position.y+=Math.sin(t*.00035+i)*.0015;m.position.x+=Math.sin(t*.00006+i*.5)*.0017});waterMat.uniforms.uTime.value=t*.001;renderScene()}
+  clouds.forEach((c,i)=>{c.position.x=c.userData.baseX+Math.sin(t*.00007+i)*2.4});crown.rotation.z=t*.00008;crown2.rotation.z=-t*.000055;grandHalo.rotation.z=Math.sin(t*.00008)*.025;grandHalo2.rotation.z=-t*.000018;grandHeart.rotation.y=t*.00018;grandHeart.rotation.x=.18+Math.sin(t*.00033)*.08;heartGlow.scale.setScalar(1+Math.sin(t*.0012)*.035);[realmLeft,realmRight,realmHigh].forEach((g,i)=>{g.position.y=g.userData.baseY+Math.sin(t*.00042+g.userData.phase)*(.18+i*.04);g.rotation.y=Math.sin(t*.00012+g.userData.phase)*.018});starRiverPulses.forEach((sp,i)=>{const u=(t*.000022+i/starRiverPulses.length)%1;sp.position.copy(starRiverCurve.getPoint(u));const pulse=.74+.18*Math.sin(t*.0015+i);sp.scale.set(pulse,pulse,1)});starRiverDots.forEach((m,i)=>{m.material.opacity=.34+.20*(.5+.5*Math.sin(t*.0011+i*.72))});fallPools.forEach((m,i)=>{m.material.opacity=.10+.07*(.5+.5*Math.sin(t*.0014+i));m.rotation.z=t*.000035*(i%2?1:-1)});
+  nodes.forEach((N,i)=>{N.g.position.y+=(N.targetY-N.g.position.y)*.045;N.g.rotation.y=Math.sin(t*.00011+i*.8)*.025});connections.forEach((C,i)=>{const u=(t*.000045+i*.13)%1;C.pulse.position.copy(C.curve.getPoint(u));const s=.36+C.strength*.48;C.pulse.scale.set(s,s,1)});birds.forEach((b,i)=>{const a=t*.000075+i/9*Math.PI*2,r=18+i*.82;b.position.set(Math.cos(a)*r,10+i*.42,Math.sin(a)*r-3);b.rotation.y=-a});motes.forEach((m,i)=>{m.position.y+=Math.sin(t*.00035+i)*.0015;m.position.x+=Math.sin(t*.00006+i*.5)*.0017});waterMat.uniforms.uTime.value=t*.001;renderScene()}
 resetView();{const cp=Math.cos(orbitPitch);camera.position.copy(worldLook).add(new THREE.Vector3(Math.sin(orbitYaw)*cp*orbitDistance,Math.sin(orbitPitch)*orbitDistance,Math.cos(orbitYaw)*cp*orbitDistance));camLook.copy(worldLook);camera.lookAt(camLook);}animate(0);
 addEventListener('keydown',e=>{if(e.key==='Escape'){drawer.classList.remove('open');rankDrawer.classList.remove('open')}if(e.key.toLowerCase()==='r')resetView()});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);if(bloomComposer)bloomComposer.setSize(innerWidth,innerHeight);if(finalComposer)finalComposer.setSize(innerWidth,innerHeight)});

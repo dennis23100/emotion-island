@@ -1,0 +1,18 @@
+v3.1 GRAND WORLD VERIFY
+
+main inline JavaScript syntax: True (5/5)
+duplicate DOM ids: 0
+world guide button present: True
+separate ranking button present: True
+separate ranking drawer present: True
+ranking podium present: True
+world guide copy hides score/rank: True
+Grand Spectacle scene pass present: True
+star river present: True
+floating realms present: True
+central world heart present: True
+small world byte-identical: True
+small world SHA256: ab91eebccc53710aad7f7699b6945717eefdf3f7e047c7eb330dc093cb45061e
+score page byte-identical: True
+EmotionData module byte-identical: True
+EmotionData SHA256: 7f8c1c0bc7cddc5d866311d15ce9f396a9de67ad2c1b11bf166e6b62f203e21f

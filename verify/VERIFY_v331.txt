@@ -1,0 +1,19 @@
+v3.3.1 EXACT EIGHT WORLDS - VERIFY
+
+Group-island nodePositions: 8 (expected 8)
+floatingRealm mentions: 0 (expected 0)
+Extra decorative floating realms removed: PASS
+Runtime 8-island guard present: PASS
+Inline JS syntax: PASS (13/13)
+emotion_my_world.html unchanged: PASS
+emotion_score.html unchanged: PASS
+
+Expected visible island model:
+- 8 score-driven group islands
+- 1 central 共感主島 / 聖山
+- 0 decorative floating islands that can be mistaken for groups
+
+What was wrong in v3.3:
+- 8 group islands existed correctly.
+- PLUS 3 decorative floatingRealm islands (left/right/high), so the scene visually read as 11 outer islands.
+- Those 3 have now been removed.

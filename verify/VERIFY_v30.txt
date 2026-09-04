@@ -1,0 +1,10 @@
+v3.0 MAIN WORLD VERIFY
+emotion_my_world source: ab91eebccc53710aad7f7699b6945717eefdf3f7e047c7eb330dc093cb45061e
+emotion_my_world output: ab91eebccc53710aad7f7699b6945717eefdf3f7e047c7eb330dc093cb45061e
+small world byte-identical: True
+emotion_score byte-identical: True
+EmotionData module byte-identical: True
+world guide present: True
+old rank/status drawer absent: True
+island labels absent: True
+no score displayed in guide copy: True

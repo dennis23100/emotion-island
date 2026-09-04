@@ -1,0 +1,34 @@
+情緒不孤島 v3.2 TIDAL AWAKENING - VERIFY
+
+Inline JavaScript syntax: 13/13 PASS
+Duplicate DOM ids: 0
+EmotionData core identical to v3.1: PASS
+emotion_my_world.html byte-identical to v3.1: PASS
+emotion_score.html byte-identical to v3.1: PASS
+
+Runtime symbol counts:
+  moonTideShrine: 1 definition(s)
+  createLandBridge: 1 definition(s)
+  updateWorldState: 1 definition(s)
+  makeSeaRipple: 1 definition(s)
+
+Progress simulation (ratio / island group Y / light opacity / bridge segments started / bridge segments at waterline):
+  0.00 -> y=-3.150, light=0.000, started=0/14, at-water=0/14
+  0.25 -> y=-2.584, light=0.008, started=4/14, at-water=0/14
+  0.50 -> y=-1.340, light=0.057, started=10/14, at-water=6/14
+  0.75 -> y=-0.096, light=0.136, started=14/14, at-water=10/14
+  0.90 -> y=0.369, light=0.196, started=14/14, at-water=12/14
+  1.00 -> y=0.470, light=0.240, started=14/14, at-water=14/14
+
+Feature checks:
+  stylized water shader: PASS
+  ocean surface rings: PASS
+  progressive terrain roots: PASS
+  zero-score light hidden: PASS
+  moon-tide shrine: PASS
+  waterfall spray: PASS
+  islands spawn submerged: PASS
+  ranking preserved: PASS
+  world guide preserved: PASS
+
+Chromium visual smoke test: unavailable in this container because EGL/ANGLE fails before WebGL renderer initialization.
