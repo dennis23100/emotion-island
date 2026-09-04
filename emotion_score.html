@@ -18,6 +18,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   const GROUP_COUNT = 8;
   const MAX_SCORE = 1600;
   const PERSON_STEP = 100;
+  const START_POINTS = 500;   // 開場先給的可用點數；不計入分數，也不解鎖小精靈
   const STORAGE_KEY_PREFIX = 'emotionIslandV24:';
 
   const GROUPS = [
@@ -115,7 +116,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
       id:String(id),
       score:0,
       progressScore:0,
-      spendablePoints:0,
+      spendablePoints:START_POINTS,
       worldName:meta.theme,
       maxMembers:10,
       members:{},
@@ -129,7 +130,9 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
     const g = raw || {};
     base.score = Math.max(0, Number(g.score) || 0);
     base.progressScore = Math.max(base.score, Number(g.progressScore) || 0);
-    base.spendablePoints = Math.max(0, Number(g.spendablePoints) || 0);
+    base.spendablePoints = (g.spendablePoints === undefined || g.spendablePoints === null)
+      ? base.spendablePoints
+      : Math.max(0, Number(g.spendablePoints) || 0);
     base.worldName = safeText(g.worldName || base.worldName, 24) || base.worldName;
     base.maxMembers = clamp(Math.floor(Number(g.maxMembers) || 10), 1, 30);
     base.members = (g.members && typeof g.members === 'object') ? g.members : {};
@@ -325,7 +328,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   }
   function resetLocalDemo() { if(!room){localStorage.removeItem(localKey);global.dispatchEvent(new CustomEvent('emotion-v3-local-change'));} }
   async function resetAllScores() {
-    const resetOne=(g,id)=>{g=normalizeGroup(g,id);g.score=0;g.progressScore=0;g.spendablePoints=0;g.updatedAt=now();return g;};
+    const resetOne=(g,id)=>{g=normalizeGroup(g,id);g.score=0;g.progressScore=0;g.spendablePoints=START_POINTS;g.updatedAt=now();return g;};
     if (ensureFirebase()) {
       const ref=db.ref(basePath());
       const r=await ref.transaction(raw=>{const out=(raw&&typeof raw==='object')?Object.assign({},raw):{};for(let i=1;i<=GROUP_COUNT;i++){const id=String(i);out[id]=resetOne(raw&&raw[id],id);}return out;});
