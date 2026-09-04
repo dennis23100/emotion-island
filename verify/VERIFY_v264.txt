@@ -1,0 +1,14 @@
+v2.6.4 OFFICIAL verification
+
+PASS - emotion_my_world.html inline JavaScript syntax
+PASS - renderCurrent/renderEditor/renderPeople/updateSpirits/updateRides present
+PASS - free placement runtime functions present
+PASS - switchGroupBtn removed
+PASS - groupSwitchModal removed
+PASS - showcase switch handler removed
+PASS - no-room fallback points to emotion_links.html
+PASS - existing room boot still uses selectGroup(requested,false)
+PASS - no persistent storage/data key intentionally changed
+PASS - no score reset added
+PASS - 202601 decodes to event room 2026 / group 1
+PASS - 202608 decodes to event room 2026 / group 8

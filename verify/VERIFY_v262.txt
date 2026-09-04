@@ -1,0 +1,17 @@
+v2.6.2 FREE PLACEMENT VERIFY
+
+PASS  EmotionData核心資料層完全未修改
+PASS  自由座標碰撞函式存在
+PASS  不再使用固定slotSafeForItem
+PASS  不再使用nearestPlacementSlot
+PASS  藍色方格GridHelper存在
+PASS  確認放下按鈕存在
+PASS  renderPlaced優先使用p.x/p.z
+PASS  拖曳視角不再因selectedItem阻擋
+PASS  手機拿物件時仍使用rotate手勢
+PASS  點擊只選位置不直接commit
+PASS  確認按鈕才commit
+PASS  其他物件半透明編輯模式
+PASS  重複DOM ID為0
+
+EmotionData SHA256: 91ae0d85b6a47656105a29727def4140b3b714f4fb49e4005546a59635519c9a

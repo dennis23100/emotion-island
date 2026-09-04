@@ -1,0 +1,52 @@
+v2.6.3 RUNTIME RESTORE verification
+===================================
+
+[PASS] All inline JavaScript blocks parse with zero syntax errors.
+
+Critical runtime definitions (exactly one each):
+[PASS] renderCurrent
+[PASS] renderEditor
+[PASS] renderMembers
+[PASS] renderPeople
+[PASS] setSpiritTarget
+[PASS] updateSpirits
+[PASS] refreshWindObjects
+[PASS] updateWind
+[PASS] updateRides
+[PASS] renderShop
+[PASS] startPlace
+[PASS] freePlacementSafe
+[PASS] chooseGhostPlacement
+[PASS] commitGhostPlacement
+[PASS] saveLayoutDraft
+[PASS] selectGroup
+
+Free-placement functions compared against v2.6.2:
+[PASS] freePlacementSafe unchanged
+[PASS] startPlace unchanged
+[PASS] updateGhostFromEvent unchanged
+[PASS] chooseGhostPlacement unchanged
+[PASS] commitGhostPlacement unchanged
+[PASS] saveLayoutDraft unchanged
+[PASS] selectGroup unchanged
+
+Function-set comparison with v2.6.1:
+Only intentionally removed fixed-slot helpers remain absent:
+- clearPlacementHighlights
+- highlightPlacementSlots
+- nearestPlacementSlot
+- placementSlotSummary
+- slotSafeForItem
+No references to those helpers remain in v2.6.3.
+
+Data-layer regression executed in Node:
+[PASS] 8-group showcase seed
+[PASS] 1600 + 100 => 1700
+[PASS] buy item => inventory increments
+[PASS] arbitrary free coordinate save/reload: x=7.321, z=-4.876
+[PASS] 41 shop items
+[PASS] all shop items cost 100 pt
+
+Scope of this release:
+Runtime restore only. No new art or gameplay changes.
+PASS data layer: seed/add/buy/free-coordinate-save/catalog
