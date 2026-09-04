@@ -1,0 +1,26 @@
+const fs=require('fs'),vm=require('vm');
+const html=fs.readFileSync('/mnt/data/emotion_island_v23_biome_identity/emotion_my_world.html','utf8');
+const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
+const data=scripts.find(s=>s.includes('global.EmotionData='));
+if(!data)throw new Error('EmotionData script not found');
+const mem=new Map();
+const localStorage={getItem:k=>mem.has(k)?mem.get(k):null,setItem:(k,v)=>mem.set(k,String(v)),removeItem:k=>mem.delete(k),clear:()=>mem.clear()};
+const sandbox={console,URLSearchParams,Date,Math,JSON,Promise,setTimeout,clearTimeout,setInterval,clearInterval,CustomEvent:function(type,init){this.type=type;this.detail=init&&init.detail},dispatchEvent:()=>{},addEventListener:()=>{},location:{search:'',pathname:'/emotion_my_world.html'},localStorage};
+sandbox.window=sandbox;sandbox.globalThis=sandbox;sandbox.firebase=undefined;
+vm.createContext(sandbox);vm.runInContext(data,sandbox);
+const D=sandbox.EmotionData;
+(async()=>{
+ if(!D)throw new Error('EmotionData missing');
+ console.log('shop_count',Object.keys(D.SHOP).length);
+ console.log('groups',D.GROUPS.length);
+ await D.resetLocalDemo();
+ let g; const off=D.watchGroup('1',x=>g=x); await new Promise(r=>setTimeout(r,0)); off&&off();
+ console.log('initial_score',g.score);
+ let r=await D.addScore('1',100); console.log('add_score',r.ok,r.group&&r.group.score);
+ r=await D.buyItem('1','bench'); console.log('buy',r.ok,r.group&&r.group.spendablePoints);
+ r=await D.saveLayout('1',{bench:1},{'0':{itemId:'bench',rot:0,x:1,z:1}}); console.log('layout',r.ok);
+ const roomTests=['090501','090508'];
+ console.log('room_regex_090501', /^(\d{4})(0[1-8])$/.exec('090501').slice(1).join('/'));
+ console.log('room_regex_090508', /^(\d{4})(0[1-8])$/.exec('090508').slice(1).join('/'));
+ process.exit(0);
+})().catch(e=>{console.error(e);process.exit(1)});

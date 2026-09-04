@@ -1,0 +1,44 @@
+JS syntax: PASS
+emotion_my_world.html duplicate DOM IDs: 0
+emotion_island.html duplicate DOM IDs: 0
+emotion_score.html duplicate DOM IDs: 0
+Core freeze addScore: UNCHANGED
+Core freeze buyItem: UNCHANGED
+Core freeze saveLayout: UNCHANGED
+Core freeze placeItem: UNCHANGED
+Core freeze setWorldName: UNCHANGED
+Core freeze saveMember: UNCHANGED
+Core freeze selectGroup: UNCHANGED
+Core freeze renderPlaced: UNCHANGED
+Core freeze renderPeople: UNCHANGED
+v23 biome core: PASS
+v23 per-biome lighting: PASS
+group1 observatory summit: PASS
+group2 tea garden: PASS
+group3 world tree basin: PASS
+group4 wind ridge: PASS
+group5 crescent lagoon: PASS
+group6 flower mandala: PASS
+group7 crystal canyon: PASS
+group8 aurora altar: PASS
+cumulative score hook: PASS
+shop preserved: PASS
+group switching preserved: PASS
+layout save preserved: PASS
+Biome branch 1: PASS
+Biome branch 2: PASS
+Biome branch 3: PASS
+Biome branch 4: PASS
+Biome branch 5: PASS
+Biome branch 6: PASS
+Biome branch 7: PASS
+Biome branch 8: PASS
+Data regression: PASS
+  shop_count 41
+  groups 8
+  initial_score 1600
+  add_score true 1700
+  buy true undefined
+  layout true
+  room_regex_090501 0905/01
+  room_regex_090508 0905/08

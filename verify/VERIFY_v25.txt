@@ -1,0 +1,39 @@
+Emotion Island v2.5 FINAL ASSET REMASTER - regression verification
+
+[PASS] emotion_my_world.html: 17 inline scripts parsed by Node Function constructor, 0 syntax errors.
+[PASS] Core functions unchanged vs v2.4:
+  addScore
+  setScore
+  buyItem
+  saveLayout
+  placeItem
+  removePlacement
+  setWorldName
+  saveMember
+  selectGroup
+  renderPlaced
+  renderPeople
+  updateSpirits
+  updateRides
+[PASS] 11 target objects route through dedicated premium renderer branches:
+  telescope
+  campfire
+  musicStage
+  easel
+  carousel
+  miniTrain
+  slide
+  cloudCoaster
+  arch
+  torii
+  giantTree
+[PASS] Shop catalog count = 41.
+[PASS] Every shop item cost = 100 pt.
+[PASS] Data-layer runtime regression test:
+  showcase score 1600 + addScore(100) => 1700
+  buyItem('telescope') => inventory +1
+  saveLayout slot 117 => persisted
+[PASS] V24 storage/data key intentionally preserved for backwards compatibility.
+
+Browser/WebGL note:
+The container Chromium still cannot initialize its available EGL/ANGLE implementation, so visual screenshots cannot be reliably rendered here. This is an environment limitation; static and data-layer regressions above were executed successfully.

@@ -1,0 +1,52 @@
+Emotion Island v2.4 FINAL SHOWCASE - Static Verification
+==================================================================
+
+CORE FREEZE VS v2.3
+- addScore: UNCHANGED
+- buyItem: UNCHANGED
+- setWorldName: UNCHANGED
+- saveMember: UNCHANGED
+- setMaxMembers: UNCHANGED
+- removePlacement: UNCHANGED
+- selectGroup: UNCHANGED
+- renderPlaced: UNCHANGED
+- renderPeople: UNCHANGED
+- saveLayout: INTENTIONALLY CHANGED (slot-range + local persistence hotfix)
+- placeItem: INTENTIONALLY CHANGED (accept placement slots through 127)
+
+DOM / UX
+- duplicate IDs: 0 PASS
+- #rotatePlaceBtn: PASS
+- #saveLayoutBtn: PASS
+- #discardLayoutBtn: PASS
+- #cancelPlace: PASS
+- #switchGroupBtn: PASS
+- #setScoreBtn: PASS
+- #saveWorldTop: PASS
+- placebar pointer-events: PASS
+
+SAVE REGRESSION
+- MAX_PLACEMENT_SLOT = 127: PASS
+- position radius validation >= 15.4: PASS
+- local direct persistence path: PASS
+
+FINAL VISUAL PASS
+- addFinalWorldLayerV24 present: PASS
+- group 1 celestial observatory final layer: PASS
+- group 2 sakura water garden final layer: PASS
+- group 3 deep forest basin final layer: PASS
+- group 4 dawn ridge final layer: PASS
+- group 5 moon-tide archipelago final layer: PASS
+- group 6 flower carnival final layer: PASS
+- group 7 crystal canyon final layer: PASS
+- group 8 aurora sanctuary final layer: PASS
+
+NOTE: WebGL screenshot validation is unavailable in this container because Chromium EGL/ANGLE initialization fails; JS/data regression tests are run separately.
+DATA REGRESSION RUNTIME
+- 8 demo groups at 1600: PASS
+- 16 spirits unlocked each: PASS
+- shop count: 41 all 100pt: PASS
+- cumulative score 1600 + 100 = 1700: PASS
+- buy item: PASS
+- save outer slot #118 (index117): PASS
+- room 090508 => event 0905 / group 8: PASS

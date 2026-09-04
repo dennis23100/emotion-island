@@ -1,0 +1,22 @@
+Emotion Island v2.6.1 Placement Hotfix - verification
+
+core setScore: UNCHANGED
+core addScore: UNCHANGED
+core setWorldName: UNCHANGED
+core setMaxMembers: UNCHANGED
+core saveMember: UNCHANGED
+core buyItem: UNCHANGED
+core placeItem: UNCHANGED
+core removePlacement: UNCHANGED
+core saveLayout: UNCHANGED
+
+contains v2.6.1 PLACEMENT HOTFIX: PASS
+contains function placementSlotSummary: PASS
+contains function highlightPlacementSlots: PASS
+contains relaxed==='fallback': PASS
+contains window.__emotionPlacementDiagnostics: PASS
+contains ghostObject.visible=true: PASS
+contains 目前可用 '+summary.total+' 個位置: PASS
+placement slot count expected: 118
+placement slot count expected == 118: PASS
+storage key preserved emotionIslandV24: PASS

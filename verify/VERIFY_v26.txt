@@ -1,0 +1,21 @@
+[PASS] 7 inline scripts parsed by Node Function constructor, 0 syntax errors.
+[PASS] Entire EmotionData module is byte-identical to v2.5 (score/Firebase/room/store/save data contract frozen).
+[PASS] selectGroup unchanged vs v2.5.
+[PASS] renderPlaced unchanged vs v2.5.
+[PASS] renderPeople unchanged vs v2.5.
+[PASS] updateSpirits unchanged vs v2.5.
+[PASS] updateRides unchanged vs v2.5.
+[PASS] saveLayoutDraft unchanged vs v2.5.
+[PASS] submitScore unchanged vs v2.5.
+[PASS] v26StableCrystalBasin present.
+[PASS] v26ForestOpenSpace present.
+[PASS] v26DawnComposition present.
+[PASS] v26FlowerComposition present.
+[PASS] addV26BiomeRebalance present.
+[PASS] Group 7 overlapping legacy center pool removed.
+[PASS] Group 7 transparent overlapping lake ring removed.
+[PASS] V24 storage key preserved for existing saved worlds.
+[PASS] Shop catalog remains 41 items; every item remains 100 pt.
+[PASS] Group 3 dense 18-tree ring replaced by perimeter grove/open layout.
+[PASS] Targeted worlds use smaller/farther clouds to reduce foreground obstruction.
+[PASS] Data-layer runtime regression: score accumulation, purchase, layout save at slot 117, catalog/storage all passed.
