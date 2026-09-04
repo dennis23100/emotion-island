@@ -1,0 +1,68 @@
+v3.5.0 RELEASE CANDIDATE VERIFY: 66/66 PASS
+
+PASS  Main guide enters same tab
+PASS  Main islands are read-only visits
+PASS  Main visit carries return source
+PASS  Gallery mode exists
+PASS  Gallery is included in viewer lock
+PASS  Gallery persistent switch exists
+PASS  Gallery switch does not navigate/reload
+PASS  Gallery hides editor
+PASS  Gallery hides score visitor card
+PASS  Editable world has gallery button
+PASS  Convenience gallery URL exists
+PASS  Main visit return icon exists
+PASS  Leader ferris support separated from rotor
+PASS  Ferris cabins counter-rotate upright
+PASS  Train cars follow track independently
+PASS  Train tangent orientation corrected
+PASS  main: no visible debug copy SCORE CONTROL · 
+PASS  main: no visible debug copy v2.6.4 OFFICIAL 
+PASS  main: no visible debug copy 拖曳旋轉 · 滾輪縮放 · 右鍵
+PASS  main: no visible debug copy MYTHIC SHOWCASE<
+PASS  world: no visible debug copy SCORE CONTROL · 
+PASS  world: no visible debug copy v2.6.4 OFFICIAL 
+PASS  world: no visible debug copy 拖曳旋轉 · 滾輪縮放 · 右鍵
+PASS  world: no visible debug copy MYTHIC SHOWCASE<
+PASS  score: no visible debug copy SCORE CONTROL · 
+PASS  score: no visible debug copy v2.6.4 OFFICIAL 
+PASS  score: no visible debug copy 拖曳旋轉 · 滾輪縮放 · 右鍵
+PASS  score: no visible debug copy MYTHIC SHOWCASE<
+PASS  leader: no visible debug copy SCORE CONTROL · 
+PASS  leader: no visible debug copy v2.6.4 OFFICIAL 
+PASS  leader: no visible debug copy 拖曳旋轉 · 滾輪縮放 · 右鍵
+PASS  leader: no visible debug copy MYTHIC SHOWCASE<
+PASS  emotion_island.html: duplicate DOM IDs
+PASS  emotion_island.html: inline script 1 syntax
+PASS  emotion_island.html: inline script 2 syntax
+PASS  emotion_island.html: inline script 3 syntax
+PASS  emotion_island.html: inline script 4 syntax
+PASS  emotion_island.html: inline script 5 syntax
+PASS  emotion_my_world.html: duplicate DOM IDs
+PASS  emotion_my_world.html: inline script 1 syntax
+PASS  emotion_my_world.html: inline script 2 syntax
+PASS  emotion_my_world.html: inline script 3 syntax
+PASS  emotion_my_world.html: inline script 4 syntax
+PASS  emotion_my_world.html: inline script 5 syntax
+PASS  emotion_my_world.html: inline script 6 syntax
+PASS  emotion_my_world.html: inline script 7 syntax
+PASS  emotion_score.html: duplicate DOM IDs
+PASS  emotion_score.html: inline script 1 syntax
+PASS  emotion_score.html: inline script 2 syntax
+PASS  emotion_score.html: inline script 3 syntax
+PASS  emotion_score.html: inline script 4 syntax
+PASS  emotion_score.html: inline script 5 syntax
+PASS  emotion_leader_world.html: duplicate DOM IDs
+PASS  emotion_leader_world.html: inline script 1 syntax
+PASS  emotion_gallery.html: duplicate DOM IDs
+PASS  emotion_gallery.html: inline script 1 syntax
+PASS  Small-world core preserved: function addScore(
+PASS  Small-world core preserved: function saveLayout(
+PASS  Small-world core preserved: function buyItem(
+PASS  Small-world core preserved: function saveMember(
+PASS  Small-world core preserved: function resetAllScores(
+PASS  Small-world core preserved: function resetAllWorlds(
+PASS  Rollback backup exact: emotion_island.html
+PASS  Rollback backup exact: emotion_my_world.html
+PASS  Rollback backup exact: emotion_score.html
+PASS  Rollback backup exact: emotion_leader_world.html

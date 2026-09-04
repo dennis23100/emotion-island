@@ -79,6 +79,8 @@ body{min-height:100vh;padding:34px 20px 64px;
 .main-card .nm{font-size:17px}
 .leader-card{border-color:rgba(255,229,156,.32);
   background:linear-gradient(135deg,rgba(255,229,156,.11),rgba(244,155,137,.09))}
+.gallery-card{border-color:rgba(255,171,217,.30);
+  background:linear-gradient(135deg,rgba(255,171,217,.11),rgba(184,142,255,.09))}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px}
 
@@ -104,7 +106,7 @@ footer b{color:var(--cyan);font-weight:900}
   <div class="brand">
     <small>EMOTION ISLAND · LINK BUILDER</small>
     <h1>情緒不孤島 連結產生器</h1>
-    <p>輸入房號，一次產生大世界主畫面與八組專屬連結。主畫面與八組共用同一份資料，任何一組加分或佈置，主畫面即時同步。主領班示範島為固定展示，不讀分數也不列入排行。</p>
+    <p>輸入房號，一次產生所有連結。主畫面與八組共用同一份資料，任何一組加分或佈置，主畫面即時同步。<b>各組連結可以編輯，其餘連結都是唯讀</b> —— 群島參觀能在八組之間切換但不顯示分數，主領班示範島為固定展示，不讀分數也不列入排行。</p>
   </div>
 
   <div class="panel">
@@ -126,7 +128,7 @@ footer b{color:var(--cyan);font-weight:900}
     </div>
   </div>
 
-  <div class="sec"><h2>投影用</h2><span>老師端，不需要發給學生</span></div>
+  <div class="sec"><h2>大世界與參觀</h2><span>投影或全班瀏覽用，皆為唯讀</span></div>
   <div class="grid">
     <div class="card main-card" id="mainCard">
       <div class="top">
@@ -140,10 +142,22 @@ footer b{color:var(--cyan);font-weight:900}
         <a class="btn" id="mainOpen" target="_blank" rel="noopener">開啟</a>
       </div>
     </div>
+    <div class="card gallery-card" id="galleryCard">
+      <div class="top">
+        <span class="dot" style="color:#ffabd9;background:#ffabd9"></span>
+        <span class="nm">群島參觀</span>
+        <span class="meta">八組唯讀切換</span>
+      </div>
+      <div class="url" id="galleryUrl">—</div>
+      <div class="row">
+        <button class="btn" type="button" data-copy="gallery">複製連結</button>
+        <a class="btn" id="galleryOpen" target="_blank" rel="noopener">開啟</a>
+      </div>
+    </div>
     <div class="card leader-card" id="leaderCard">
       <div class="top">
         <span class="dot" style="color:#ffe59c;background:#ffe59c"></span>
-        <span class="nm">主領班 · 共感典範島</span>
+        <span class="nm">主領班 · 星願神境</span>
         <span class="meta">示範世界</span>
       </div>
       <div class="url" id="leaderUrl">—</div>
@@ -221,6 +235,11 @@ footer b{color:var(--cyan);font-weight:900}
   function leaderUrl(room){
     return build('emotion_leader_world.html',{room:room});
   }
+  // 群島參觀頁只是轉址器，會導到 emotion_my_world.html 的 mode=gallery 唯讀模式，
+  // 進去之後可以在八組之間直接切換。
+  function galleryUrl(room){
+    return build('emotion_gallery.html',{room:room});
+  }
 
   function flash(btn,label){
     var old=btn.getAttribute('data-label')||btn.textContent;
@@ -268,6 +287,8 @@ footer b{color:var(--cyan);font-weight:900}
     document.getElementById('mainOpen').removeAttribute('href');
     document.getElementById('leaderUrl').textContent='—';
     document.getElementById('leaderOpen').removeAttribute('href');
+    document.getElementById('galleryUrl').textContent='—';
+    document.getElementById('galleryOpen').removeAttribute('href');
     GROUPS.forEach(function(g){
       grid.querySelector('[data-url="'+g.id+'"]').textContent='—';
       grid.querySelector('[data-meta="'+g.id+'"]').textContent='—';
@@ -295,12 +316,14 @@ footer b{color:var(--cyan);font-weight:900}
 
     try{ localStorage.setItem(STORE,room); }catch(e){}
 
-    links={ main: mainUrl(room), leader: leaderUrl(room) };
+    links={ main: mainUrl(room), gallery: galleryUrl(room), leader: leaderUrl(room) };
     document.getElementById('mainUrl').textContent=links.main;
     document.getElementById('mainMeta').textContent='房號 '+room;
     document.getElementById('mainOpen').href=links.main;
     document.getElementById('leaderUrl').textContent=links.leader;
     document.getElementById('leaderOpen').href=links.leader;
+    document.getElementById('galleryUrl').textContent=links.gallery;
+    document.getElementById('galleryOpen').href=links.gallery;
 
     GROUPS.forEach(function(g){
       var url=groupUrl(room,g.id);
@@ -313,7 +336,8 @@ footer b{color:var(--cyan);font-weight:900}
 
     var lines=['情緒不孤島｜房號 '+room+(mode==='view'?'（唯讀參觀）':''),'',
                '【主畫面】共感大世界', links.main, '',
-               '【示範】主領班 · 共感典範島', links.leader, ''];
+               '【參觀】群島參觀（八組唯讀切換）', links.gallery, '',
+               '【示範】主領班 · 星願神境', links.leader, ''];
     GROUPS.forEach(function(g){
       lines.push('【'+g.label+'】'+g.theme);
       lines.push(links[g.id]);

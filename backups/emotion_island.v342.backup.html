@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>情緒不孤島｜共感大世界</title>
+<title>情緒不孤島｜共感大世界 v3.4</title>
 <style>
 :root{
   --ink:#fffdf8;--muted:rgba(241,247,255,.74);--line:rgba(255,255,255,.14);
@@ -36,12 +36,14 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
 </script>
 <div id="stage"></div>
 <div class="hud">
-  <section class="brand collapsed" id="brand"><button class="brand-toggle" id="brandToggle" aria-label="展開標題">›</button><h1>情緒不孤島</h1></section>
+  <section class="brand" id="brand"><button class="brand-toggle" id="brandToggle" aria-label="收合標題">‹</button><small>EMOTION IS NOT AN ISLAND · LEADER SHOWCASE v3.4</small><h1>情緒不孤島</h1><p>八座世界從海中甦醒，分數越高，整座島會真正離開海面；共感地脈與光流也會跟著升起，直到在空中重新連回中央聖山。</p></section>
   <div class="top-actions"><button class="btn primary" id="guideBtn">世界導覽</button><button class="btn ranking" id="rankingBtn">🏆 排行榜</button><button class="btn" id="tourBtn">◌ 電影巡航</button><button class="btn" id="fxToggleMain">✨ 光影</button><button class="btn" id="adminBtn">管理</button></div>
-  <aside class="world-drawer" id="worldDrawer"><h2>世界導覽</h2><div id="worldNav"></div></aside>
-  <aside class="rank-drawer" id="rankDrawer"><h2>即時排行榜</h2><div id="rankPodium" class="rank-podium"></div><div id="rankList" class="rank-list"></div></aside>
+  <aside class="world-drawer" id="worldDrawer"><h2>世界導覽</h2><div class="sub">選擇想前往的世界。所有世界都會在新分頁開啟；這裡只負責導覽，不顯示分數與名次。</div><div id="worldNav"></div></aside>
+  <aside class="rank-drawer" id="rankDrawer"><h2>即時排行榜</h2><div class="sub">排行與世界導覽完全分開。這裡顯示目前八組的即時分數。</div><div id="rankPodium" class="rank-podium"></div><div id="rankList" class="rank-list"></div></aside>
+  <div class="guide-flare">拖曳旋轉 · 滾輪縮放 · 右鍵拖曳平移</div>
+  <div class="world-title"><b>共感世界</b>　八座世界一開始沉在海中、彼此不相連。分數越高，島嶼越往上升；埋在海底的共感地脈會從兩端逐段露出，直到重新連回中央聖山。</div>
   <div class="view-controls"><button class="btn mini" id="resetView" title="重置視角">↺</button></div>
-  <div class="cinematic-vignette"></div><div class="horizon-glow"></div><div class="film-grain"></div>
+  <div class="cinematic-vignette"></div><div class="horizon-glow"></div><div class="film-grain"></div><div class="spectacle-badge" id="spectacleBadge">潮汐甦醒 · TIDAL AWAKENING</div>
 </div>
 <div class="admin-modal" id="adminModal"><div class="admin-box"><h2>主辦方管理</h2><p>輸入密碼後可以重置八組分數，或完整重製八組小世界。</p><input id="adminPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="管理密碼"><div class="admin-error" id="adminError"></div><div class="admin-actions"><button class="btn" id="adminCancel">取消</button><button class="btn" id="adminResetScores">重置分數</button><button class="btn danger" id="adminWorldStep">重製世界</button></div><div id="worldConfirm" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12)"><p><b>第二次確認：</b>這會刪除八組的小世界名稱、小精靈、庫存與全部佈置。請輸入「重製世界」。</p><input id="worldConfirmText" autocomplete="off" placeholder="輸入：重製世界"><div class="admin-actions"><button class="btn danger" id="adminResetWorld">永久重製八組世界</button></div></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'"></script>
@@ -52,7 +54,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-<script>(function(){var room=(new URLSearchParams(location.search)).get('room');if(!room)return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\/script>');})();</script>
+<script>(function(){var room=(new URLSearchParams(location.search)).get('room');if(!room)return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\\/script>');})();</script>
 <script>
 (function (global) {
   'use strict';
@@ -672,15 +674,15 @@ const birds=[];for(let i=0;i<9;i++){const b=new THREE.Group();for(const s of[-1,
 
 // UI / data.
 let groups=D.normalizeAll({});
-const brand=document.getElementById('brand'),brandToggle=document.getElementById('brandToggle');let brandCollapsed=true;function syncBrand(){brand.classList.toggle('collapsed',brandCollapsed);brandToggle.textContent=brandCollapsed?'›':'‹'}brandToggle.onclick=e=>{e.stopPropagation();brandCollapsed=!brandCollapsed;syncBrand()};syncBrand();
+const brand=document.getElementById('brand'),brandToggle=document.getElementById('brandToggle');let brandCollapsed=false;function syncBrand(){brand.classList.toggle('collapsed',brandCollapsed);brandToggle.textContent=brandCollapsed?'›':'‹'}brandToggle.onclick=e=>{e.stopPropagation();brandCollapsed=!brandCollapsed;syncBrand()};syncBrand();
 const drawer=document.getElementById('worldDrawer'),guideBtn=document.getElementById('guideBtn'),worldNav=document.getElementById('worldNav'),rankDrawer=document.getElementById('rankDrawer'),rankingBtn=document.getElementById('rankingBtn'),rankPodium=document.getElementById('rankPodium'),rankList=document.getElementById('rankList');
 guideBtn.onclick=()=>{const open=!drawer.classList.contains('open');drawer.classList.toggle('open',open);rankDrawer.classList.remove('open')};
 rankingBtn.onclick=()=>{const open=!rankDrawer.classList.contains('open');rankDrawer.classList.toggle('open',open);drawer.classList.remove('open')};
 function iconFor(i){return ['✦','✿','♣','☀','☾','❀','◆','✧'][i]}
-function worldHref(i){const id=String(i+1),params=new URLSearchParams(),code=D.groupRoomCode(id);if(code)params.set('room',code);else{if(D.room)params.set('room',D.room);params.set('group',id)}params.set('view','1');params.set('from','main');return 'emotion_my_world.html?'+params.toString()}
+function worldHref(i){const id=String(i+1),params=new URLSearchParams(),code=D.groupRoomCode(id);if(code)params.set('room',code);else{if(D.room)params.set('room',D.room);params.set('group',id)}params.set('from','main');return 'emotion_my_world.html?'+params.toString()}
 function leaderHref(){const params=new URLSearchParams();if(D.room)params.set('room',D.room);params.set('from','main');return 'emotion_leader_world.html?'+params.toString()}
-function openWorld(i){location.href=worldHref(i)}
-function renderGuide(){worldNav.innerHTML='';const leader=document.createElement('div');leader.className='world-card leader-showcase';leader.innerHTML='<div class="orb" style="--orb:#ffe2a533;color:#ffe8b8">✺</div><div><div class="label">主領班 · 星願神境</div><div class="name">官方示範島</div></div><a href="'+leaderHref()+'">前往</a>';worldNav.appendChild(leader);for(let i=0;i<8;i++){const g=groups[String(i+1)]||{},m=D.GROUPS[i],row=document.createElement('div');row.className='world-card';row.innerHTML='<div class="orb" style="--orb:'+m.accent+'33;color:'+m.accent+'">'+iconFor(i)+'</div><div><div class="label">'+m.label+' · '+m.theme+'</div><div class="name">'+((g.worldName||m.theme).replace(/[<>]/g,''))+'</div></div><a href="'+worldHref(i)+'">前往</a>';worldNav.appendChild(row)}}
+function openWorld(i){window.open(worldHref(i),'_blank','noopener,noreferrer')}
+function renderGuide(){worldNav.innerHTML='';const leader=document.createElement('div');leader.className='world-card leader-showcase';leader.innerHTML='<div class="orb" style="--orb:#ffe2a533;color:#ffe8b8">✺</div><div><div class="label">主領班 · 共感典範島</div><div class="name">官方示範世界 · 固定展示 · 不列入排行</div></div><a target="_blank" rel="noopener noreferrer" href="'+leaderHref()+'">前往 ↗</a>';worldNav.appendChild(leader);for(let i=0;i<8;i++){const g=groups[String(i+1)]||{},m=D.GROUPS[i],row=document.createElement('div');row.className='world-card';row.innerHTML='<div class="orb" style="--orb:'+m.accent+'33;color:'+m.accent+'">'+iconFor(i)+'</div><div><div class="label">'+m.label+' · '+m.theme+'</div><div class="name">'+((g.worldName||m.theme).replace(/[<>]/g,''))+'</div></div><a target="_blank" rel="noopener noreferrer" href="'+worldHref(i)+'">前往 ↗</a>';worldNav.appendChild(row)}}
 function renderRanking(){const ranked=D.ranking(groups),medals=['🥇','🥈','🥉'],classes=['first','',''];rankPodium.innerHTML='';const order=[1,0,2];for(const idx of order){const r=ranked[idx];if(!r)continue;const m=D.GROUPS[Number(r.id)-1],g=groups[r.id]||{},card=document.createElement('div');card.className='podium-card '+(classes[idx]||'');card.style.setProperty('--glow',m.accent+'55');card.innerHTML='<div class="crown">'+medals[idx]+'</div><div class="place">第 '+(idx+1)+' 名</div><div class="group">'+m.label+'</div><div class="score">'+Number(r.score).toLocaleString()+' pt</div>';rankPodium.appendChild(card)}rankList.innerHTML='';ranked.forEach((r,idx)=>{if(idx<3)return;const m=D.GROUPS[Number(r.id)-1],g=groups[r.id]||{},row=document.createElement('div');row.className='rank-row';row.innerHTML='<div class="rank-no">#'+(idx+1)+'</div><div><div class="rank-name">'+m.label+' · '+m.theme+'</div><div class="rank-world">'+((g.worldName||m.theme).replace(/[<>]/g,''))+'</div></div><div class="rank-score">'+Number(r.score).toLocaleString()+' pt</div>';rankList.appendChild(row)})}
 function updateWorldState(){const ratios=[];for(let i=0;i<8;i++){const g=groups[String(i+1)]||{},r=D.clamp((Number(g.progressScore)||0)/1600,0,1),rise=smooth01(r);ratios[i]=r;nodes[i].scoreRatio=r;
     // v3.3: score controls actual altitude. 0 pt = only the top grazes the sea; 1600 pt = the entire rock body clears the ocean.
