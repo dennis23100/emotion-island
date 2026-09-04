@@ -77,6 +77,8 @@ body{min-height:100vh;padding:34px 20px 64px;
 .main-card{border-color:rgba(156,236,255,.36);
   background:linear-gradient(135deg,rgba(156,236,255,.13),rgba(184,142,255,.10))}
 .main-card .nm{font-size:17px}
+.leader-card{border-color:rgba(255,229,156,.32);
+  background:linear-gradient(135deg,rgba(255,229,156,.11),rgba(244,155,137,.09))}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px}
 
@@ -102,7 +104,7 @@ footer b{color:var(--cyan);font-weight:900}
   <div class="brand">
     <small>EMOTION ISLAND · LINK BUILDER</small>
     <h1>情緒不孤島 連結產生器</h1>
-    <p>輸入房號，一次產生大世界主畫面與八組專屬連結。九個連結共用同一份資料，任何一組加分或佈置，主畫面即時同步。</p>
+    <p>輸入房號，一次產生大世界主畫面與八組專屬連結。主畫面與八組共用同一份資料，任何一組加分或佈置，主畫面即時同步。主領班示範島為固定展示，不讀分數也不列入排行。</p>
   </div>
 
   <div class="panel">
@@ -124,17 +126,31 @@ footer b{color:var(--cyan);font-weight:900}
     </div>
   </div>
 
-  <div class="sec"><h2>主畫面</h2><span>投影用，顯示八島全景與即時排名</span></div>
-  <div class="card main-card" id="mainCard">
-    <div class="top">
-      <span class="dot" style="color:#9cecff;background:#9cecff"></span>
-      <span class="nm">八島大世界</span>
-      <span class="meta" id="mainMeta">房號 —</span>
+  <div class="sec"><h2>投影用</h2><span>老師端，不需要發給學生</span></div>
+  <div class="grid">
+    <div class="card main-card" id="mainCard">
+      <div class="top">
+        <span class="dot" style="color:#9cecff;background:#9cecff"></span>
+        <span class="nm">共感大世界</span>
+        <span class="meta" id="mainMeta">房號 —</span>
+      </div>
+      <div class="url" id="mainUrl">—</div>
+      <div class="row">
+        <button class="btn" type="button" data-copy="main">複製連結</button>
+        <a class="btn" id="mainOpen" target="_blank" rel="noopener">開啟</a>
+      </div>
     </div>
-    <div class="url" id="mainUrl">—</div>
-    <div class="row">
-      <button class="btn" type="button" data-copy="main">複製連結</button>
-      <a class="btn" id="mainOpen" target="_blank" rel="noopener">開啟</a>
+    <div class="card leader-card" id="leaderCard">
+      <div class="top">
+        <span class="dot" style="color:#ffe59c;background:#ffe59c"></span>
+        <span class="nm">主領班 · 共感典範島</span>
+        <span class="meta">示範世界</span>
+      </div>
+      <div class="url" id="leaderUrl">—</div>
+      <div class="row">
+        <button class="btn" type="button" data-copy="leader">複製連結</button>
+        <a class="btn" id="leaderOpen" target="_blank" rel="noopener">開啟</a>
+      </div>
     </div>
   </div>
 
@@ -142,13 +158,13 @@ footer b{color:var(--cyan);font-weight:900}
   <div class="grid" id="grid"></div>
 
   <div class="tools">
-    <button class="btn" type="button" id="copyAll">複製全部九個連結</button>
+    <button class="btn" type="button" id="copyAll">複製全部連結</button>
     <button class="btn" type="button" id="toggleText">顯示純文字清單</button>
   </div>
   <textarea id="textOut" class="hidden" readonly spellcheck="false"></textarea>
 
   <footer>
-    八組的連結使用「組別房號」<b>（房號 + 兩位組別）</b>，例如房號 2026 的第三組是 <b>202603</b>。組別已經包在房號裡，資料仍然寫回 <b>2026</b> 這個房間，所以九個連結全部連動。
+    八組的連結使用「組別房號」<b>（房號 + 兩位組別）</b>，例如房號 2026 的第三組是 <b>202603</b>。組別已經包在房號裡，資料仍然寫回 <b>2026</b> 這個房間，所以主畫面與八組完全連動。
   </footer>
 </div>
 
@@ -201,6 +217,10 @@ footer b{color:var(--cyan);font-weight:900}
   function mainUrl(room){
     return build('emotion_island.html',{room:room});
   }
+  // 主領班示範島不讀 Firebase，room 只用來讓「返回大世界」回到同一個房間。
+  function leaderUrl(room){
+    return build('emotion_leader_world.html',{room:room});
+  }
 
   function flash(btn,label){
     var old=btn.getAttribute('data-label')||btn.textContent;
@@ -246,6 +266,8 @@ footer b{color:var(--cyan);font-weight:900}
     document.getElementById('mainUrl').textContent='—';
     document.getElementById('mainMeta').textContent='房號 —';
     document.getElementById('mainOpen').removeAttribute('href');
+    document.getElementById('leaderUrl').textContent='—';
+    document.getElementById('leaderOpen').removeAttribute('href');
     GROUPS.forEach(function(g){
       grid.querySelector('[data-url="'+g.id+'"]').textContent='—';
       grid.querySelector('[data-meta="'+g.id+'"]').textContent='—';
@@ -273,10 +295,12 @@ footer b{color:var(--cyan);font-weight:900}
 
     try{ localStorage.setItem(STORE,room); }catch(e){}
 
-    links={ main: mainUrl(room) };
+    links={ main: mainUrl(room), leader: leaderUrl(room) };
     document.getElementById('mainUrl').textContent=links.main;
     document.getElementById('mainMeta').textContent='房號 '+room;
     document.getElementById('mainOpen').href=links.main;
+    document.getElementById('leaderUrl').textContent=links.leader;
+    document.getElementById('leaderOpen').href=links.leader;
 
     GROUPS.forEach(function(g){
       var url=groupUrl(room,g.id);
@@ -288,7 +312,8 @@ footer b{color:var(--cyan);font-weight:900}
     });
 
     var lines=['情緒不孤島｜房號 '+room+(mode==='view'?'（唯讀參觀）':''),'',
-               '【主畫面】八島大世界', links.main, ''];
+               '【主畫面】共感大世界', links.main, '',
+               '【示範】主領班 · 共感典範島', links.leader, ''];
     GROUPS.forEach(function(g){
       lines.push('【'+g.label+'】'+g.theme);
       lines.push(links[g.id]);

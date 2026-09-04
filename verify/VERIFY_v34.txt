@@ -1,0 +1,39 @@
+v3.4 LEADER SHOWCASE - VERIFY
+
+emotion_island.html inline JS syntax (5 blocks): PASS
+emotion_leader_world.html inline JS syntax (1 blocks): PASS
+emotion_my_world.html inline JS syntax (7 blocks): PASS
+emotion_score.html inline JS syntax (5 blocks): PASS
+emotion_my_world.html byte-identical to v3.3.1: PASS
+emotion_score.html byte-identical to v3.3.1: PASS
+Main EmotionData/Firebase core unchanged: PASS
+Main world score-driven node positions = 8: PASS
+No decorative floatingRealm islands: PASS
+World guide contains 主領班 showcase: PASS
+World guide links open in new tabs: PASS
+主領班 excluded from ranking code: PASS
+Leader showcase has no Firebase dependency: PASS
+Leader showcase has no score/reset/edit persistence: PASS
+Leader page includes best view / tour / FX / back controls: PASS
+Duplicate DOM IDs main = 0: PASS
+Duplicate DOM IDs leader = 0: PASS
+
+Navigation URL test:
+- emotion_my_world.html?room=202601&from=main
+- emotion_my_world.html?room=202608&from=main
+- emotion_leader_world.html?room=2026&from=main
+
+Frozen file hashes:
+- emotion_my_world.html: ab91eebccc53710aad7f7699b6945717eefdf3f7e047c7eb330dc093cb45061e
+- emotion_score.html: be850ad9d60e53f5aa4ff9b83378b4fb338c53d81282a8890a0b6d19ad580237
+
+Expected main-world model:
+- 8 score-driven group islands
+- 1 central 共感主島 / 聖山
+- 主領班 exists only as a separate guide destination; it is not a ninth score-driven island and is not ranked
+
+Leader showcase guarantees:
+- Separate emotion_leader_world.html
+- No Firebase / score / reset / editing dependency
+- Fixed showcase composition cannot be erased by admin reset
+- Group worlds and leader world all open in new tabs

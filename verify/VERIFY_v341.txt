@@ -1,0 +1,35 @@
+v3.4.1 LEADER SHOWCASE REMASTER verification
+
+Scope freeze:
+- emotion_island.html: byte-identical to v3.4
+- emotion_my_world.html: byte-identical to v3.4
+- emotion_score.html: byte-identical to v3.4
+- Only emotion_leader_world.html is redesigned.
+
+Static/runtime-oriented checks:
+- Inline JavaScript syntax: PASS (Node vm.Script)
+- TypeScript checkJs missing-name scan: PASS (no unknown identifiers; only expected THREE possibly-undefined diagnostics because THREE is loaded externally)
+- Return-to-main flow preserved
+- Best view / cinematic tour / FX toggle preserved
+- Responsive HUD preserved
+
+Showcase scene checks:
+- Irregular layered floating-island terrain: PASS
+- Saturated controlled palette / lowered exposure: PASS
+- Giant curated wish tree: PASS
+- Cherry tea garden + gazebo: PASS
+- Stream + pond + 2 waterfalls + bridges: PASS
+- Observatory shelf + 2 telescopes + crystal garden: PASS
+- Ferris wheel animation: PASS
+- Carousel animation: PASS
+- Moving outer-ring train: PASS
+- Music stage + campfire lounge: PASS
+- Easel with actual painted landscape texture: PASS
+- Torii + real luminous arch: PASS
+- 16 moving spirits: PASS
+- 105 ambient motes/fireflies: PASS
+- Ocean uses continuous wave bands, no white glint-dot field: PASS
+- Bloom threshold raised to 0.91 and exposure reduced to 0.88 to avoid washed-out white surfaces: PASS
+
+Environment limitation:
+- Chromium WebGL screenshot rendering could not be completed in the container because EGL/ANGLE initialization fails in this environment. Static and semantic checks above passed; final visual judgment must be made in the normal browser/Vercel environment.
