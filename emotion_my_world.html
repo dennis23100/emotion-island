@@ -254,11 +254,17 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
     });
   }
 
+  const PRESENCE_TTL = 600000;   // 超過 10 分鐘沒更新的紀錄視為過期，不計入
   function tryUpgradeRealtime() {
-    fetch(REST_BASE + '/rooms/' + room + '/presence.json?shallow=true', { cache: 'no-store' })
+    fetch(REST_BASE + '/rooms/' + room + '/presence.json', { cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(function (v) {
-        const n = v ? Object.keys(v).length : 0;
+        const now = Date.now();
+        let n = 0;
+        Object.keys(v || {}).forEach(function (k) {
+          const t = v[k] && v[k].t;
+          if (typeof t === 'number' && now - t <= PRESENCE_TTL) n++;
+        });
         if (n >= LIVE_LIMIT) { global.__emotionLiveMode = false; return; }
         return loadScript('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js')
           .then(function () { return loadScript('https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js'); })

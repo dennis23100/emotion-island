@@ -20,6 +20,8 @@
   var LIMIT = 100;           // 免費方案硬上限
   var OFFLINE_AFTER = 15000; // 連不上多久才提示（毫秒）
   var SDK_WAIT = 25000;      // 等頁面初始化 Firebase 的上限
+  var PRESENCE_REFRESH = 240000; // 每 4 分鐘更新一次自己的時間戳
+  var PRESENCE_TTL = 600000;     // 超過 10 分鐘沒更新就視為過期
 
   var room = (function () {
     var raw = new URLSearchParams(location.search).get('room') || '';
@@ -141,14 +143,27 @@
     // 走 REST 的唯讀裝置不會登記，因為它們本來就不佔連線。
     var id = 'd' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
     var meRef = db.ref('rooms/' + room + '/presence/' + id);
-    try {
-      meRef.onDisconnect().remove();
-      meRef.set({ t: firebase.database.ServerValue.TIMESTAMP });
-    } catch (e) {}
+    function stamp() {
+      try { meRef.set({ t: firebase.database.ServerValue.TIMESTAMP }); } catch (e) {}
+    }
+    try { meRef.onDisconnect().remove(); } catch (e) {}
+    stamp();
+    // 分頁被強制關閉時 onDisconnect 偶爾來不及生效，
+    // 因此定期更新時間戳，讓過期的紀錄可以被忽略與清除。
+    setInterval(stamp, PRESENCE_REFRESH);
     window.addEventListener('pagehide', function () { try { meRef.remove(); } catch (e) {} });
 
     db.ref('rooms/' + room + '/presence').on('value', function (snap) {
-      var n = snap.numChildren ? snap.numChildren() : 0;
+      var v = snap.val() || {};
+      var now = Date.now(), n = 0;
+      Object.keys(v).forEach(function (k) {
+        var t = v[k] && v[k].t;
+        if (typeof t !== 'number' || now - t > PRESENCE_TTL) {
+          if (k !== id) { try { db.ref('rooms/' + room + '/presence/' + k).remove(); } catch (e) {} }
+          return;                                   // 過期紀錄不計入，並順手清掉
+        }
+        n++;
+      });
       window.__emotionConnections = n;
       if (offlineShown) return;              // 連線問題的提示優先
       if (n >= WARN_AT && !crowdShown) {
