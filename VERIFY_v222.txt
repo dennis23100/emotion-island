@@ -1,0 +1,24 @@
+Emotion Island v2.2.2 STABILITY VERIFY
+
+CORE FUNCTION COMPARISON vs v2.1
+renderCurrent: UNCHANGED
+renderPlaced: UNCHANGED
+renderPeople: UNCHANGED
+saveLayoutDraft: UNCHANGED
+startPlace: UNCHANGED
+commitGhostPlacement: UNCHANGED
+submitScore: UNCHANGED
+
+REGRESSION / VISUAL CHECKS
+sound_decl_before_selectGroup: PASS
+sound_decl_before_boot_call: PASS
+v22_dynamic_bloom_scale_removed: PASS
+v22_bloom_disable_during_drag_removed: PASS
+v22_detail_lod_removed: PASS
+v21_full_quality_bloom_restored: PASS
+target_camera_smoothing_small: PASS
+target_camera_smoothing_main: PASS
+score_additive_intact: PASS
+room_switch_intact: PASS
+shop_intact: PASS
+save_layout_intact: PASS

@@ -1,0 +1,32 @@
+JS syntax: PASS
+Hero GLB: 8/8 valid
+  hero_aurora_altar.glb: 14 meshes, 33904 bytes
+  hero_crystal_cathedral.glb: 8 meshes, 21016 bytes
+  hero_flower_pavilion.glb: 19 meshes, 33308 bytes
+  hero_moon_shrine.glb: 6 meshes, 26844 bytes
+  hero_observatory.glb: 12 meshes, 32328 bytes
+  hero_tea_pavilion.glb: 10 meshes, 9544 bytes
+  hero_wind_shrine.glb: 8 meshes, 9168 bytes
+  hero_world_tree.glb: 16 meshes, 28292 bytes
+AssetBank hero_observatory: PASS
+AssetBank hero_tea_pavilion: PASS
+AssetBank hero_world_tree: PASS
+AssetBank hero_wind_shrine: PASS
+AssetBank hero_moon_shrine: PASS
+AssetBank hero_flower_pavilion: PASS
+AssetBank hero_crystal_cathedral: PASS
+AssetBank hero_aurora_altar: PASS
+biome silhouette pass: PASS
+ride seat anchors: PASS
+ride first animate: PASS
+room-code parser: PASS
+cumulative scoring: PASS
+shop preserved 41: PASS
+placement save preserved: PASS
+group switching preserved: PASS
+Core freeze addScore: UNCHANGED
+Core freeze buyItem: UNCHANGED
+Core freeze saveLayout: UNCHANGED
+Core freeze placeItem: UNCHANGED
+Core freeze setWorldName: UNCHANGED
+Core freeze saveMember: UNCHANGED
