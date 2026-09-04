@@ -16,7 +16,7 @@ Firebase Realtime Database，路徑為 `rooms/{room}/emotionV3/groups/{group}`�
 
 ## 資源
 
-`assets/assetbank.js` 定義模型清單，`assets/models/` 收錄 24 個 `.glb`：樹木（橡木／松木／櫻花）、涼亭、燈籠、水晶、長椅、橋、營火、小屋、鳥居、望遠鏡、岩石群，以及 8 個 hero 建築（世界樹、水晶教堂、月神殿、觀星台、茶亭、風神殿、花亭、極光祭壇）。
+`assets/assetbank.js` 定義模型清單，`assets/models/` 收錄 21 個 `.glb`：樹木（橡木／松木／櫻花）、涼亭、燈籠、水晶、長椅、橋、營火、小屋、鳥居、望遠鏡、岩石群，以及 8 個 hero 建築（世界樹、水晶教堂、月神殿、觀星台、茶亭、風神殿、花亭、極光祭壇）。
 
 所有資源皆為相對路徑，three.js 由 CDN 載入，可直接靜態部署。
 
