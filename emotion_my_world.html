@@ -58,7 +58,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 <script src="assets/assetbank.js"></script>
 <script>
-(function(){var room=(new URLSearchParams(location.search)).get('room');if(!room)return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\/script>');})();
+(function(){var q=new URLSearchParams(location.search);var room=q.get('room');if(!room)return;if(q.get('view')==='1'||q.get('mode')==='gallery')return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\/script>');})();
 </script>
 <script>
 (function (global) {
@@ -212,8 +212,29 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   let db = null;
   let listeners=[];
 
+  // 唯讀／群島參觀改走 REST 一次性讀取＋輪詢：
+  // Firebase 免費方案上限 100 個同時連線，即時監聽會佔用名額，
+  // REST 是無狀態 HTTP，不計入連線數。
+  const REST_BASE = 'https://score-calculation-ef584-default-rtdb.firebaseio.com';
+  const restMode = (function(){
+    const q = new URLSearchParams(location.search);
+    return Boolean(room) && (q.get('view') === '1' || q.get('mode') === 'gallery');
+  })();
+  function restPoll(path, ms, cb) {
+    let stopped = false, timer = 0;
+    const tick = function () {
+      fetch(REST_BASE + '/' + path + '.json', {cache: 'no-store'})
+        .then(function (r) { return r.json(); })
+        .then(function (v) { if (!stopped) cb(v); })
+        .catch(function () {})
+        .then(function () { if (!stopped) timer = setTimeout(tick, ms); });
+    };
+    tick();
+    listeners.push(function () { stopped = true; clearTimeout(timer); });
+  }
   function isFirebaseMode() { return Boolean(room && global.firebase); }
   function ensureFirebase() {
+    if (restMode) return false;   // 唯讀模式不建立即時連線
     if (!isFirebaseMode()) return false;
     if (firebaseReady) return true;
     const firebaseConfig = {
@@ -289,6 +310,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   }
 
   function watchAll(cb) {
+    if (restMode) { restPoll(basePath(), 25000, function (v) { cb(normalizeAll(v), {mode:'rest', room:room}); }); return; }
     if (ensureFirebase()) {
       const ref=db.ref(basePath());
       const handler=snap=>cb(normalizeAll(snap.val()), {mode:'firebase', room});
@@ -302,6 +324,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
     listeners.push(()=>{clearInterval(timer);global.removeEventListener('storage',ev);global.removeEventListener('emotion-v3-local-change',ev);});
   }
   function watchGroup(id, cb) {
+    if (restMode) { restPoll(basePath() + '/' + id, 20000, function (v) { cb(normalizeGroup(v, id), {mode:'rest', room:room}); }); return; }
     if (ensureFirebase()) {
       const ref=db.ref(`${basePath()}/${id}`);
       const handler=snap=>cb(normalizeGroup(snap.val(),id),{mode:'firebase',room});
@@ -1077,4 +1100,5 @@ setTimeout(function(){var hasCore=!!window.EmotionData;var is3d=!!document.getEl
 .viewer-mode:not(.gallery-mode) .right-actions > *{display:none!important}.viewer-mode:not(.gallery-mode) .right-actions #backMain{display:grid!important}.viewer-mode:not(.gallery-mode) .topbar{pointer-events:none!important}.viewer-mode:not(.gallery-mode) #backMain{pointer-events:auto!important}
 @media(max-width:680px){.gallery-switcher{left:8px;right:8px;top:8px;transform:none;justify-content:center}.gallery-switcher select{min-width:0;flex:1}.gallery-exit{padding:0 9px;font-size:9px!important}.viewer-mode:not(.gallery-mode) #backMain{left:10px!important;top:10px!important;width:48px!important;height:48px!important}}
 </style>
+<script src="assets/netguard.js" defer></script>
 </body></html>
