@@ -66,6 +66,17 @@ test('concurrent placement changes are not overwritten even when item counts mat
   assert.equal(db.get().worldsV4[1].placements[0].x,0);
 });
 
+test('decorations and NPC progress survive a completely fresh client load',async()=>{
+  const db=backend(migrateRoot(legacy(),'2026')),first=new CloudIslandStore('2026',1,false,db);await first.load();
+  const layout=first.layout();layout.inventory.bench--;layout.placements[0]={itemId:'bench',x:4,z:11,rot:Math.PI/2};await first.saveLayout(layout);
+  await first.meet('mori');await first.chat('mori',Date.parse('2026-09-05T08:00:00Z'));await first.complete('bench');
+  const reopened=new CloudIslandStore('2026',1,false,db);await reopened.load();
+  assert.deepEqual(reopened.state.placements[0],layout.placements[0]);
+  assert.equal(reopened.state.inventory.bench||0,0);assert.equal(reopened.state.inventory.cushion,1);
+  assert.deepEqual(reopened.state.met,['mori']);assert.equal(reopened.state.quests.bench,true);assert.equal(reopened.state.chats.mori,'2026-09-05');
+  assert.equal(reopened.state.rewardScore,55);
+});
+
 test('NPC gifts require saved buildings and award exactly 50 points once across clients',async()=>{
   const db=backend(migrateRoot(legacy(),'2026')),a=new CloudIslandStore('2026',1,false,db),b=new CloudIslandStore('2026',1,false,db);await a.load();
   assert.equal(await a.complete('bench'),false);const layout=a.layout();layout.inventory.bench--;layout.placements[0]={itemId:'bench',x:0,z:12,rot:0};await a.saveLayout(layout);await b.load();

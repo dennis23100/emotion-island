@@ -12,6 +12,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 hydrateIcons();
 let config,store,world,thumbs,history;
 let collection='inventory',category='全部',mode='walk',activeNpc=null,placing=null,modelPreview=null,toastTimer=0,audioContext=null,lastPanelFocus=null,thumbObserver=null,thumbGeneration=0;
+let layoutSaveChain=Promise.resolve();
 const panel=$('panel-dialog'),dialogueTurns=new Map();let ambientTimer=0;
 function visitorHref(group){return islandHref(config,group);}
 try{
@@ -54,8 +55,8 @@ function refresh(){
 }
 function wire(){
   document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
-  $('save-button').onclick=()=>saveLayout();$('undo-button').onclick=()=>{if(!editable())return;if(history.undo()){world.renderPlacements(history.present.placements);refresh();toast('已復原上一步佈置。');}};
-  $('redo-button').onclick=()=>{if(!editable())return;if(history.redo()){world.renderPlacements(history.present.placements);refresh();toast('已重做佈置。');}};
+  $('save-button').onclick=()=>saveLayout();$('undo-button').onclick=()=>{if(!editable())return;if(history.undo()){world.renderPlacements(history.present.placements);refresh();saveLayout({preserveHistory:true,success:'已復原並自動儲存。'});}};
+  $('redo-button').onclick=()=>{if(!editable())return;if(history.redo()){world.renderPlacements(history.present.placements);refresh();saveLayout({preserveHistory:true,success:'已重做並自動儲存。'});}};
   $('close-tray').onclick=()=>setMode('walk');document.querySelectorAll('[data-collection]').forEach(b=>b.onclick=()=>{collection=b.dataset.collection;category='全部';renderTray();});
   $('rotate-item').onclick=()=>{world.rotateGhost();chirp();};$('cancel-item').onclick=()=>cancelPlacement();$('confirm-item').onclick=()=>confirmPlacement();
   $('snap-button').onclick=()=>{world.snap=!world.snap;$('snap-button').setAttribute('aria-pressed',String(world.snap));const p=world.ghostState();if(p)world.moveGhost(p.x,p.z);};
@@ -93,7 +94,7 @@ function renderTray(){
   $('item-list').innerHTML=rows.length?rows.map((r,i)=>`<button class="item-card" data-row="${i}" aria-label="${esc(r.item.name)} · ${r.sub}">${r.count?`<span class="item-count">× ${r.count}</span>`:''}<img data-thumb="${r.item.id}" alt="${esc(r.item.name)}的 3D 模型"><b>${esc(r.item.name)}</b><small>${r.sub}</small></button>`).join(''):`<div class="empty-state">${collection==='inventory'?'這個分類還沒有家具。<br>去島嶼商店看看，或完成島民的小心願。':collection==='placed'?'這裡還沒有佈置。<br>從收納裡挑一件喜歡的家具吧。':'這個分類還沒有家具。'}</div>`;
   $('item-list').querySelectorAll('[data-thumb]').forEach(img=>thumbObserver.observe(img));
   $('item-list').querySelectorAll('button').forEach(b=>b.onclick=()=>{const r=rows[Number(b.dataset.row)];if(collection==='shop')openItem(r.item.id);else if(collection==='placed')openPlaced(r.key);else startPlacement(r.item.id);});
-  $('tray-help').textContent=collection==='shop'?'每件家具 100 點。購買後放進收納，團隊總分不會減少。':'點物品拿取 · 點地面選位置 · R 旋轉 · 拖曳仍可轉動鏡頭';
+  $('tray-help').textContent=collection==='shop'?'每件家具 100 點。購買後放進收納，團隊總分不會減少。':'點物品拿取 · 確定位置後自動儲存 · R 旋轉 · 拖曳仍可轉動鏡頭';
 }
 function openPanel(title,kicker,html){closeDialogue();if(modelPreview){modelPreview.dispose();modelPreview=null;}if(!panel.open)lastPanelFocus=document.activeElement;$('panel-title').textContent=title;$('panel-kicker').textContent=kicker;$('panel-body').innerHTML=html;hydrateIcons($('panel-body'));if(!panel.open)panel.showModal();}
 function closePanel(){panel.close();}
@@ -112,10 +113,11 @@ function confirmPlacement(){
   if(!placing||!editable())return;const p=world.ghostState();if(!p?.chosen||!p.ok){toast(p?.chosen?p.reason:'先點一下地面，選好位置。');return;}
   run(async()=>{const selected={...placing};history.apply(layout=>{let key=selected.key;if(!key){for(let i=0;i<128;i++)if(!layout.placements[String(i)]){key=String(i);break;}if(key===undefined||key===null)throw new Error('已達 128 件家具，收回一些再試試。');if((layout.inventory[selected.id]||0)<1)throw new Error('收納裡沒有這件家具。');layout.inventory[selected.id]--;}
       layout.placements[key]={itemId:selected.id,x:p.x,z:p.z,rot:p.rot};});
-    cancelPlacement();world.renderPlacements(history.present.placements);refresh();chirp('success');toast('放好了！可以繼續調整，最後記得儲存佈置。');});
+    cancelPlacement();world.renderPlacements(history.present.placements);refresh();toast('正在儲存這個位置…');await saveLayout({preserveHistory:true,success:'已放好並自動儲存。'});});
 }
-function openPlaced(key){const p=history.present.placements[key];if(!p)return;const item=CATALOG[p.itemId];openPanel(item.name,'A PLACE OF ITS OWN',`<div class="item-detail"><img src="${thumbs.item(item.id)}" alt="${item.name}"><div><small>已佈置在島上</small><p>${item.description}</p></div></div><div class="button-row"><button id="collect-item" class="secondary-button">收回收納</button><button id="move-item" class="primary-button">${icon('edit')}換個位置</button></div>`);$('move-item').onclick=()=>startPlacement(p.itemId,key);$('collect-item').onclick=()=>run(async()=>{if(!editable())return;history.apply(l=>{l.inventory[p.itemId]=(l.inventory[p.itemId]||0)+1;delete l.placements[key];});world.renderPlacements(history.present.placements);closePanel();refresh();toast('已收回收納，儲存後會保留這次調整。');});}
-function saveLayout(){return run(async()=>{if(!editable()||placing)return false;await store.saveLayout(history.present);history.rebase(store.layout());world.renderPlacements(store.state.placements);const gifts=[];for(const id of ['bench','explore','lantern','teaTable','musicStage','telescope']){const q=await completeQuest(id,true);if(q)gifts.push(q);}refresh();chirp('success');toast(gifts.length?'佈置已儲存 · 收到 '+gifts.map(q=>q.reward+' · +50 獎勵分數').join('、'):config.cloud?'小島佈置已儲存，其他裝置也能看見。':'小島佈置已儲存在這台電腦。');if(gifts.length)openRewards(gifts);return true;});}
+function openPlaced(key){const p=history.present.placements[key];if(!p)return;const item=CATALOG[p.itemId];openPanel(item.name,'A PLACE OF ITS OWN',`<div class="item-detail"><img src="${thumbs.item(item.id)}" alt="${item.name}"><div><small>已佈置在島上</small><p>${item.description}</p></div></div><div class="button-row"><button id="collect-item" class="secondary-button">收回收納</button><button id="move-item" class="primary-button">${icon('edit')}換個位置</button></div>`);$('move-item').onclick=()=>startPlacement(p.itemId,key);$('collect-item').onclick=()=>run(async()=>{if(!editable())return;history.apply(l=>{l.inventory[p.itemId]=(l.inventory[p.itemId]||0)+1;delete l.placements[key];});world.renderPlacements(history.present.placements);closePanel();refresh();toast('正在收回並儲存…');await saveLayout({preserveHistory:true,success:'已收回收納並自動儲存。'});});}
+function saveLayout(options={}){const task=layoutSaveChain.then(()=>saveLayoutNow(options));layoutSaveChain=task.then(()=>undefined,()=>undefined);return task;}
+function saveLayoutNow({preserveHistory=false,success}={}){return run(async()=>{if(!editable()||placing)return false;const snapshot=clone(history.present);await store.saveLayout(snapshot);if(!preserveHistory&&JSON.stringify(history.present)===JSON.stringify(snapshot))history.rebase(store.layout());world.renderPlacements(history.present.placements);const gifts=[];for(const id of ['bench','explore','lantern','teaTable','musicStage','telescope']){const q=await completeQuest(id,true);if(q)gifts.push(q);}refresh();chirp('success');toast(gifts.length?'佈置已儲存 · 收到 '+gifts.map(q=>q.reward+' · +50 獎勵分數').join('、'):success||(config.cloud?'小島佈置已儲存，其他裝置也能看見。':'小島佈置已儲存在這台電腦。'));if(gifts.length)openRewards(gifts);return true;});}
 function completeQuest(id,quiet=false,evidence={}){if(config.viewer)return;return run(async()=>{const q=await store.complete(id,evidence);if(q){const next=clone(history.present);next.inventory[q.gift]=(next.inventory[q.gift]||0)+1;history.rebase(next);world.updateProgress(store.state);refresh();if(!quiet){openRewards([q]);chirp('success');}}return q;});}
 function openDialogue(id){
   $('ambient-greeting').hidden=true;
