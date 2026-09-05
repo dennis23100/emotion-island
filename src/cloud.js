@@ -108,7 +108,7 @@ export class CloudIslandStore extends IslandStore {
     super({getItem:()=>null,setItem:()=>{}},group,readOnly);
     this.room=room;this.cloud=true;this.options=options;this.state=initialState(group,room);this.pending=0;
   }
-  async load(){this.state=stateFromRoot(await readRoom(this.room,this.options.fetcher),this.room,this.group);return this.state;}
+  async load(){const root=await readRoom(this.room,this.options.fetcher);this.islandNames=Object.fromEntries(Object.entries(root.groups||{}).filter(([,g])=>g).map(([id,g])=>[id,g.worldName]));this.state=stateFromRoot(root,this.room,this.group);return this.state;}
   async transact(fn) {
     if(this.readOnly)throw Error('唯讀參觀不能修改小島資料。');
     if(this.pending)throw Error('正在儲存，請等候完成再操作。');
