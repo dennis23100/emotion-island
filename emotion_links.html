@@ -1,119 +1,20 @@
 <!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>情緒不孤島｜連結產生器</title>
-<style>
-:root{
-  --ink:#fffdfc;--muted:rgba(245,247,255,.76);--faint:rgba(245,247,255,.52);
-  --line:rgba(255,255,255,.16);--line-soft:rgba(255,255,255,.075);
-  --cyan:#9cecff;--pink:#ffabd9;--gold:#ffe59c;--bg:#0c1530;
-}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased}
-body{min-height:100vh;padding:34px 20px 64px;
-  background:
-    radial-gradient(1100px 620px at 12% -8%,rgba(115,183,255,.20),transparent 62%),
-    radial-gradient(950px 560px at 92% 4%,rgba(194,155,234,.20),transparent 60%),
-    radial-gradient(800px 500px at 50% 104%,rgba(111,215,222,.13),transparent 62%),
-    var(--bg)}
-.wrap{max-width:1080px;margin:0 auto}
-
-.brand{padding:20px 22px;border:1px solid var(--line);border-radius:24px;
-  background:linear-gradient(135deg,rgba(20,26,62,.75),rgba(111,60,130,.24));
-  backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 20px 70px rgba(3,7,30,.26)}
-.brand small{display:block;font-size:10px;font-weight:900;letter-spacing:.26em;color:#bfefff}
-.brand h1{font-size:clamp(24px,3.4vw,38px);margin:6px 0 6px;letter-spacing:.06em}
-.brand p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.75}
-
-.panel{margin-top:18px;padding:18px;border:1px solid var(--line);border-radius:22px;
-  background:linear-gradient(145deg,rgba(20,25,62,.82),rgba(70,43,105,.42));
-  backdrop-filter:blur(22px) saturate(1.25);box-shadow:0 22px 70px rgba(2,5,28,.30)}
-
-.field{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
-.field label{display:block;font-size:10px;font-weight:900;letter-spacing:.22em;
-  color:#bfefff;margin-bottom:8px}
-#room{width:210px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;
-  background:rgba(9,14,38,.72);color:var(--ink);font:inherit;font-size:26px;
-  font-weight:900;letter-spacing:.22em;text-align:center}
-#room:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(156,236,255,.16)}
-.hint{font-size:11.5px;color:var(--faint);line-height:1.7;flex:1;min-width:230px}
-.hint b{color:var(--cyan);font-weight:900}
-
-.modes{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
-.mode{padding:10px 14px;border:1px solid var(--line);border-radius:14px;cursor:pointer;
-  background:rgba(17,22,54,.56);color:var(--muted);font:inherit;font-size:11.5px;
-  font-weight:900;transition:.18s}
-.mode:hover{border-color:rgba(255,255,255,.32);color:var(--ink)}
-.mode.on{background:linear-gradient(90deg,rgba(119,226,255,.22),rgba(184,142,255,.26));
-  border-color:rgba(156,236,255,.5);color:#fff}
-
-.warn{margin-top:14px;padding:12px 14px;border-radius:14px;font-size:11.5px;line-height:1.7;
-  border:1px solid rgba(255,229,156,.34);background:rgba(255,229,156,.09);color:#ffe59c}
-
-.sec{margin:26px 0 12px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.sec h2{margin:0;font-size:15px;letter-spacing:.05em}
-.sec span{font-size:11px;color:var(--faint)}
-
-.card{padding:16px;border:1px solid var(--line-soft);border-radius:18px;
-  background:rgba(255,255,255,.045);transition:.2s}
-.card:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.18)}
-.card .top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.dot{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 12px currentColor}
-.card .nm{font-size:14px;font-weight:900;letter-spacing:.04em}
-.card .meta{font-size:10px;color:var(--faint);margin-left:auto;letter-spacing:.08em;
-  font-weight:900;white-space:nowrap}
-.url{margin:10px 0 12px;padding:11px 12px;border-radius:12px;font-size:11px;
-  background:rgba(6,10,30,.62);border:1px solid rgba(255,255,255,.07);
-  color:var(--muted);word-break:break-all;line-height:1.6;
-  font-family:ui-monospace,"SFMono-Regular",Consolas,monospace}
-.row{display:flex;gap:8px}
-.btn{flex:1;padding:11px 12px;border:1px solid var(--line);border-radius:13px;cursor:pointer;
-  background:rgba(17,22,54,.56);color:#fff;font:inherit;font-size:11.5px;font-weight:900;
-  transition:.16s;text-align:center;text-decoration:none;display:block}
-.btn:hover{background:rgba(38,46,96,.72);border-color:rgba(255,255,255,.3)}
-.btn.ok{background:rgba(120,201,139,.26);border-color:rgba(120,201,139,.6);color:#c9f0c9}
-
-.main-card{border-color:rgba(156,236,255,.36);
-  background:linear-gradient(135deg,rgba(156,236,255,.13),rgba(184,142,255,.10))}
-.main-card .nm{font-size:17px}
-.leader-card{border-color:rgba(255,229,156,.32);
-  background:linear-gradient(135deg,rgba(255,229,156,.11),rgba(244,155,137,.09))}
-.gallery-card{border-color:rgba(255,171,217,.30);
-  background:linear-gradient(135deg,rgba(255,171,217,.11),rgba(184,142,255,.09))}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px}
-
-.tools{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
-.tools .btn{flex:0 1 auto;min-width:150px}
-
-textarea{width:100%;height:210px;margin-top:12px;padding:14px;border-radius:16px;
-  border:1px solid var(--line);background:rgba(6,10,30,.62);color:var(--muted);
-  font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:11.5px;
-  line-height:1.85;resize:vertical}
-textarea:focus{outline:none;border-color:var(--cyan)}
-.hidden{display:none}
-footer{margin-top:30px;font-size:11px;color:var(--faint);line-height:1.85}
-footer b{color:var(--cyan);font-weight:900}
-@media(max-width:560px){
-  body{padding:20px 14px 48px}
-  #room{width:100%}
-  .field{gap:10px}
-}
-</style><script src="assets/bgm.js"></script></head><body>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src https://score-calculation-ef584-default-rtdb.firebaseio.com; object-src 'none'; base-uri 'none'; form-action 'none'"><link rel="icon" href="data:,"><link rel="stylesheet" href="links.css"></head><body>
 <div class="wrap">
 
   <div class="brand">
     <small>EMOTION ISLAND · LINK BUILDER</small>
     <h1>情緒不孤島 連結產生器</h1>
-    <p>輸入房號，一次產生所有連結。主畫面與八組共用同一份資料，任何一組加分或佈置，主畫面即時同步。<b>各組連結可以編輯，其餘連結都是唯讀</b> —— 群島參觀能在八組之間切換但不顯示分數，主領班示範島為固定展示，不讀分數也不列入排行。</p>
+    <p>輸入活動房號，一次開啟所有小島。<b>各組連結可以加分與佈置，其餘連結皆為唯讀</b>。主畫面與八組共用活動資料；群島參觀能切換八組但不顯示分數。主領班為完整佈置的固定展示，不計分、不列入排行。</p>
   </div>
 
   <div class="panel">
     <div class="field">
       <div>
         <label for="room">活動房號</label>
-        <input id="room" inputmode="numeric" maxlength="12" placeholder="2026" autocomplete="off">
+        <input id="room" inputmode="numeric" maxlength="80" value="2026" aria-describedby="hint" autocomplete="off">
       </div>
       <div class="hint" id="hint"></div>
     </div>
@@ -158,7 +59,7 @@ footer b{color:var(--cyan);font-weight:900}
       <div class="top">
         <span class="dot" style="color:#ffe59c;background:#ffe59c"></span>
         <span class="nm">主領班 · 星願神境</span>
-        <span class="meta">示範世界</span>
+        <span class="meta">固定展示</span>
       </div>
       <div class="url" id="leaderUrl">—</div>
       <div class="row">
@@ -177,211 +78,7 @@ footer b{color:var(--cyan);font-weight:900}
   </div>
   <textarea id="textOut" class="hidden" readonly spellcheck="false"></textarea>
 
-  <footer>
-    八組的連結使用「組別房號」<b>（房號 + 兩位組別）</b>，例如房號 2026 的第三組是 <b>202603</b>。組別已經包在房號裡，資料仍然寫回 <b>2026</b> 這個房間，所以主畫面與八組完全連動。
-  </footer>
+  <footer>這份預覽固定使用 <b>2027</b>，各組房號為 <b>202701 ～ 202708</b>。已儲存的加分與佈置會在同一瀏覽器的分頁間同步。<br>目前先以本機資料測試；跨電腦雲端同步待驗收後整合。程式已採相對路徑，可放在 GitHub Pages 或 Vercel 作靜態預覽。<br><a href="README.md">預覽說明與操作方式</a></footer>
 </div>
 
-<script>
-(function(){
-  var GROUPS=[
-    {id:1,label:'第一組',theme:'星瀑島',color:'#73b7ff'},
-    {id:2,label:'第二組',theme:'櫻光島',color:'#ff9bc9'},
-    {id:3,label:'第三組',theme:'森語島',color:'#78c98b'},
-    {id:4,label:'第四組',theme:'晨曦島',color:'#f3bd68'},
-    {id:5,label:'第五組',theme:'月汐島',color:'#8f83e8'},
-    {id:6,label:'第六組',theme:'花風島',color:'#f49b89'},
-    {id:7,label:'第七組',theme:'晶語島',color:'#6fd7de'},
-    {id:8,label:'第八組',theme:'希望島',color:'#c29bea'}
-  ];
-  var STORE='emotionIslandLinkBuilder:lastRoom';
-  var roomInput=document.getElementById('room');
-  var hint=document.getElementById('hint');
-  var grid=document.getElementById('grid');
-  var textOut=document.getElementById('textOut');
-  var mode='edit', links={};
-
-  // 取得本頁所在目錄。若無法解析成絕對網址（例如以 data: 或受限環境開啟），
-  // 回傳空字串，連結改以相對路徑呈現，頁面仍可正常運作。
-  function dir(){
-    try{ return new URL('.',location.href).href; }catch(e){ return ''; }
-  }
-  function build(file,params){
-    var qs=[];
-    for(var k in params){
-      if(Object.prototype.hasOwnProperty.call(params,k))
-        qs.push(encodeURIComponent(k)+'='+encodeURIComponent(params[k]));
-    }
-    return dir()+file+'?'+qs.join('&');
-  }
-
-  // 房號恰為 4 碼時使用程式內建的「組別房號」解碼（見 emotion_island.html 的 decodeRoomCode）；
-  // 其他長度則退回明確的 group 參數，兩種寫法 groupFromUrl() 都吃。
-  function groupUrl(room,id){
-    var p={};
-    if(/^\d{4}$/.test(room)){
-      p.room = room + String(id).padStart(2,'0');
-    }else{
-      p.room = room;
-      p.group = String(id);
-    }
-    if(mode==='view') p.view='1';
-    return build('emotion_my_world.html',p);
-  }
-  function mainUrl(room){
-    return build('emotion_island.html',{room:room});
-  }
-  // 主領班示範島不讀 Firebase，room 只用來讓「返回大世界」回到同一個房間。
-  function leaderUrl(room){
-    return build('emotion_leader_world.html',{room:room});
-  }
-  // 群島參觀頁只是轉址器，會導到 emotion_my_world.html 的 mode=gallery 唯讀模式，
-  // 進去之後可以在八組之間直接切換。
-  function galleryUrl(room){
-    return build('emotion_gallery.html',{room:room});
-  }
-
-  function flash(btn,label){
-    var old=btn.getAttribute('data-label')||btn.textContent;
-    btn.setAttribute('data-label',old);
-    btn.textContent=label; btn.classList.add('ok');
-    setTimeout(function(){ btn.textContent=old; btn.classList.remove('ok'); },1400);
-  }
-  function copy(text,btn){
-    function fallback(){
-      var t=document.createElement('textarea');
-      t.value=text; t.style.position='fixed'; t.style.opacity='0';
-      document.body.appendChild(t); t.select();
-      try{ document.execCommand('copy'); flash(btn,'已複製 ✓'); }
-      catch(e){ flash(btn,'請手動複製'); }
-      document.body.removeChild(t);
-    }
-    if(navigator.clipboard && window.isSecureContext){
-      navigator.clipboard.writeText(text).then(function(){ flash(btn,'已複製 ✓'); },fallback);
-    }else fallback();
-  }
-
-  function buildCards(){
-    grid.innerHTML='';
-    GROUPS.forEach(function(g){
-      var card=document.createElement('div');
-      card.className='card';
-      card.innerHTML=
-        '<div class="top">'+
-          '<span class="dot" style="color:'+g.color+';background:'+g.color+'"></span>'+
-          '<span class="nm">'+g.label+' · '+g.theme+'</span>'+
-          '<span class="meta" data-meta="'+g.id+'">—</span>'+
-        '</div>'+
-        '<div class="url" data-url="'+g.id+'">—</div>'+
-        '<div class="row">'+
-          '<button class="btn" type="button" data-copy="'+g.id+'">複製連結</button>'+
-          '<a class="btn" data-open="'+g.id+'" target="_blank" rel="noopener">開啟</a>'+
-        '</div>';
-      grid.appendChild(card);
-    });
-  }
-
-  function clearAll(){
-    document.getElementById('mainUrl').textContent='—';
-    document.getElementById('mainMeta').textContent='房號 —';
-    document.getElementById('mainOpen').removeAttribute('href');
-    document.getElementById('leaderUrl').textContent='—';
-    document.getElementById('leaderOpen').removeAttribute('href');
-    document.getElementById('galleryUrl').textContent='—';
-    document.getElementById('galleryOpen').removeAttribute('href');
-    GROUPS.forEach(function(g){
-      grid.querySelector('[data-url="'+g.id+'"]').textContent='—';
-      grid.querySelector('[data-meta="'+g.id+'"]').textContent='—';
-      grid.querySelector('[data-open="'+g.id+'"]').removeAttribute('href');
-    });
-    links={}; textOut.value='';
-  }
-
-  function render(){
-    var room=roomInput.value.trim();
-    var valid=/^[A-Za-z0-9_-]{1,12}$/.test(room);
-    var four=/^\d{4}$/.test(room);
-
-    if(!room){
-      hint.innerHTML='輸入房號後自動產生連結。建議使用 <b>4 位數字</b>，例如 <b>2026</b>。';
-    }else if(!valid){
-      hint.innerHTML='房號只能使用英數字、底線或減號，長度 1–12。';
-    }else if(four){
-      hint.innerHTML='資料存放於 <b>rooms/'+room+'/emotionV3</b>。各組使用組別房號 <b>'+room+'01</b> ～ <b>'+room+'08</b>。';
-    }else{
-      hint.innerHTML='資料存放於 <b>rooms/'+room+'/emotionV3</b>。房號非 4 位數字，各組連結改用 <b>&amp;group=</b> 參數，效果相同。';
-    }
-
-    if(!room||!valid){ clearAll(); return; }
-
-    try{ localStorage.setItem(STORE,room); }catch(e){}
-
-    links={ main: mainUrl(room), gallery: galleryUrl(room), leader: leaderUrl(room) };
-    document.getElementById('mainUrl').textContent=links.main;
-    document.getElementById('mainMeta').textContent='房號 '+room;
-    document.getElementById('mainOpen').href=links.main;
-    document.getElementById('leaderUrl').textContent=links.leader;
-    document.getElementById('leaderOpen').href=links.leader;
-    document.getElementById('galleryUrl').textContent=links.gallery;
-    document.getElementById('galleryOpen').href=links.gallery;
-
-    GROUPS.forEach(function(g){
-      var url=groupUrl(room,g.id);
-      links[g.id]=url;
-      grid.querySelector('[data-url="'+g.id+'"]').textContent=url;
-      grid.querySelector('[data-meta="'+g.id+'"]').textContent=
-        four ? ('房號 '+room+String(g.id).padStart(2,'0')) : ('第 '+g.id+' 組');
-      grid.querySelector('[data-open="'+g.id+'"]').href=url;
-    });
-
-    var lines=['情緒不孤島｜房號 '+room+(mode==='view'?'（唯讀參觀）':''),'',
-               '【主畫面】共感大世界', links.main, '',
-               '【參觀】群島參觀（八組唯讀切換）', links.gallery, '',
-               '【示範】主領班 · 星願神境', links.leader, ''];
-    GROUPS.forEach(function(g){
-      lines.push('【'+g.label+'】'+g.theme);
-      lines.push(links[g.id]);
-      lines.push('');
-    });
-    textOut.value=lines.join('\n').trim();
-  }
-
-  document.addEventListener('click',function(e){
-    var btn=e.target.closest('[data-copy]');
-    if(btn){
-      var key=btn.getAttribute('data-copy');
-      if(links[key]) copy(links[key],btn); else flash(btn,'先輸入房號');
-      return;
-    }
-    var m=e.target.closest('.mode');
-    if(m){
-      mode=m.getAttribute('data-mode');
-      document.querySelectorAll('.mode').forEach(function(x){ x.classList.toggle('on',x===m); });
-      document.getElementById('groupNote').textContent=
-        mode==='view' ? '唯讀模式：可以看世界，但不能加分或佈置' : '每組只會進到自己的小世界';
-      render();
-    }
-  });
-
-  document.getElementById('copyAll').onclick=function(){
-    if(!textOut.value){ flash(this,'先輸入房號'); return; }
-    copy(textOut.value,this);
-  };
-  document.getElementById('toggleText').onclick=function(){
-    var stillHidden=textOut.classList.toggle('hidden');
-    this.textContent = stillHidden ? '顯示純文字清單' : '收合純文字清單';
-  };
-
-  roomInput.addEventListener('input',render);
-
-  if(!/^https?:/i.test(dir())) document.getElementById('fileWarn').classList.remove('hidden');
-
-  var preset=new URLSearchParams(location.search).get('room');
-  var saved=''; try{ saved=localStorage.getItem(STORE)||''; }catch(e){}
-  roomInput.value=(preset||saved||'2026');
-
-  buildCards();
-  render();
-})();
-</script>
-</body></html>
+<button id="linkMusic" class="music-button" aria-label="開啟島嶼音樂"></button><div id="copyStatus" class="copy-status" role="status" aria-live="polite"></div><script type="module" src="src/links.js"></script></body></html>

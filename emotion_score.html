@@ -1,355 +1,41 @@
-<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>情緒不孤島｜快速填分</title><style>
-:root{--ink:#fff;--muted:rgba(244,246,255,.72);--line:rgba(255,255,255,.14);--glass:rgba(20,23,58,.78);--cyan:#a6ecff;--pink:#ffacd9}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 15% 10%,#6e5aa2 0,transparent 28%),radial-gradient(circle at 88% 14%,#7f487a 0,transparent 26%),linear-gradient(145deg,#111a38,#24234f 48%,#101a32);background-attachment:fixed}.wrap{width:min(900px,calc(100% - 28px));margin:0 auto;padding:28px 0 50px}.head{padding:18px 20px;border:1px solid var(--line);border-radius:24px;background:rgba(18,22,55,.62);backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.22)}.head small{color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:.2em}.head h1{margin:5px 0 4px;font-size:32px}.head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}.card{margin-top:14px;padding:18px;border:1px solid var(--line);border-radius:22px;background:var(--glass);backdrop-filter:blur(18px);box-shadow:0 20px 60px rgba(0,0,0,.18)}.groups{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.groups button,.btn{border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(255,255,255,.06);color:#fff;font-weight:900;cursor:pointer}.groups button{padding:14px 8px}.groups button.active{background:linear-gradient(135deg,rgba(166,236,255,.24),rgba(255,172,217,.2));border-color:rgba(255,255,255,.3)}.workspace{display:none}.workspace.show{display:block}.who{display:flex;justify-content:space-between;gap:10px;align-items:center}.who h2{margin:0;font-size:22px}.who span{color:var(--muted);font-size:11px}.score{font-size:clamp(54px,10vw,92px);font-weight:1000;letter-spacing:-.04em;margin:16px 0 5px;text-shadow:0 10px 35px rgba(135,111,255,.25)}.label{color:var(--muted);font-size:10px}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.btn{padding:12px}.btn.primary{background:linear-gradient(90deg,rgba(166,236,255,.32),rgba(255,172,217,.28))}.manual{display:flex;gap:8px;margin-top:10px}.manual input{flex:1;min-width:0;border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:12px;background:rgba(255,255,255,.06);color:#fff;font-size:16px}.note{margin-top:12px;color:var(--muted);font-size:10px;line-height:1.65;padding:10px 12px;border-radius:13px;background:rgba(255,255,255,.04)}@media(max-width:680px){.groups{grid-template-columns:repeat(2,1fr)}.quick{grid-template-columns:repeat(2,1fr)}}
-</style>
-<style id="boot-safety-style">
-#bootError{position:fixed;inset:0;z-index:99999;display:none;place-items:center;padding:24px;background:linear-gradient(145deg,#10152d,#4b2a71);color:#fff;font-family:"Microsoft JhengHei",system-ui,sans-serif}
-#bootError.show{display:grid}#bootError .box{max-width:680px;padding:22px 24px;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:rgba(14,18,46,.88);box-shadow:0 25px 70px rgba(0,0,0,.28);line-height:1.65}#bootError b{font-size:22px}#bootError code{display:block;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.08);white-space:pre-wrap;word-break:break-word;color:#c8efff}
-</style>
-<script src="assets/bgm.js"></script></head><body><div id="bootError"><div class="box"><b>頁面資源沒有完整載入</b><div id="bootErrorText" style="margin-top:8px;color:rgba(255,255,255,.78)">請確認網路連線，或改用完整 ZIP 解壓縮後再開啟。</div><code id="bootErrorDetail"></code></div></div>
-<script>
-window.__emotionBootError=function(msg,detail){var e=document.getElementById('bootError');if(!e)return;e.classList.add('show');document.getElementById('bootErrorText').textContent=msg||'頁面初始化失敗';document.getElementById('bootErrorDetail').textContent=detail||'';};
-window.addEventListener('error',function(ev){var m=(ev&&ev.message)||'JavaScript 載入失敗';if(/favicon/i.test(m))return;setTimeout(function(){if(!window.__emotionBootOK)window.__emotionBootError('頁面初始化失敗，已捕捉到錯誤。',m);},50);});
-window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){if(!window.__emotionBootOK)window.__emotionBootError('頁面初始化失敗。',String(ev.reason||''));},50);});
-</script>
-<main class="wrap"><section class="head"><h1>快速填分</h1></section><section class="card"><div class="groups"><button data-group="1">第一組</button><button data-group="2">第二組</button><button data-group="3">第三組</button><button data-group="4">第四組</button><button data-group="5">第五組</button><button data-group="6">第六組</button><button data-group="7">第七組</button><button data-group="8">第八組</button></div></section><section class="card workspace" id="workspace"><div class="who"><div><h2 id="who">第一組</h2><span id="worldLevel">世界 Lv.0</span></div></div><div class="score" id="score">0</div><div class="label">目前分數</div><div class="manual"><input id="manual" type="number" min="0" step="50" placeholder="本次加分，例如 100"><button class="btn primary" id="setBtn">送出</button></div><div class="quick"><button class="btn" data-add-preset="50">+50</button><button class="btn" data-add-preset="100">+100</button><button class="btn" data-add-preset="200">+200</button><button class="btn" data-add-preset="500">+500</button></div><button class="btn primary" id="goWorld" style="width:100%;margin-top:10px">前往這一組的小世界 →</button></section></main><script>(function(){var room=(new URLSearchParams(location.search)).get('room');if(!room)return;document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"><\/script>');document.write('<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"><\/script>');})();</script><script>
-(function (global) {
-  'use strict';
-
-  const GROUP_COUNT = 8;
-  const MAX_SCORE = 1600;
-  const PERSON_STEP = 100;
-  const START_POINTS = 1000;   // 開場先給的可用點數；不計入分數，也不解鎖小精靈
-  const STORAGE_KEY_PREFIX = 'emotionIslandV24:';
-
-  const GROUPS = [
-    { id:'1', label:'第一組', theme:'星瀑島', color:0x73b7ff, accent:'#b8d7ff' },
-    { id:'2', label:'第二組', theme:'櫻光島', color:0xff9bc9, accent:'#ffd0e4' },
-    { id:'3', label:'第三組', theme:'森語島', color:0x78c98b, accent:'#c9f0c9' },
-    { id:'4', label:'第四組', theme:'晨曦島', color:0xf3bd68, accent:'#ffe3ac' },
-    { id:'5', label:'第五組', theme:'月汐島', color:0x8f83e8, accent:'#d5cffd' },
-    { id:'6', label:'第六組', theme:'花風島', color:0xf49b89, accent:'#ffd0c8' },
-    { id:'7', label:'第七組', theme:'晶語島', color:0x6fd7de, accent:'#c8f7f4' },
-    { id:'8', label:'第八組', theme:'希望島', color:0xc29bea, accent:'#ead7ff' }
-  ];
-
-  const SHOP = {
-    flowerPatch: { name:'花叢', cost:100, icon:'✿', category:'自然' },
-    shrub: { name:'森林灌木', cost:100, icon:'♧', category:'自然' },
-    mushroom: { name:'蘑菇叢', cost:100, icon:'♠', category:'自然' },
-    sakura: { name:'櫻花樹', cost:100, icon:'❀', category:'自然' },
-    pineTree: { name:'山林松樹', cost:100, icon:'♠', category:'自然' },
-    giantTree: { name:'願望樹', cost:100, icon:'♣', category:'自然' },
-    rockGarden: { name:'景觀岩石', cost:100, icon:'⬟', category:'自然' },
-    crystal: { name:'共感水晶', cost:100, icon:'◆', category:'自然' },
-
-    cottage: { name:'彩色小木屋', cost:100, icon:'⌂', category:'建築' },
-    gazebo: { name:'花園亭', cost:100, icon:'△', category:'建築' },
-    arch: { name:'光之拱門', cost:100, icon:'⌒', category:'建築' },
-    torii: { name:'森之鳥居', cost:100, icon:'Π', category:'建築' },
-    tent: { name:'星空帳篷', cost:100, icon:'▲', category:'建築' },
-    windmill: { name:'小風車', cost:100, icon:'✣', category:'建築' },
-
-    bench: { name:'休憩長椅', cost:100, icon:'▰', category:'休憩' },
-    picnic: { name:'野餐角落', cost:100, icon:'▦', category:'休憩' },
-    teaTable: { name:'茶會桌椅', cost:100, icon:'◫', category:'休憩' },
-    swing: { name:'森林鞦韆', cost:100, icon:'∩', category:'休憩' },
-    hammock: { name:'樹間吊床', cost:100, icon:'⌣', category:'休憩' },
-    signpost: { name:'小世界路牌', cost:100, icon:'➜', category:'休憩' },
-
-    lantern: { name:'星燈', cost:100, icon:'✦', category:'燈飾' },
-    starLamp: { name:'星星路燈', cost:100, icon:'★', category:'燈飾' },
-    moonLamp: { name:'月牙燈', cost:100, icon:'☾', category:'燈飾' },
-    fireflyLamp: { name:'螢光精靈燈', cost:100, icon:'✧', category:'燈飾' },
-
-    fountain: { name:'小噴泉', cost:100, icon:'◉', category:'水景' },
-    pond: { name:'山水小池', cost:100, icon:'◌', category:'水景' },
-    lotusPond: { name:'睡蓮池', cost:100, icon:'❁', category:'水景' },
-
-    telescope: { name:'觀星台', cost:100, icon:'✧', category:'活動' },
-    campfire: { name:'篝火晚會', cost:100, icon:'◈', category:'活動' },
-    musicStage: { name:'小小音樂台', cost:100, icon:'♫', category:'活動' },
-    easel: { name:'風景畫架', cost:100, icon:'▱', category:'活動' },
-
-    ferrisWheel: { name:'星願摩天輪', cost:100, icon:'◎', category:'遊樂' },
-    carousel: { name:'夢境旋轉木馬', cost:100, icon:'◌', category:'遊樂' },
-    teacups: { name:'月光咖啡杯', cost:100, icon:'◍', category:'遊樂' },
-    miniTrain: { name:'小世界觀光列車', cost:100, icon:'▣', category:'遊樂' },
-    skySwing: { name:'天空飛椅', cost:100, icon:'✺', category:'遊樂' },
-    slide: { name:'彩虹溜滑梯', cost:100, icon:'⌁', category:'遊樂' },
-    trampoline: { name:'雲朵彈跳床', cost:100, icon:'⊙', category:'遊樂' },
-    balloonDock: { name:'熱氣球驛站', cost:100, icon:'◒', category:'遊樂' },
-    photoBooth: { name:'星願拍照亭', cost:100, icon:'▤', category:'遊樂' },
-    cloudCoaster: { name:'雲端迷你軌道', cost:100, icon:'∞', category:'遊樂' }
-  };
-
-  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-  function rawRoomFromUrl() {
-    const v = new URLSearchParams(location.search).get('room') || '';
-    return /^[A-Za-z0-9_-]{1,80}$/.test(v) ? v : '';
-  }
-  function decodeRoomCode(v) {
-    // Six-digit group room convention: EEEE01..EEEE08.
-    // Example: 090501 => event room 0905, group 1.
-    const m = String(v || '').match(/^(\d{4})(0[1-8])$/);
-    return m ? { eventRoom:m[1], group:String(Number(m[2])), groupRoom:m[0] } : null;
-  }
-  const rawRoom = rawRoomFromUrl();
-  const decodedRoom = decodeRoomCode(rawRoom);
-  function roomFromUrl() { return decodedRoom ? decodedRoom.eventRoom : rawRoom; }
-  function groupFromUrl() {
-    const v = new URLSearchParams(location.search).get('group') || '';
-    if (/^[1-8]$/.test(v)) return v;
-    return decodedRoom ? decodedRoom.group : '';
-  }
-  function groupRoomCode(id) {
-    const n = String(Number(id)||0).padStart(2,'0');
-    const eventRoom = roomFromUrl();
-    return /^\d{4}$/.test(eventRoom) && /^[0][1-8]$/.test(n) ? eventRoom + n : '';
-  }
-  function now() { return Date.now(); }
-  function safeText(v, max=30) {
-    return String(v == null ? '' : v).replace(/[<>]/g,'').trim().slice(0,max);
-  }
-  function emptyGroup(id) {
-    const meta = GROUPS[Number(id)-1];
-    return {
-      id:String(id),
-      score:0,
-      progressScore:0,
-      spendablePoints:START_POINTS,
-      worldName:meta.theme,
-      maxMembers:10,
-      members:{},
-      inventory:{},
-      placements:{},
-      updatedAt:0
-    };
-  }
-  function normalizeGroup(raw, id) {
-    const base = emptyGroup(id);
-    const g = raw || {};
-    base.score = Math.max(0, Number(g.score) || 0);
-    base.progressScore = Math.max(base.score, Number(g.progressScore) || 0);
-    base.spendablePoints = (g.spendablePoints === undefined || g.spendablePoints === null)
-      ? base.spendablePoints
-      : Math.max(0, Number(g.spendablePoints) || 0);
-    base.worldName = safeText(g.worldName || base.worldName, 24) || base.worldName;
-    base.maxMembers = clamp(Math.floor(Number(g.maxMembers) || 10), 1, 30);
-    base.members = (g.members && typeof g.members === 'object') ? g.members : {};
-    base.inventory = (g.inventory && typeof g.inventory === 'object') ? g.inventory : {};
-    base.placements = (g.placements && typeof g.placements === 'object') ? g.placements : {};
-    base.updatedAt = Number(g.updatedAt) || 0;
-    return base;
-  }
-  function emptyAll() {
-    const out={}; for (let i=1;i<=GROUP_COUNT;i++) out[String(i)] = emptyGroup(String(i)); return out;
-  }
-  function normalizeAll(raw) {
-    const out={}; for (let i=1;i<=GROUP_COUNT;i++) out[String(i)] = normalizeGroup(raw && raw[String(i)], String(i)); return out;
-  }
-  function peopleUnlocked(group) {
-    return clamp(Math.floor((Number(group.progressScore)||0) / PERSON_STEP), 0, Number(group.maxMembers)||10);
-  }
-  function worldLevel(group) { return clamp(Math.floor((Number(group.progressScore)||0)/100),0,16); }
-  function ranking(groups) {
-    return Object.values(groups).map((g,i)=>({id:g.id, score:Number(g.score)||0, progress:Number(g.progressScore)||0, i}))
-      .sort((a,b)=>b.score-a.score || Number(a.id)-Number(b.id));
-  }
-
-  const room = roomFromUrl();
-  const localKey = STORAGE_KEY_PREFIX + (room || 'demo');
-  let firebaseReady = false;
-  let db = null;
-  let listeners=[];
-
-  function isFirebaseMode() { return Boolean(room && global.firebase); }
-  function ensureFirebase() {
-    if (!isFirebaseMode()) return false;
-    if (firebaseReady) return true;
-    const firebaseConfig = {
-      apiKey: 'AIzaSyD5ytWrUOI6UIUBIcKpF3fyODQR2pXFMmY',
-      authDomain: 'score-calculation-ef584.firebaseapp.com',
-      databaseURL: 'https://score-calculation-ef584-default-rtdb.firebaseio.com',
-      projectId: 'score-calculation-ef584',
-      storageBucket: 'score-calculation-ef584.firebasestorage.app',
-      messagingSenderId: '634074718336',
-      appId: '1:634074718336:web:38960860ad796197a50665',
-      measurementId: 'G-R6NT2QJQSC'
-    };
-    if (!global.firebase.apps.length) global.firebase.initializeApp(firebaseConfig);
-    db = global.firebase.database();
-    firebaseReady = true;
-    return true;
-  }
-  function basePath() { return `rooms/${room}/emotionV3/groups`; }
-
-
-  function showcaseAll() {
-    const all=emptyAll();
-    const demoNames=['小晴','阿澤','Mina','宇辰','安安','Leo','小葵','Yuki','承恩','Nina','哲宇','米米','Aaron','若晴','Kai','小星'];
-    const layouts={
-      '1':['telescope','crystal','starLamp','bench','pineTree','rockGarden','moonLamp','picnic','pond','teaTable','mushroom','giantTree','lantern','easel','signpost','campfire','ferrisWheel','miniTrain','photoBooth','skySwing'],
-      '2':['sakura','sakura','flowerPatch','bench','gazebo','mushroom','lantern','picnic','shrub','arch','lotusPond','teaTable','moonLamp','easel','signpost','fountain','carousel','teacups','photoBooth','slide'],
-      '3':['giantTree','cottage','bench','campfire','shrub','fireflyLamp','pineTree','hammock','rockGarden','gazebo','mushroom','pond','signpost','easel','teaTable','lantern','miniTrain','trampoline','slide','balloonDock'],
-      '4':['lantern','starLamp','gazebo','bench','torii','flowerPatch','fountain','teaTable','windmill','signpost','picnic','telescope','cottage','campfire','easel','pond','skySwing','ferrisWheel','photoBooth','miniTrain'],
-      '5':['telescope','crystal','moonLamp','pond','lantern','bench','gazebo','rockGarden','picnic','fireflyLamp','arch','hammock','lotusPond','starLamp','easel','teaTable','balloonDock','ferrisWheel','teacups','photoBooth'],
-      '6':['flowerPatch','mushroom','sakura','gazebo','picnic','bench','lotusPond','shrub','lantern','fountain','teaTable','arch','swing','hammock','easel','signpost','carousel','teacups','skySwing','trampoline'],
-      '7':['crystal','rockGarden','crystal','fountain','arch','starLamp','bench','pond','gazebo','telescope','crystal','lotusPond','fireflyLamp','moonLamp','easel','teaTable','cloudCoaster','ferrisWheel','trampoline','photoBooth'],
-      '8':['giantTree','starLamp','telescope','gazebo','bench','crystal','torii','campfire','flowerPatch','moonLamp','tent','musicStage','fountain','easel','signpost','teaTable','ferrisWheel','carousel','balloonDock','cloudCoaster']
-    };
-    const layoutSlots={
-      '1':[55,59,64,38,25,43,66,41,37,39,47,17,61,56,52,42,90,97,104,111],
-      '2':[24,10,52,41,19,55,50,44,56,17,39,40,66,47,59,42,91,98,105,112],
-      '3':[19,10,42,31,47,66,24,40,44,17,59,39,55,56,41,64,92,99,106,113],
-      '4':[52,66,10,38,24,59,34,39,42,56,44,50,18,41,47,37,93,100,107,114],
-      '5':[47,59,50,37,63,38,18,43,42,66,25,34,39,26,56,40,94,101,108,115],
-      '6':[50,55,10,17,43,38,40,56,63,44,41,19,39,42,47,59,95,102,109,116],
-      '7':[59,43,61,37,25,50,38,34,18,56,52,41,66,64,47,40,96,103,110,117],
-      '8':[24,61,47,18,38,59,10,41,64,66,39,34,37,56,50,40,90,99,108,116]
-    };
-    for(let i=1;i<=GROUP_COUNT;i++){
-      const id=String(i),g=all[id],slots=layoutSlots[id]||[];
-      g.score=1600;g.progressScore=1600;g.spendablePoints=3200;g.maxMembers=16;
-      for(let j=1;j<=16;j++)g.members[String(j)]={name:demoNames[(j-1+i*2)%demoNames.length],gender:j%3===0?'other':(j%2===0?'male':'female'),updatedAt:now()};
-      g.worldName=['星願花園','櫻霞庭院','森語秘境','晨曦山庭','月汐觀星灣','花風原野','晶湖聖域','希望極光庭'][i-1];
-      g.placements={};
-      (layouts[id]||[]).forEach((itemId,k)=>{const slot=slots[k];if(slot!=null)g.placements[String(slot)]={itemId,rot:(k%8)*.62,placedAt:now()}});
-    }
-    return all;
-  }
-
-  function readLocal() {
-    try {
-      const raw=localStorage.getItem(localKey);
-      if(!raw && !room){const seeded=showcaseAll();localStorage.setItem(localKey,JSON.stringify(seeded));return normalizeAll(seeded);}
-      return normalizeAll(JSON.parse(raw || '{}'));
-    }
-    catch (_) { return !room ? showcaseAll() : emptyAll(); }
-  }
-  function writeLocal(all) {
-    localStorage.setItem(localKey, JSON.stringify(all));
-    global.dispatchEvent(new CustomEvent('emotion-v3-local-change'));
-  }
-  function mutateLocalGroup(id, fn) {
-    const all=readLocal();
-    const g=normalizeGroup(all[id],id);
-    const result=fn(g);
-    if (result === false) return {ok:false, group:g};
-    g.updatedAt=now(); all[id]=g; writeLocal(all); return {ok:true, group:g};
-  }
-
-  function watchAll(cb) {
-    if (ensureFirebase()) {
-      const ref=db.ref(basePath());
-      const handler=snap=>cb(normalizeAll(snap.val()), {mode:'firebase', room});
-      ref.on('value',handler); listeners.push(()=>ref.off('value',handler));
-      return;
-    }
-    let last='';
-    const emit=()=>{ const all=readLocal(); const s=JSON.stringify(all); if(s!==last){last=s;cb(all,{mode:'local',room:''});} };
-    const ev=()=>emit(); global.addEventListener('storage',ev); global.addEventListener('emotion-v3-local-change',ev);
-    const timer=setInterval(emit,500); emit();
-    listeners.push(()=>{clearInterval(timer);global.removeEventListener('storage',ev);global.removeEventListener('emotion-v3-local-change',ev);});
-  }
-  function watchGroup(id, cb) {
-    if (ensureFirebase()) {
-      const ref=db.ref(`${basePath()}/${id}`);
-      const handler=snap=>cb(normalizeGroup(snap.val(),id),{mode:'firebase',room});
-      ref.on('value',handler); listeners.push(()=>ref.off('value',handler)); return;
-    }
-    let last=''; const emit=()=>{const g=readLocal()[id];const s=JSON.stringify(g);if(s!==last){last=s;cb(g,{mode:'local',room:''});}};
-    const ev=()=>emit(); global.addEventListener('storage',ev);global.addEventListener('emotion-v3-local-change',ev);const timer=setInterval(emit,500);emit();
-    listeners.push(()=>{clearInterval(timer);global.removeEventListener('storage',ev);global.removeEventListener('emotion-v3-local-change',ev);});
-  }
-
-  async function setScore(id, value) {
-    value=clamp(Math.round(Number(value)||0),0,999999);
-    if (ensureFirebase()) {
-      const ref=db.ref(`${basePath()}/${id}`); let reason='';
-      const r=await ref.transaction(raw=>{
-        const g=normalizeGroup(raw,id); if(value<g.score){reason='分數只能增加，不能扣分';return;}
-        const diff=value-g.score;g.score=value;g.progressScore=Math.max(g.progressScore,value);if(diff>0)g.spendablePoints+=diff;g.updatedAt=now();return g;
-      });
-      return r.committed?{ok:true}:{ok:false,error:reason||'送出失敗'};
-    }
-    const current=readLocal()[id]; if(value<current.score)return {ok:false,error:'分數只能增加，不能扣分'};
-    return mutateLocalGroup(id,g=>{const diff=value-g.score;g.score=value;g.progressScore=Math.max(g.progressScore,value);if(diff>0)g.spendablePoints+=diff;});
-  }
-  async function addScore(id, delta) {
-    delta=Math.round(Number(delta)||0);if(delta<=0)return {ok:false,error:'分數只能增加'};
-    if (ensureFirebase()) {
-      const ref=db.ref(`${basePath()}/${id}`);const r=await ref.transaction(raw=>{const g=normalizeGroup(raw,id);g.score+=delta;g.progressScore=Math.max(g.progressScore,g.score);g.spendablePoints+=delta;g.updatedAt=now();return g;});return r.committed?{ok:true}:{ok:false,error:'送出失敗'};
-    }
-    return mutateLocalGroup(id,g=>{g.score+=delta;g.progressScore=Math.max(g.progressScore,g.score);g.spendablePoints+=delta;});
-  }
-  async function setWorldName(id, name) {
-    name=safeText(name,24); if(!name) return {ok:false,error:'名稱不能是空白'};
-    if(ensureFirebase()){await db.ref(`${basePath()}/${id}/worldName`).set(name);await db.ref(`${basePath()}/${id}/updatedAt`).set(now());return {ok:true};}
-    return mutateLocalGroup(id,g=>{g.worldName=name;});
-  }
-  async function setMaxMembers(id, value) {
-    value=clamp(Math.floor(Number(value)||10),1,30);
-    if(ensureFirebase()){await db.ref(`${basePath()}/${id}/maxMembers`).set(value);return {ok:true};}
-    return mutateLocalGroup(id,g=>{g.maxMembers=value;});
-  }
-  async function saveMember(id, slot, payload) {
-    slot=String(Math.floor(Number(slot)||0));
-    const name=safeText(payload.name,18); const gender=['female','male','other'].includes(payload.gender)?payload.gender:'other';
-    if(!name) return {ok:false,error:'請輸入名稱'};
-    const apply=g=>{const unlocked=peopleUnlocked(g);if(Number(slot)<1||Number(slot)>unlocked)return false;g.members=g.members||{};g.members[slot]={name,gender,updatedAt:now()};};
-    if(ensureFirebase()){
-      const ref=db.ref(`${basePath()}/${id}`); let reason='尚未解鎖';
-      const r=await ref.transaction(raw=>{const g=normalizeGroup(raw,id);if(apply(g)===false)return;return g;});
-      return r.committed?{ok:true}:{ok:false,error:reason};
-    }
-    const r=mutateLocalGroup(id,apply); return r.ok?{ok:true}:{ok:false,error:'這個小精靈欄位尚未解鎖'};
-  }
-  async function buyItem(id, itemId) {
-    const item=SHOP[itemId]; if(!item) return {ok:false,error:'未知物品'};
-    const apply=g=>{if(g.spendablePoints<item.cost)return false;g.spendablePoints-=item.cost;g.inventory=g.inventory||{};g.inventory[itemId]=(Number(g.inventory[itemId])||0)+1;};
-    if(ensureFirebase()){
-      const ref=db.ref(`${basePath()}/${id}`); const r=await ref.transaction(raw=>{const g=normalizeGroup(raw,id);if(apply(g)===false)return;return g;});
-      return r.committed?{ok:true}:{ok:false,error:'可用分數不足'};
-    }
-    const r=mutateLocalGroup(id,apply);return r.ok?{ok:true}:{ok:false,error:'可用分數不足'};
-  }
-  async function placeItem(id, itemId, slot) {
-    slot=String(Math.floor(Number(slot)||0));
-    if(!SHOP[itemId] || Number(slot)<0 || Number(slot)>95) return {ok:false,error:'無效位置'};
-    const apply=g=>{g.inventory=g.inventory||{};g.placements=g.placements||{};if((Number(g.inventory[itemId])||0)<1)return false;if(g.placements[slot])return false;g.inventory[itemId]-=1;g.placements[slot]={itemId,rot:(Number(slot)%8)*0.55,placedAt:now()};};
-    if(ensureFirebase()){const ref=db.ref(`${basePath()}/${id}`);const r=await ref.transaction(raw=>{const g=normalizeGroup(raw,id);if(apply(g)===false)return;return g;});return r.committed?{ok:true}:{ok:false,error:'物品不足或位置已被使用'};}
-    const r=mutateLocalGroup(id,apply);return r.ok?{ok:true}:{ok:false,error:'物品不足或位置已被使用'};
-  }
-  async function removePlacement(id, slot) {
-    slot=String(Math.floor(Number(slot)||0));
-    const apply=g=>{g.placements=g.placements||{};const p=g.placements[slot];if(!p)return false;g.inventory=g.inventory||{};g.inventory[p.itemId]=(Number(g.inventory[p.itemId])||0)+1;delete g.placements[slot];};
-    if(ensureFirebase()){const ref=db.ref(`${basePath()}/${id}`);const r=await ref.transaction(raw=>{const g=normalizeGroup(raw,id);if(apply(g)===false)return;return g;});return r.committed?{ok:true}:{ok:false,error:'這個位置沒有物品'};}
-    const r=mutateLocalGroup(id,apply);return r.ok?{ok:true}:{ok:false,error:'這個位置沒有物品'};
-  }
-  function resetLocalDemo() { if(!room){localStorage.removeItem(localKey);global.dispatchEvent(new CustomEvent('emotion-v3-local-change'));} }
-  async function resetAllScores() {
-    const resetOne=(g,id)=>{g=normalizeGroup(g,id);g.score=0;g.progressScore=0;g.spendablePoints=START_POINTS;g.updatedAt=now();return g;};
-    if (ensureFirebase()) {
-      const ref=db.ref(basePath());
-      const r=await ref.transaction(raw=>{const out=(raw&&typeof raw==='object')?Object.assign({},raw):{};for(let i=1;i<=GROUP_COUNT;i++){const id=String(i);out[id]=resetOne(raw&&raw[id],id);}return out;});
-      return {ok:!!r.committed};
-    }
-    const all=readLocal();for(let i=1;i<=GROUP_COUNT;i++){const id=String(i);all[id]=resetOne(all[id],id);}writeLocal(all);return {ok:true};
-  }
-  async function resetAllWorlds() {
-    const fresh=emptyAll();
-    if(ensureFirebase()){
-      const ref=db.ref(basePath());
-      await ref.set(fresh); return {ok:true};
-    }
-    writeLocal(fresh); return {ok:true};
-  }
-    function disconnectAll(){listeners.forEach(fn=>{try{fn();}catch(_){}});listeners=[];}
-
-  global.EmotionData={GROUP_COUNT,MAX_SCORE,PERSON_STEP,GROUPS,SHOP,room,rawRoom,decodedRoom,groupFromUrl,groupRoomCode,clamp,normalizeGroup,normalizeAll,peopleUnlocked,worldLevel,ranking,watchAll,watchGroup,setScore,addScore,setWorldName,setMaxMembers,saveMember,buyItem,placeItem,removePlacement,resetLocalDemo,resetAllScores,resetAllWorlds,isFirebaseMode,disconnectAll};
-})(window);
-</script><script>
-(()=>{const D=window.EmotionData;let gid='',group=null;const buttons=[...document.querySelectorAll('[data-group]')];function select(id){gid=id;buttons.forEach(b=>b.classList.toggle('active',b.dataset.group===id));D.disconnectAll();D.watchGroup(id,g=>{group=g;document.getElementById('workspace').classList.add('show');const m=D.GROUPS[Number(id)-1];document.getElementById('who').textContent=m.label+' · '+g.worldName;document.getElementById('score').textContent=g.score;document.getElementById('worldLevel').textContent='世界 Lv.'+D.worldLevel(g)+' · '+D.peopleUnlocked(g)+' 小精靈已解鎖'})}buttons.forEach(b=>b.onclick=()=>select(b.dataset.group));const submit=async()=>{if(!gid||!group)return;const input=document.getElementById('manual'),delta=Math.round(Number(input.value)||0);if(delta<=0){alert('請輸入這次要增加的分數');input.focus();return}const btn=document.getElementById('setBtn');btn.disabled=true;btn.textContent='送出中…';try{const r=await D.addScore(gid,delta);if(!r.ok)alert(r.error||'送出失敗');else input.value=''}finally{btn.disabled=false;btn.textContent='送出'}};document.getElementById('setBtn').onclick=submit;document.getElementById('manual').addEventListener('keydown',e=>{if(e.key==='Enter')submit()});document.querySelectorAll('[data-add-preset]').forEach(b=>b.onclick=()=>{const input=document.getElementById('manual');input.value=b.dataset.addPreset;input.focus()});document.getElementById('goWorld').onclick=()=>{if(!gid)return;const p=new URLSearchParams(),rc=D.groupRoomCode(gid);if(rc)p.set('room',rc);else{if(D.room)p.set('room',D.room);p.set('group',gid)}location.href='emotion_my_world.html?'+p.toString()};const forced=D.groupFromUrl();if(forced){select(forced);buttons.forEach(b=>{if(b.dataset.group!==forced)b.style.display='none'})}})();
-</script><script>setTimeout(function(){if(window.EmotionData)window.__emotionBootOK=true;else window.__emotionBootError('核心資料模組沒有載入。','EmotionData missing');},800);</script>
-<script src="assets/netguard.js" defer></script>
-</body></html>
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src https://score-calculation-ef584-default-rtdb.firebaseio.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#24736b">
+  <meta name="description" content="情緒不孤島 佈置自己的小世界，看精靈與居民一起生活。">
+  <title>森語島 — 情緒不孤島・小島生活</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game" aria-label="森語島互動世界">
+    <div id="scene"></div>
+    <div class="scene-vignette" aria-hidden="true"></div>
+    <div id="labels" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="island-brand"><div class="brand-mark" data-icon="leaf"></div><div><p class="eyebrow">情緒不孤島 <span class="preview-tag">本機預覽 · 2027</span></p><button id="island-name" class="title-button" aria-label="修改小島名稱">森語島</button><span id="group-label">第三組的小世界</span></div></div>
+      <button id="time-button" class="weather-chip" aria-label="切換日夜"><span data-icon="sun"></span><span><b id="time-label">晴日</b><small id="location-label">溪光小徑</small></span><span class="weather-dot"></span></button>
+      <div class="top-actions"><button id="wallet-button" class="wallet" aria-label="查看點數與成長"><span class="coin-mark" data-icon="spark"></span><b id="wallet-count">1,000</b><small>點</small></button><button id="save-button" class="save-button" aria-label="儲存佈置" disabled><span data-icon="check"></span><span>已儲存</span></button><button id="photo-button" class="round-button" data-icon="camera" aria-label="拍攝小島照片" title="拍攝小島照片"></button></div>
+    </header>
+    <aside class="day-card collapsed" id="day-card"><button id="day-toggle" class="day-toggle" aria-expanded="false" aria-controls="day-card-details"><span data-icon="sprout"></span><b>島上日常</b><span id="day-count" class="day-count"></span><span data-icon="plus"></span></button><div id="day-card-details" hidden><div id="quest-peek"></div><button id="journal-mini" class="journal-link">打開生活手帳 <span data-icon="arrow"></span></button></div></aside>
+    <button id="ambient-greeting" class="ambient-greeting" hidden></button><div class="world-hint" id="world-hint"><span class="hint-dot"></span><span>點一下地面散步，點島民聊聊天</span></div>
+    <div class="camera-tools"><button id="zoom-in" data-icon="plus" aria-label="拉近鏡頭"></button><button id="zoom-out" data-icon="minus" aria-label="拉遠鏡頭"></button><span></span><button id="rotate-view" data-icon="rotate" aria-label="旋轉觀看角度"></button><button id="home-view" data-icon="focus" aria-label="回到最佳視角"></button></div>
+    <button id="avatar-button" class="avatar-chip"><img id="avatar-thumb" alt="團隊小精靈"><span><small>小島，因你們而熱鬧</small><b id="avatar-name">團隊夥伴</b></span><span data-icon="edit"></span></button>
+    <nav class="bottom-dock" aria-label="小島活動"><button data-mode="walk" class="dock-button active"><span data-icon="focus"></span><b>觀察</b></button><button data-mode="decorate" class="dock-button"><span data-icon="chair"></span><b>佈置</b></button><i></i><button id="residents-button" class="dock-button"><span data-icon="people"></span><b>島民</b></button><button id="journal-button" class="dock-button"><span data-icon="book"></span><b>手帳</b><em id="journal-dot"></em></button><button id="map-button" class="dock-button"><span data-icon="map"></span><b>地圖</b></button></nav>
+    <button id="mini-map-button" class="mini-map" aria-label="拜訪其他小島：唯讀切換"><canvas id="mini-map-canvas" width="320" height="240"></canvas><span>拜訪其他小島 <span data-icon="arrow"></span></span></button><nav id="gallery-switcher" class="gallery-switcher" aria-label="唯讀島嶼切換" hidden><a id="previous-island" aria-label="參觀上一座島">‹</a><button id="choose-island"></button><a id="next-island" aria-label="參觀下一座島">›</a></nav>
+    <button id="sound-button" class="sound-button" aria-label="開啟島嶼音樂" data-icon="sound-off"></button>
+    <section id="decor-tray" class="decor-tray" aria-label="家具收納" hidden><header class="tray-header"><div><span class="eyebrow">MAKE ROOM FOR YOU</span><h2>把喜歡的，放進生活裡。</h2></div><div class="tray-actions"><button id="undo-button" data-icon="undo" aria-label="復原佈置" disabled></button><button id="redo-button" data-icon="redo" aria-label="重做佈置" disabled></button><button id="close-tray" data-icon="close" aria-label="收起家具收納"></button></div></header><div class="tray-nav"><div class="collection-tabs" role="tablist" aria-label="物品來源"><button role="tab" aria-selected="true" data-collection="inventory">我的收納 <span id="inventory-count">4</span></button><button role="tab" aria-selected="false" data-collection="shop">島嶼商店</button><button role="tab" aria-selected="false" data-collection="placed">已佈置</button></div><div id="categories" class="categories" aria-label="家具分類"></div></div><div id="item-list" class="item-list"></div><p id="tray-help" class="tray-help">選一件家具，替小島添一點你的樣子。</p></section>
+    <section id="placement-toolbar" class="placement-toolbar" aria-label="放置家具" hidden><img id="placing-thumb" alt=""><div class="placing-status"><b id="placing-name"></b><small id="placing-status">點地面選位置</small></div><button id="snap-button" aria-pressed="true" title="切換格線吸附"><span data-icon="grid"></span><span>吸附</span></button><button id="rotate-item" title="旋轉 45°（R）"><span data-icon="rotate"></span><span>旋轉</span></button><button id="cancel-item" data-icon="close" aria-label="取消這次拿取"></button><button id="confirm-item" class="primary-button" disabled><span data-icon="check"></span>放在這裡</button></section>
+    <div id="dialogue" class="dialogue" hidden><img id="dialogue-portrait" alt=""><div class="dialogue-body"><div class="dialogue-name"><b id="npc-name"></b><span id="npc-role"></span></div><p id="npc-words"></p><div id="dialogue-actions"></div></div><button id="close-dialogue" class="dialog-close" data-icon="close" aria-label="結束對話"></button></div>
+    <dialog id="panel-dialog" class="panel-dialog"><header><div><p class="eyebrow" id="panel-kicker"></p><h2 id="panel-title"></h2></div><button id="close-panel" class="round-button" data-icon="close" aria-label="關閉視窗"></button></header><div id="panel-body"></div></dialog>
+    <div id="toast-region" role="status" aria-live="polite"></div>
+    <div id="loading" class="loading-screen"><div class="loading-leaf" data-icon="leaf"></div><h1>沿著風，回到小島。</h1><p>正在整理花園與今天的陽光</p><div class="loading-track"><i></i></div></div>
+    <section id="boot-error" class="boot-error" hidden><h1>小島暫時無法開啟</h1><p id="boot-error-message"></p><a href="">重新開啟本頁</a></section>
+  </main>
+  <script src="src/boot.js"></script>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

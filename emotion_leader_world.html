@@ -1,274 +1,41 @@
 <!doctype html>
 <html lang="zh-Hant-TW">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>主領班｜星願神境</title>
-<style>
-:root{
-  --ink:#fffdf8;--muted:rgba(238,247,255,.75);--line:rgba(255,255,255,.14);
-  --glass:rgba(5,14,35,.58);--cyan:#9eeeff;--gold:#ffd88c;--pink:#ffb5d0
-}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07152d;color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
-#stage{position:fixed;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}
-.hud{position:fixed;inset:0;pointer-events:none;z-index:8}
-.title-card{position:absolute;left:22px;top:20px;max-width:min(470px,calc(100vw - 44px));padding:15px 18px 16px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(5,14,42,.70),rgba(57,43,91,.28));backdrop-filter:blur(18px) saturate(1.22);box-shadow:0 22px 70px rgba(0,0,0,.28);pointer-events:auto;transition:.2s ease}
-.title-card.collapsed{width:auto;min-width:0;padding:10px 13px}.title-card.collapsed .detail,.title-card.collapsed .badge,.title-card.collapsed .eyebrow{display:none}.title-card.collapsed h1{font-size:18px;margin:0 34px 0 0}.collapse-btn{position:absolute;right:9px;top:9px;width:34px;height:34px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(4,12,34,.48);color:#fff;font:inherit;font-weight:1000;cursor:pointer}
-.eyebrow{font-size:9px;font-weight:1000;letter-spacing:.21em;color:#bfeeff}.title-card h1{margin:6px 42px 3px 0;font-size:clamp(28px,3.2vw,44px);letter-spacing:.04em}.detail{margin:0;color:var(--muted);font-size:10px;line-height:1.7}.badge{display:inline-flex;margin-top:9px;padding:6px 9px;border:1px solid rgba(255,216,140,.22);border-radius:999px;background:linear-gradient(90deg,rgba(255,213,132,.12),rgba(116,222,255,.10));font-size:9px;font-weight:1000;color:#fff0c7}
-.actions{position:absolute;right:18px;top:18px;display:flex;gap:7px;pointer-events:auto}.btn{border:1px solid var(--line);border-radius:15px;padding:10px 13px;background:rgba(5,14,39,.62);backdrop-filter:blur(14px);color:#fff;font:inherit;font-size:10px;font-weight:1000;cursor:pointer;box-shadow:0 12px 34px rgba(0,0,0,.17);transition:.17s ease}.btn:hover{transform:translateY(-2px);background:rgba(26,44,76,.82)}.btn.primary{color:#13223b;background:linear-gradient(90deg,#aeeeff,#ffe1a5);border-color:rgba(255,255,255,.42)}
-.hint{position:absolute;left:50%;top:21px;transform:translateX(-50%);padding:7px 12px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(4,12,33,.28);backdrop-filter:blur(10px);font-size:9px;color:rgba(255,255,255,.60)}
-.story{position:absolute;left:22px;bottom:20px;max-width:min(650px,72vw);padding:9px 12px;border:1px solid rgba(255,255,255,.11);border-radius:15px;background:rgba(5,14,36,.44);backdrop-filter:blur(12px);font-size:9px;line-height:1.55;color:rgba(245,251,255,.72)}.story b{color:#fff}.stamp{position:absolute;right:18px;bottom:20px;padding:8px 11px;border:1px solid rgba(255,216,140,.16);border-radius:13px;background:rgba(5,14,36,.42);backdrop-filter:blur(11px);font-size:8px;color:rgba(255,238,199,.74)}
-.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 55%,rgba(2,7,22,.09) 76%,rgba(2,5,18,.34) 100%);mix-blend-mode:multiply}.grain{position:absolute;inset:0;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
-#bootError{position:fixed;inset:0;z-index:99;display:none;place-items:center;padding:24px;background:linear-gradient(145deg,#0c1734,#4c2d72)}#bootError.show{display:grid}#bootError .box{max-width:640px;padding:22px;border:1px solid rgba(255,255,255,.16);border-radius:22px;background:rgba(12,18,46,.92)}#bootError code{display:block;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.07);white-space:pre-wrap;word-break:break-word;color:#c8efff}
-@media(max-width:860px){.title-card{left:10px;top:10px;max-width:58vw;padding:11px 13px}.title-card .detail,.title-card .badge,.title-card .eyebrow,.hint{display:none}.title-card h1{font-size:20px;margin-right:34px}.actions{right:9px;top:9px;gap:4px;max-width:62vw;justify-content:flex-end;flex-wrap:wrap}.btn{padding:8px 9px;font-size:9px}.story{left:10px;bottom:9px;max-width:calc(100vw - 120px);font-size:8px}.stamp{right:9px;bottom:9px}}
-</style>
-<script src="assets/bgm.js"></script></head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src https://score-calculation-ef584-default-rtdb.firebaseio.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#24736b">
+  <meta name="description" content="情緒不孤島 佈置自己的小世界，看精靈與居民一起生活。">
+  <title>森語島 — 情緒不孤島・小島生活</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-<div id="stage"></div>
-<div class="hud">
-  <div class="title-card collapsed" id="titleCard">
-    <button class="collapse-btn" id="collapseTitle" aria-label="展開">›</button>
-    <h1>主領班 · 星願神境</h1>
-  </div>
-  <div class="actions">
-    <button class="btn primary" id="bestView">◎ 最佳視角</button>
-    <button class="btn" id="tourBtn">◌ 電影巡航</button>
-    <button class="btn" id="fxBtn">✨ 電影光影</button>
-    <button class="btn" id="backBtn">↩ 返回大世界</button>
-  </div>
-  <div class="vignette"></div><div class="grain"></div>
-</div>
-<div id="bootError"><div class="box"><b>示範世界載入失敗</b><code id="bootErrorText"></code></div></div>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/Pass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-<script>
-(()=>{try{
-if(!window.THREE)throw new Error('Three.js 尚未載入');
-const stage=document.getElementById('stage');
-const scene=new THREE.Scene();
-scene.fog=new THREE.Fog(0x162d55,48,125);
-const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,240);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;
-if(THREE.ACESFilmicToneMapping){renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.82}
-stage.appendChild(renderer.domElement);
-const world=new THREE.Group();scene.add(world);
-const animations=[],fireflies=[],spirits=[],swayers=[],waterfalls=[];let waterMat=null,composer=null,bloomPass=null,fxEnabled=true,autoTour=false,tourTime=0;
-const C={grass:0x2e9a63,grass2:0x65c87d,grassDark:0x185b45,rock:0x2b3b58,rock2:0x41506e,rockDeep:0x101a30,path:0xd9aa58,wood:0x83543f,woodDark:0x4a3340,pink:0xee7daa,pink2:0xffbfd4,cyan:0x42c9ca,cyan2:0x9cece5,gold:0xf2bd58,lav:0x8d7fe0,blue:0x4d9fd9,water:0x176d85};
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function toon(c,opt={}){return new THREE.MeshStandardMaterial({color:c,roughness:opt.roughness??.72,metalness:opt.metalness??.02,flatShading:opt.flatShading??true,transparent:!!opt.transparent,opacity:opt.opacity??1,emissive:opt.emissive??0x000000,emissiveIntensity:opt.emissiveIntensity??0,side:opt.side??THREE.FrontSide,depthWrite:opt.depthWrite??true})}
-function basic(c,op=1){return new THREE.MeshBasicMaterial({color:c,transparent:op<1,opacity:op,depthWrite:false,toneMapped:false})}
-function mesh(parent,g,m,x=0,y=0,z=0){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
-function cyl(parent,r1,r2,h,c,x,y,z,seg=12,opt={}){return mesh(parent,new THREE.CylinderGeometry(r1,r2,h,seg),toon(c,opt),x,y,z)}
-function box(parent,w,h,d,c,x,y,z,opt={}){return mesh(parent,new THREE.BoxGeometry(w,h,d),toon(c,opt),x,y,z)}
-function ico(parent,r,c,x,y,z,detail=1,opt={}){return mesh(parent,new THREE.IcosahedronGeometry(r,detail),toon(c,opt),x,y,z)}
-function glow(parent,r,c,x,y,z,op=.8){const o=mesh(parent,new THREE.IcosahedronGeometry(r,2),basic(c,op),x,y,z);o.castShadow=false;o.receiveShadow=false;return o}
-function ribbonMaterial(c,op=.42){return new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:op,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false})}
-function softTexture(inner,outer){const cv=document.createElement('canvas');cv.width=cv.height=128;const x=cv.getContext('2d'),g=x.createRadialGradient(64,64,2,64,64,62);g.addColorStop(0,inner);g.addColorStop(.25,inner);g.addColorStop(1,outer||'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,128,128);const t=new THREE.CanvasTexture(cv);t.minFilter=THREE.LinearFilter;return t}
-// Rich sky dome: deep blue, violet and warm horizon.
-const sky=new THREE.Mesh(new THREE.SphereGeometry(145,48,32),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,fog:false,vertexShader:'varying vec3 v;void main(){v=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec3 v;void main(){float y=v.y*.5+.5;vec3 n=vec3(.018,.055,.15);vec3 b=vec3(.055,.18,.38);vec3 p=vec3(.32,.24,.52);vec3 h=vec3(.92,.42,.42);vec3 c=mix(h,p,smoothstep(.06,.24,y));c=mix(c,b,smoothstep(.28,.57,y));c=mix(c,n,smoothstep(.65,.98,y));float glow=exp(-pow((y-.19)*8.0,2.0));c+=vec3(.20,.08,.06)*glow;gl_FragColor=vec4(c,1.0);}'}));scene.add(sky);
-// Stars and crescent moon.
-const starGeo=new THREE.BufferGeometry(),N=460,sp=new Float32Array(N*3);for(let i=0;i<N;i++){const a=Math.random()*Math.PI*2,r=68+Math.random()*52,y=9+Math.random()*48;sp[i*3]=Math.cos(a)*r;sp[i*3+1]=y;sp[i*3+2]=Math.sin(a)*r-25}starGeo.setAttribute('position',new THREE.BufferAttribute(sp,3));scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xd8f5ff,size:.13,transparent:true,opacity:.62,sizeAttenuation:true})));
-const moonG=new THREE.Group();const moon=glow(moonG,2.55,0xffdfb1,0,0,0,.98);const cut=mesh(moonG,new THREE.SphereGeometry(2.3,28,18),toon(0x172f5c,{roughness:1}),1.22,.2,.35);cut.castShadow=false;moonG.position.set(-30,24,-58);scene.add(moonG);const moonHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:softTexture('rgba(255,218,165,.55)','rgba(255,255,255,0)'),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));moonHalo.position.set(-30,24,-59);moonHalo.scale.set(11,11,1);scene.add(moonHalo);
-function cloud(x,y,z,s=1,col=0xe6d9ec){const g=new THREE.Group();for(let i=0;i<8;i++){const q=ico(g,1.0+(i%3)*.24,i%2?col:0xd7e6ed,(i-3.5)*.62+Math.sin(i)*.18,(i%3)*.19,Math.sin(i*1.7)*.42,1,{roughness:1});q.scale.set(1.28,.72,1)}g.position.set(x,y,z);g.scale.setScalar(s);scene.add(g);return g}
-cloud(-31,18,-35,2.0,0xe8cfe3);cloud(28,16,-45,1.75,0xcbd8e8);cloud(7,24,-60,1.55,0xd7d7ef);cloud(-10,12,-70,1.25,0xd3e8ee);cloud(40,25,-75,1.3,0xe8d6e6);
-// Stylized ocean with continuous wave bands; no white glint dots.
-const waterGeo=new THREE.PlaneGeometry(150,150,120,120);waterMat=new THREE.ShaderMaterial({transparent:false,side:THREE.DoubleSide,uniforms:{uTime:{value:0}},vertexShader:'uniform float uTime;varying vec3 wp;varying float w;void main(){vec3 p=position;float a=sin(p.x*.21+uTime*.80)*.16;float b=sin(p.y*.17-uTime*.55+p.x*.045)*.11;float c=sin((p.x+p.y)*.09+uTime*.38)*.07;p.z=a+b+c;w=a+b+c;vec4 q=modelMatrix*vec4(p,1.0);wp=q.xyz;gl_Position=projectionMatrix*viewMatrix*q;}',fragmentShader:'uniform float uTime;varying vec3 wp;varying float w;float band(float v,float wid){return 1.0-smoothstep(0.0,wid,abs(v));}void main(){vec3 deep=vec3(.035,.20,.32);vec3 mid=vec3(.04,.34,.46);vec3 c=mix(deep,mid,clamp(w*.7+.34,0.0,1.0));float l1=band(sin(wp.x*.16+wp.z*.055+uTime*.72)-.86,.055);float l2=band(sin(wp.z*.145-wp.x*.045-uTime*.51)-.90,.038);float l3=band(sin((wp.x+wp.z)*.085+uTime*.34)-.94,.030);c+=vec3(.02,.28,.36)*(l1*.38+l2*.18+l3*.10);float warm=exp(-pow((wp.x+11.0)*.045,2.0))*exp(-pow((wp.z+30.0)*.022,2.0));c+=vec3(.18,.055,.025)*warm*.10;gl_FragColor=vec4(c,1.0);}'});const ocean=new THREE.Mesh(waterGeo,waterMat);ocean.rotation.x=-Math.PI/2;ocean.position.y=-1.7;scene.add(ocean);
-// Irregular extruded island helper: silhouette is intentionally asymmetric.
-function islandLayer(points,y,depth,topCol,sideCol,scale=1){const sh=new THREE.Shape();points.forEach((p,i)=>{const x=p[0]*scale,z=p[1]*scale;if(i===0)sh.moveTo(x,z);else sh.lineTo(x,z)});sh.closePath();const geo=new THREE.ExtrudeGeometry(sh,{depth,bevelEnabled:true,bevelSegments:1,bevelSize:.18,bevelThickness:.16,steps:1});geo.rotateX(Math.PI/2);const o=new THREE.Mesh(geo,[toon(topCol,{roughness:.88}),toon(sideCol,{roughness:.96})]);o.position.y=y;o.castShadow=true;o.receiveShadow=true;world.add(o);return o}
-const mainPts=[[-14.2,-7.2],[-12.3,-10.6],[-8.1,-12.4],[-3.2,-13.1],[2.1,-12.8],[7.4,-11.7],[11.8,-8.9],[14.2,-4.7],[14.6,.8],[13.5,5.8],[10.4,9.8],[6.2,12.0],[1.1,12.8],[-4.2,12.2],[-8.7,10.6],[-12.0,7.5],[-14.4,3.1],[-15.0,-2.1]];
-// Deep floating base + sculpted terraces: the showcase is no longer a flat furniture plate.
-islandLayer(mainPts,-.45,4.0,C.rockDeep,0x091325,1.00);islandLayer(mainPts,.18,.74,0x223c4b,0x182a43,1.015);islandLayer(mainPts,.70,.42,C.grassDark,C.rock,.985);islandLayer(mainPts,1.03,.26,C.grass,C.rock2,.955);
-for(let i=0;i<26;i++){const a=i/26*Math.PI*2,r=9.6+(i%6)*.75;const shard=new THREE.Mesh(new THREE.ConeGeometry(.38+(i%4)*.12,2.0+(i%5)*.48,5),toon(i%3===0?0x1d2a45:0x263653,{roughness:1}));shard.position.set(Math.cos(a)*r,-2.6-(i%4)*.22,Math.sin(a)*r);shard.rotation.z=(Math.random()-.5)*.24;world.add(shard)}
-// Path network: warm stone ribbons connecting complete themed districts.
-function pathLine(points,width=.72,col=C.path,y=1.39){for(let i=0;i<points.length-1;i++){const a=new THREE.Vector3(points[i][0],y,points[i][1]),b=new THREE.Vector3(points[i+1][0],y,points[i+1][1]),mid=a.clone().add(b).multiplyScalar(.5),len=a.distanceTo(b),seg=box(world,width,.08,len,col,mid.x,mid.y,mid.z);seg.rotation.y=Math.atan2(b.x-a.x,b.z-a.z)}}
-pathLine([[0,-12],[0,-9.6],[-1.0,-7.7],[-.3,-5.3],[0,-3.0],[0,0],[0,3.1]],1.15,0xd7a957,1.40);pathLine([[0,-4.8],[-3.2,-4.5],[-6.2,-3.0],[-9.8,-1.2]],.76,0xc99854,1.40);pathLine([[0,-4.8],[3.0,-4.3],[5.5,-2.9],[8.5,-1.4]],.76,0xc99854,1.40);pathLine([[0,1.2],[-3.4,2.5],[-6.8,4.3]],.68,0xc99854,1.40);pathLine([[0,1.2],[3.1,2.6],[6.9,4.7]],.68,0xc99854,1.40);
-// Vegetation helpers.
-function tree(x,y,z,s=1,kind='green'){const g=new THREE.Group();const trunkCol=kind==='cherry'?0x8e5662:0x6e493b;cyl(g,.20*s,.31*s,2.28*s,trunkCol,0,1.13*s,0,9);const palette=kind==='cherry'?[0xe97da6,0xf6a0bd,0xffc6d7]:kind==='gold'?[0x73a85b,0xa5c66a,0xe4c96c]:[0x218255,0x36a96a,0x61c57c];for(let i=0;i<9;i++){const a=i*1.62,r=.58*s+(i%3)*.12*s,q=ico(g,.63*s,palette[i%palette.length],Math.cos(a)*r,2.15*s+(i%3)*.22*s,Math.sin(a)*r,1,{roughness:.92});q.scale.set(1.12,.78,1)}g.position.set(x,y,z);world.add(g);swayers.push({g,phase:Math.random()*6,amp:.007+Math.random()*.007});return g}
-function lantern(x,z,col=C.gold,y=1.26){const g=new THREE.Group();cyl(g,.045,.06,.95,0x51415a,0,.47,0,6);glow(g,.15,col,0,1.04,0,.83);g.position.set(x,y,z);world.add(g);return g}
-// === EXCLUSIVE LANDMARK 1: 共感星宮 + 星環神木 ===
-const crownPts=[[-5.0,-.6],[-4.2,-4.0],[-1.8,-5.6],[1.5,-5.6],[4.5,-3.8],[5.1,-.6],[4.5,3.3],[2.1,5.0],[-1.6,5.1],[-4.2,3.1]];islandLayer(crownPts,1.25,1.18,0x328f62,0x263a56,.95);islandLayer(crownPts,2.18,.28,0x58b878,0x354b65,.84);
-const palace=new THREE.Group();cyl(palace,2.35,2.55,.28,0x243a59,0,.14,0,28);cyl(palace,2.10,2.18,.18,0xdab25d,0,.35,0,28);for(let i=0;i<8;i++){const a=i/8*Math.PI*2;const tower=new THREE.Group();cyl(tower,.26,.34,2.15,0x3e5874,0,1.08,0,8);const roof=new THREE.Mesh(new THREE.ConeGeometry(.48,1.0,6),toon(i%2?0x6ed0ca:0xe8a86b,{roughness:.48,metalness:.06}));roof.position.y=2.52;tower.add(roof);glow(tower,.10,i%2?0x7de7e0:0xffca68,0,1.32,.29,.88);tower.position.set(Math.cos(a)*1.75,.30,Math.sin(a)*1.75);palace.add(tower)}const dome=new THREE.Mesh(new THREE.SphereGeometry(1.20,18,12,0,Math.PI*2,0,Math.PI/2),toon(0x375b7c,{metalness:.08,roughness:.34,emissive:0x0f3550,emissiveIntensity:.18}));dome.position.y=1.05;palace.add(dome);const palaceCore=glow(palace,.44,0xffcf67,0,1.25,0,.95);palace.position.set(0,2.48,1.8);world.add(palace);
-const wish=new THREE.Group();cyl(wish,.62,.92,5.7,0x694a51,0,2.85,0,10);for(let i=0;i<8;i++){const a=i/8*Math.PI*2,branch=cyl(wish,.13,.21,2.8,0x684851,Math.cos(a)*.32,4.55,Math.sin(a)*.32,8);branch.rotation.z=.72;branch.rotation.y=-a+Math.PI/2}const wcols=[0x2f9d63,0x59bc78,0xe777a3,0xf6a4bf,0x8f82df,0xe7bc58,0x43c7c2];for(let i=0;i<30;i++){const a=i/30*Math.PI*2,r=1.45+(i%6)*.35,y=4.75+(i%5)*.38;const q=ico(wish,.72+(i%3)*.13,wcols[i%wcols.length],Math.cos(a)*r,y,Math.sin(a)*r,1,{roughness:.82});q.scale.set(1.26,.75,1)}wish.position.set(0,3.0,1.8);world.add(wish);
-const treeHalo=new THREE.Sprite(new THREE.SpriteMaterial({map:softTexture('rgba(255,195,82,.34)','rgba(255,255,255,0)'),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));treeHalo.position.set(0,9.0,1.8);treeHalo.scale.set(8,8,1);scene.add(treeHalo);
-const crownRings=[];for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(3.4+i*.56,.035+i*.006,6,96),ribbonMaterial(i===1?0xffc35f:0x67e2dc,.38));ring.position.set(0,8.0+i*.48,1.8);ring.rotation.x=Math.PI/2.35+i*.18;ring.rotation.z=i*.62;world.add(ring);crownRings.push(ring)}animations.push(t=>{crownRings.forEach((r,i)=>{r.rotation.z+=(i%2?-.00035:.00028);r.rotation.y=Math.sin(t*.00018+i)*.16})});
-for(let i=0;i<24;i++){const a=i/24*Math.PI*2,r=2.25+(i%4)*.45;const orb=glow(world,.065,i%3===0?0xffc65f:(i%3===1?0x71e6df:0xf08bb0),Math.cos(a)*r,8.2+(i%4)*.22,1.8+Math.sin(a)*r,.88);fireflies.push({p:orb,phase:i*.55,speed:.7,baseY:orb.position.y,baseX:orb.position.x,baseZ:orb.position.z})}
-// === EXCLUSIVE LANDMARK 2: 星河瀑布 + 月鏡湖 ===
-const lakePts=[[-2.7,-1.0],[-1.7,-2.5],[.2,-3.0],[2.2,-2.4],[3.2,-.8],[2.8,1.0],[1.0,2.0],[-1.4,1.8]];islandLayer(lakePts,1.18,.38,0x2c5260,0x233b50,.92);const moonLake=new THREE.Group();cyl(moonLake,2.55,2.75,.25,0x284158,0,.12,0,32);cyl(moonLake,2.42,2.42,.07,0x2398ae,0,.29,0,40,{roughness:.18,metalness:.04,emissive:0x0c4b5c,emissiveIntensity:.11});for(let i=0;i<10;i++){const a=i/10*Math.PI*2;cyl(moonLake,.18,.23,.04,i%2?0x58af6e:0x8dd28a,Math.cos(a)*1.56,.36,Math.sin(a)*1.56,10)}moonLake.position.set(0,1.32,-5.2);world.add(moonLake);
-function waterfall(x,z,w=1.1,h=3.8,y=3.4){const mat=new THREE.MeshBasicMaterial({color:0x7bdbea,transparent:true,opacity:.50,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false});const p=new THREE.Mesh(new THREE.PlaneGeometry(w,h,10,28),mat);p.position.set(x,y,z);world.add(p);waterfalls.push(p);const spray=new THREE.Sprite(new THREE.SpriteMaterial({map:softTexture('rgba(120,225,240,.42)','rgba(255,255,255,0)'),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));spray.position.set(x,1.15,z);spray.scale.set(2.5,1.25,1);scene.add(spray);return p}waterfall(-1.55,-1.4,.72,4.3,3.85);waterfall(0,-1.7,.98,4.8,4.05);waterfall(1.55,-1.4,.72,4.3,3.85);
-// === EXCLUSIVE LANDMARK 3: 櫻月茶庭 ===
-const sakuraPts=[[-12.5,1.0],[-10.0,-.2],[-7.0,.7],[-6.2,3.8],[-7.8,6.5],[-10.6,7.3],[-12.8,5.1]];islandLayer(sakuraPts,1.05,.66,0x37785b,0x2b3f56,1);islandLayer(sakuraPts,1.55,.20,0x559a67,0x3a5061,.94);for(const p of[[-10.5,1.9],[-8.6,2.8],[-10.8,4.5],[-8.7,5.2],[-7.5,1.7]])tree(p[0],1.62,p[1],.86,'cherry');const teaPav=new THREE.Group();cyl(teaPav,1.55,1.72,.18,0xbe955e,0,.10,0,20);for(let i=0;i<6;i++){const a=i/6*Math.PI*2;cyl(teaPav,.065,.085,1.75,0x6e4446,Math.cos(a)*1.05,.92,Math.sin(a)*1.05,7)}const teaRoof=new THREE.Mesh(new THREE.ConeGeometry(1.75,.80,6),toon(0xb65375,{roughness:.72}));teaRoof.position.y=2.04;teaPav.add(teaRoof);teaPav.position.set(-9.6,1.68,3.6);world.add(teaPav);for(const p of[[-11.4,2.0],[-9.6,.8],[-7.4,3.8],[-10.8,5.6]])lantern(p[0],p[1],0xff9fbe,1.63);
-// === EXCLUSIVE LANDMARK 4: 雲端觀星殿 + 纜車 ===
-const obsPts=[[6.0,4.0],[8.8,3.6],[11.4,4.8],[12.0,7.6],[10.1,9.5],[7.0,9.4],[5.6,6.7]];islandLayer(obsPts,1.18,1.5,0x2f815e,0x2a3853,1);islandLayer(obsPts,2.25,.24,0x51ad70,0x3b4f66,.92);
-function telescope(x,y,z,rot=0){const g=new THREE.Group();for(let i=0;i<3;i++){const a=i/3*Math.PI*2,p=cyl(g,.045,.065,1.45,0x59556a,Math.cos(a)*.30,.58,Math.sin(a)*.30,7);p.rotation.z=Math.cos(a)*.15;p.rotation.x=Math.sin(a)*.15}ico(g,.18,0xd4a95a,0,1.24,0,1);const tube=cyl(g,.18,.23,1.45,0x283c5c,0,1.62,0,12,{metalness:.10,roughness:.38});tube.rotation.z=Math.PI/2.65;tube.rotation.y=.18;glow(g,.16,0x5fe4ee,.55,2.04,0,.82);g.position.set(x,y,z);g.rotation.y=rot;world.add(g);return g}telescope(8.1,2.55,6.2,-.45);telescope(9.9,2.55,6.9,.22);
-for(let i=0;i<12;i++){const a=i/12*Math.PI*2,r=1.55+(i%3)*.35;const q=ico(world,.25+(i%2)*.10,i%2?0x53d9dc:0x8b7dde,8.8+Math.cos(a)*r,2.65,7.0+Math.sin(a)*r,0,{emissive:i%2?0x1b6f78:0x322b73,emissiveIntensity:.18,roughness:.26});q.scale.y=1.6}
-function cableTower(x,z,h=4.4){const g=new THREE.Group();for(const sx of[-.48,.48])cyl(g,.07,.10,h,0x3a455d,sx,h/2,0,8);box(g,1.45,.14,.18,0xd4a756,0,h-.12,0);g.position.set(x,1.3,z);world.add(g);return g}cableTower(-5.1,7.2,4.0);cableTower(7.0,6.6,5.0);const cableCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-5.1,5.3,7.2),new THREE.Vector3(0,7.0,8.0),new THREE.Vector3(7.0,6.3,6.6)]);const cableLine=new THREE.Mesh(new THREE.TubeGeometry(cableCurve,80,.025,5,false),toon(0x3b4356,{metalness:.16,roughness:.44}));world.add(cableLine);for(let i=0;i<3;i++){const cab=new THREE.Group();box(cab,.70,.62,.62,i===0?0xe4799f:(i===1?0x49c9c6:0xe5b75d),0,0,0);box(cab,.50,.18,.52,0x26364f,0,.38,0);world.add(cab);animations.push(t=>{const u=(t*.000035+i/3)%1,pos=cableCurve.getPoint(u),tan=cableCurve.getTangent(u);cab.position.copy(pos);cab.position.y-=.65;cab.rotation.y=Math.atan2(tan.x,tan.z)})}
-// === EXCLUSIVE LANDMARK 5: 天空鯨 ===
-const skyWhale=new THREE.Group();const whaleBody=ico(skyWhale,1.65,0x4b8caf,0,0,0,2,{roughness:.56,metalness:.04});whaleBody.scale.set(2.5,1.0,1.05);const whaleBelly=ico(skyWhale,1.30,0x86c9d1,.25,-.58,.0,2,{roughness:.66});whaleBelly.scale.set(2.1,.48,.92);const head=ico(skyWhale,.95,0x5ba0ba,2.6,.05,0,2,{roughness:.55});head.scale.set(1.25,.9,.95);for(const side of[-1,1]){const fin=mesh(skyWhale,new THREE.ConeGeometry(.58,1.9,4),toon(0x4b86ab,{roughness:.58}),.15,-.2,side*1.45);fin.rotation.x=side>0?1.05:-1.05;fin.rotation.z=.35}for(const side of[-1,1]){const tail=mesh(skyWhale,new THREE.ConeGeometry(.65,1.7,4),toon(0x407a9f),-3.7,.05,side*.62);tail.rotation.z=Math.PI/2;tail.rotation.y=side*.55}for(let i=0;i<6;i++)glow(skyWhale,.08,0x9ceef1,1.2+i*.45,.75,Math.sin(i)*.5,.66);skyWhale.position.set(-15,15,-8);skyWhale.scale.setScalar(1.1);scene.add(skyWhale);animations.push(t=>{const a=t*.000045;skyWhale.position.set(Math.cos(a)*18,14.5+Math.sin(a*2)*1.2,-8+Math.sin(a)*10);skyWhale.rotation.y=-a+Math.PI/2;skyWhale.rotation.z=Math.sin(t*.0003)*.05});
-// Front entrance portal + floating stepping crystals.
-function lightArch(x,z,rot=0){const g=new THREE.Group();for(const sx of[-1.05,1.05])cyl(g,.10,.14,1.85,0x31425f,sx,.92,0,9);const arch=new THREE.Mesh(new THREE.TorusGeometry(1.05,.12,10,42,Math.PI),toon(0x4cc7c8,{emissive:0x1a7b84,emissiveIntensity:.34,roughness:.28}));arch.rotation.z=Math.PI;arch.position.y=1.86;g.add(arch);for(let i=0;i<7;i++){const a=.15+i*.48;glow(g,.07,i%2?0xf2bd58:0x6fe6e0,Math.cos(a)*1.18,1.9+Math.sin(a)*.82,0,.86)}g.position.set(x,1.2,z);g.rotation.y=rot;world.add(g);return g}lightArch(0,-10.2,0);
-for(let i=0;i<8;i++){const a=i/8*Math.PI*2;const q=ico(world,.34+(i%2)*.08,i%2?0x4fd7d2:0xe1b45e,Math.cos(a)*3.6,1.52, -8.7+Math.sin(a)*1.8,0,{emissive:i%2?0x1b6c75:0x6c4c13,emissiveIntensity:.12});q.scale.y=1.55}
-// Premium amusement district: wheel + carousel + kinetic light garden.
-const ferris=new THREE.Group(),ferrisRotor=new THREE.Group();ferrisRotor.position.y=2.85;const wheelRing=new THREE.Mesh(new THREE.TorusGeometry(2.55,.11,10,64),toon(0x4fc8d0,{metalness:.12,roughness:.38,emissive:0x175a67,emissiveIntensity:.12}));ferrisRotor.add(wheelRing);for(let i=0;i<6;i++){const a=i/6*Math.PI;const spoke=box(ferrisRotor,.045,5.02,.045,0xbad9da,0,0,0);spoke.rotation.z=a}const hub=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.34,12),toon(0xe9c06b,{metalness:.12,roughness:.42}));hub.rotation.x=Math.PI/2;ferrisRotor.add(hub);for(let i=0;i<12;i++){const a=i/12*Math.PI*2,cabin=new THREE.Group();box(cabin,.58,.45,.52,i%3===0?0xe87aa2:(i%3===1?0x4ecac4:0xe6b456),0,0,0);cabin.position.set(Math.cos(a)*2.55,Math.sin(a)*2.55,0);cabin.userData.cabin=true;ferrisRotor.add(cabin)}ferris.add(ferrisRotor);for(const sx of[-1.6,1.6]){const leg=cyl(ferris,.10,.16,4.7,0x4b4f64,sx,1.85,0,8);leg.rotation.z=sx>0?-.32:.32}box(ferris,3.55,.16,.18,0x4b4f64,0,2.84,0);ferris.position.set(10.1,1.18,-3.2);ferris.rotation.y=-.25;world.add(ferris);animations.push(t=>{ferrisRotor.rotation.z=t*.00013;ferrisRotor.children.forEach(ch=>{if(ch.userData.cabin)ch.rotation.z=-ferrisRotor.rotation.z})});
-const car=new THREE.Group(),carSpin=new THREE.Group();cyl(car,1.65,1.82,.24,0xc99b55,0,.13,0,24);const carRoof=new THREE.Mesh(new THREE.ConeGeometry(1.90,.92,18),toon(0xe9789d));carRoof.position.y=2.46;car.add(carRoof);cyl(car,.12,.16,2.25,0xe6b75d,0,1.18,0,10);for(let i=0;i<6;i++){const a=i/6*Math.PI*2;cyl(carSpin,.035,.035,1.5,0xe4bf72,Math.cos(a)*1.12,1.12,Math.sin(a)*1.12,6);const horse=new THREE.Group();const body=ico(horse,.25,i%2?0x4bc8bd:0xe980a3,0,0,0,1);body.scale.set(1.45,.78,.68);ico(horse,.15,0xf0c7a7,.34,.10,0,1);horse.position.set(Math.cos(a)*1.12,.80,Math.sin(a)*1.12);horse.rotation.y=-a;carSpin.add(horse)}car.add(carSpin);car.position.set(6.8,1.20,-6.9);world.add(car);animations.push(t=>{carSpin.rotation.y=t*.00024;carRoof.rotation.y=-t*.00007});
-// Exclusive light fountain with orbiting star petals.
-const fountain=new THREE.Group();cyl(fountain,1.35,1.55,.24,0x344761,0,.12,0,24);cyl(fountain,1.22,1.22,.07,0x268aa2,0,.28,0,30,{roughness:.22});cyl(fountain,.18,.28,1.0,0x806a55,0,.68,0,10);glow(fountain,.24,0xf2c35e,0,1.35,0,.9);for(let i=0;i<8;i++){const a=i/8*Math.PI*2;const pet=glow(fountain,.10,i%2?0x6be5de:0xe981a6,Math.cos(a)*.90,.90,Math.sin(a)*.90,.82);pet.userData.a=a}fountain.position.set(-4.5,1.22,-6.8);world.add(fountain);animations.push(t=>{fountain.children.forEach(ch=>{if(ch.userData&&ch.userData.a!==undefined){const a=ch.userData.a+t*.00055;ch.position.x=Math.cos(a)*.9;ch.position.z=Math.sin(a)*.9}})});
-// A curated stage / fire lounge, not random furniture.
-const stageG=new THREE.Group();cyl(stageG,2.0,2.18,.26,0xb88850,0,.14,0,24);box(stageG,3.25,.12,2.0,0x8b5549,0,.37,0);for(const x of[-1.35,1.35])cyl(stageG,.06,.08,2.2,0x49465b,x,1.35,-.75,7);box(stageG,2.9,.08,.08,0x49465b,0,2.38,-.75);for(const x of[-1.15,1.15]){box(stageG,.55,.85,.45,0x273248,x,.80,.75);glow(stageG,.10,0x68e4df,x,1.28,.96,.8)}stageG.position.set(-7.2,1.18,-5.6);world.add(stageG);
-function campfire(x,z){const g=new THREE.Group();for(let i=0;i<9;i++){const a=i/9*Math.PI*2;ico(g,.17,0x5b5b67,Math.cos(a)*.52,.13,Math.sin(a)*.52,0);const log=cyl(g,.09,.09,.78,0x69402f,Math.cos(a)*.22,.18,Math.sin(a)*.22,6);log.rotation.z=Math.PI/2;log.rotation.y=a}const flame1=new THREE.Mesh(new THREE.ConeGeometry(.32,.85,8),toon(0xf16f2f,{emissive:0xc93d12,emissiveIntensity:.60}));flame1.position.y=.62;g.add(flame1);const flame2=new THREE.Mesh(new THREE.ConeGeometry(.18,.56,8),toon(0xf3bd54,{emissive:0xe67c1b,emissiveIntensity:.52}));flame2.position.y=.70;g.add(flame2);g.position.set(x,1.25,z);world.add(g);animations.push(t=>{flame1.scale.y=.92+.12*Math.sin(t*.013);flame2.scale.y=.96+.16*Math.sin(t*.017+1.2)});return g}campfire(-5.0,-8.9);
-// Outer scenic railway + moving premium train.
-for(const r of[12.25,12.68]){const tr=new THREE.Mesh(new THREE.TorusGeometry(r,.045,6,176),toon(0x514a54,{metalness:.18,roughness:.58}));tr.rotation.x=Math.PI/2;tr.position.y=1.38;world.add(tr)}for(let i=0;i<66;i++){const a=i/66*Math.PI*2;const b=box(world,.62,.08,.16,0x8c5b43,Math.cos(a)*12.46,1.40,Math.sin(a)*12.46);b.rotation.y=-a}const trainRadius=12.46,trainCars=[];function makeTrainVehicle(kind,index){const g=new THREE.Group();if(kind==='engine'){box(g,.98,.64,1.12,0x3fc2c2,0,.42,0);box(g,.88,.46,.78,0xe8b857,0,.95,-.05);const chimney=cyl(g,.15,.20,.60,0x2c3549,0,1.28,-.28,8);box(g,.86,.16,.28,0x26334b,0,.22,.54)}else{const colors=[0xe77da1,0x73c995,0x7e86d7];box(g,.94,.46,.92,colors[index%colors.length],0,.42,0);box(g,.82,.10,.75,0xf0d6a0,0,.78,0)}for(const sx of[-.34,.34])for(const sz of[-.30,.30]){const wh=new THREE.Mesh(new THREE.CylinderGeometry(.10,.10,.08,10),toon(0x263348));wh.rotation.z=Math.PI/2;wh.position.set(sx,.16,sz);g.add(wh)}world.add(g);trainCars.push(g)}makeTrainVehicle('engine',0);for(let j=0;j<3;j++)makeTrainVehicle('car',j);animations.push(t=>{const base=t*.000070,step=1.18/trainRadius;trainCars.forEach((car,j)=>{const a=base-j*step;car.position.set(Math.cos(a)*trainRadius,1.42,Math.sin(a)*trainRadius);car.rotation.y=-a})});
-// Rest spots, cottages and flower rings establish human scale.
-function bench(x,z,rot=0){const g=new THREE.Group();box(g,1.25,.14,.38,0x965d49,0,.43,0);box(g,1.25,.48,.10,0x75493e,0,.72,-.17);for(const xx of[-.45,.45])box(g,.09,.44,.09,0x434354,xx,.22,0);g.position.set(x,1.22,z);g.rotation.y=rot;world.add(g)}bench(-3.0,-8.5,.15);bench(3.0,-8.5,-.15);bench(-7.7,6.6,.75);bench(7.4,3.4,-.65);
-function cottage(x,z,rot=0,col=0xe3c59c,roof=0xa84f6d){const g=new THREE.Group();box(g,1.55,1.10,1.35,col,0,.60,0);const rf=new THREE.Mesh(new THREE.ConeGeometry(1.22,.88,4),toon(roof));rf.position.y=1.54;rf.rotation.y=Math.PI/4;g.add(rf);box(g,.34,.65,.06,0x76503d,0,.45,.70);for(const sx of[-.48,.48])glow(g,.09,0xf2bd58,sx,.84,.71,.7);g.position.set(x,1.22,z);g.rotation.y=rot;world.add(g);return g}cottage(-11.7,-2.0,.5,0xdfc49f,0xa6516f);cottage(11.6,1.0,-.55,0xd9bf99,0x4c809f);
-for(let k=0;k<10;k++){const a=k/10*Math.PI*2,r=8.1+(k%3)*.7,cx=Math.cos(a)*r,cz=Math.sin(a)*r;for(let i=0;i<7;i++){const aa=i/7*Math.PI*2,rr=.32+(i%2)*.14;const f=ico(world,.085,i%2?0xe97da6:0xe7b755,cx+Math.cos(aa)*rr,1.47,cz+Math.sin(aa)*rr,1);f.scale.y=.7}}
-// 16 spirits roam through the curated districts.
-function spirit(col=0x66cfe0){const g=new THREE.Group();cyl(g,.13,.18,.42,col,0,.27,0,8);ico(g,.19,0xe8c4a9,0,.60,0,1);const cap=new THREE.Mesh(new THREE.SphereGeometry(.205,10,7,0,Math.PI*2,0,Math.PI/2),toon(col));cap.position.y=.70;g.add(cap);world.add(g);return g}/* 主領班團隊：八位具名角色，取代原本 16 位無名小精靈 */
-const LEADER_SCALE=1.0;   // 主領班人物大小；1 = 與一般小世界的小精靈相同
-const LEADERS=[
-{n:'翁點傳師瑋鍼',f:1,dc:2,c:0xe98cae},
-{n:'翁點傳師瑋聰',f:1,dc:2,c:0xd58ad8},
-{n:'翁點傳師晟航',f:0,dc:2,c:0x52c3d7},
-{n:'林點傳師瑋揚',f:0,dc:2,c:0x6f9ae8},
-{n:'蔡講師維宸',f:0,dc:1,c:0x63c48b},
-{n:'胡講師定宇',f:0,dc:1,c:0x8f86e0},
-{n:'王講師施今',f:1,dc:1,c:0xe8b45c},
-{n:'陳小組長怡安',f:1,dc:0,c:0x7fd4a8}];
-function leaderFigure(L){
-const g=new THREE.Group();
-// 女性用外擴長袍、男性用直筒袍，讓剪影一眼可分
-cyl(g,L.f?.10:.135,L.f?.27:.205,.66,L.c,0,.35,0,10);
-cyl(g,L.f?.12:.155,L.f?.12:.155,.055,0xffeec2,0,.60,0,10,{emissive:0x7a5f28,emissiveIntensity:.26,roughness:.4});
-ico(g,.155,0xf0cdb0,0,.86,0,1);
-const hair=L.f?0x3b2a3e:0x2b2c3f;
-const cap=new THREE.Mesh(new THREE.SphereGeometry(.178,12,8,0,Math.PI*2,0,Math.PI/2),toon(hair));
-cap.position.y=.92;g.add(cap);
-if(L.f){const bun=new THREE.Mesh(new THREE.SphereGeometry(.09,10,8),toon(hair));bun.position.set(0,.90,-.145);g.add(bun);}
-// 職稱光環：點傳師金色、講師青色
-const hc=(L.dc===2)?0xffd98a:((L.dc===1)?0x9fe8ff:0xa8f0c0);
-const halo=new THREE.Mesh(new THREE.TorusGeometry(.215,.022,8,22),toon(hc,{emissive:hc,emissiveIntensity:.9,roughness:.3}));
-halo.rotation.x=Math.PI/2;halo.position.y=1.15;g.add(halo);
-const glow=new THREE.Mesh(new THREE.SphereGeometry(.40,12,10),new THREE.MeshBasicMaterial({color:hc,transparent:true,opacity:.075,blending:THREE.AdditiveBlending,depthWrite:false}));
-glow.position.y=.66;glow.scale.y=1.55;g.add(glow);
-g.scale.setScalar(LEADER_SCALE);world.add(g);return{g:g,halo:halo};}
-const leaderTagWrap=document.createElement('div');
-leaderTagWrap.className='leader-tags';
-const leaderStyle=document.createElement('style');
-leaderStyle.textContent='.leader-tags{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}'
-+'.leader-tag{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;padding:4px 11px;'
-+'border-radius:999px;font-size:11.5px;font-weight:900;letter-spacing:.03em;color:#fff;'
-+'background:rgba(9,17,38,.66);border:1px solid rgba(255,255,255,.18);'
-+'backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);'
-+'box-shadow:0 6px 20px rgba(2,6,26,.42);text-shadow:0 2px 8px rgba(0,0,0,.5);'
-+'opacity:0;transition:opacity .3s}'
-+'.leader-tag.dc{border-color:rgba(255,217,138,.5)}'
-+'.leader-tag.lc{border-color:rgba(159,232,255,.45)}'+'.leader-tag.gc{border-color:rgba(168,240,192,.45)}'
-+'@media(max-width:520px){.leader-tag{font-size:9.5px;padding:3px 8px}}';
-document.head.appendChild(leaderStyle);
-document.body.appendChild(leaderTagWrap);
-LEADERS.forEach(function(L,i){
-const fig=leaderFigure(L);
-const r=5.5+(i%2)*1.3,a=i/LEADERS.length*Math.PI*2;
-fig.g.position.set(Math.cos(a)*r,1.42,Math.sin(a)*r-.8);
-const tag=document.createElement('div');
-tag.className='leader-tag '+((L.dc===2)?'dc':((L.dc===1)?'lc':'gc'));
-tag.textContent=L.n;
-leaderTagWrap.appendChild(tag);
-spirits.push({g:fig.g,halo:fig.halo,tag:tag,seed:i*.79,speed:1.00+(i%3)*.20,dest:{x:Math.cos(a)*r,z:Math.sin(a)*r-.8},next:0,until:0,state:'idle',chatWith:-1,cabin:null,bob:i*.6});});
-
-/* 主領班行為：隨機漫遊、兩兩交談、輪流搭摩天輪，取代原本的固定繞圈 */
-const LEADER_Y=1.42,LEADER_RMIN=4.4,LEADER_RMAX=9.6;
-const ferrisCabins=(typeof ferrisRotor!=='undefined'&&ferrisRotor.children)
-  ? ferrisRotor.children.filter(function(c){return c.userData&&c.userData.cabin;}) : [];
-const __rideV=new THREE.Vector3();
-function leaderDecide(s,i,t){
-  const roll=Math.random();
-  if(ferrisCabins.length&&roll<.16){
-    s.state='ride';s.chatWith=-1;
-    s.cabin=ferrisCabins[Math.floor(Math.random()*ferrisCabins.length)];
-    s.until=t+9000+Math.random()*6000;return;
-  }
-  if(spirits.length>1&&roll<.44){
-    let j=Math.floor(Math.random()*spirits.length);if(j===i)j=(j+1)%spirits.length;
-    const o=spirits[j];
-    const mx=(s.g.position.x+o.g.position.x)/2,mz=(s.g.position.z+o.g.position.z)/2;
-    s.state='walk';s.cabin=null;s.chatWith=j;
-    s.dest.x=mx+.42;s.dest.z=mz+.12;s.until=t+9000;return;
-  }
-  const a=Math.random()*Math.PI*2,r=LEADER_RMIN+Math.random()*(LEADER_RMAX-LEADER_RMIN);
-  s.state='walk';s.cabin=null;s.chatWith=-1;
-  s.dest.x=Math.cos(a)*r;s.dest.z=Math.sin(a)*r-.8;s.until=t+16000;
-}
-function updateLeaders(t,dt){
-  for(let i=0;i<spirits.length;i++){
-    const s=spirits[i];if(!s.dest)continue;
-    if(t>s.next){leaderDecide(s,i,t);s.next=t+2600+Math.random()*3600;}
-    if(s.state==='ride'&&s.cabin){
-      s.cabin.updateMatrixWorld(true);
-      s.cabin.getWorldPosition(__rideV);world.worldToLocal(__rideV);
-      s.g.position.set(__rideV.x,__rideV.y-.26,__rideV.z);
-      s.g.rotation.y+=.45*dt;
-      if(t>s.until){s.state='walk';s.cabin=null;s.next=t;}
-      continue;
-    }
-    const dx=s.dest.x-s.g.position.x,dz=s.dest.z-s.g.position.z,d=Math.hypot(dx,dz);
-    if(d>.16){
-      const step=Math.min(d,s.speed*dt);
-      s.g.position.x+=dx/d*step;s.g.position.z+=dz/d*step;
-      s.g.rotation.y=Math.atan2(dx,dz);
-      s.bob+=dt*7.5;s.g.position.y=LEADER_Y+Math.abs(Math.sin(s.bob))*.05;
-    }else{
-      s.g.position.y=LEADER_Y+.022*Math.sin(t*.0022+s.seed);
-      const o=s.chatWith>=0?spirits[s.chatWith]:null;
-      if(o){s.g.rotation.y=Math.atan2(o.g.position.x-s.g.position.x,o.g.position.z-s.g.position.z);}
-      else{s.g.rotation.y+=.30*dt;}
-      if(t>s.until)s.next=t;
-    }
-  }
-  updateLeaderLabels();
-}
-const __leaderV=new THREE.Vector3();
-function updateLeaderLabels(){
-const shown=[];
-const items=[];
-for(let i=0;i<spirits.length;i++){const s=spirits[i];if(!s.tag)continue;
-__leaderV.set(0,1.5,0);s.g.localToWorld(__leaderV);__leaderV.project(camera);
-if(__leaderV.z>1||__leaderV.x<-1.15||__leaderV.x>1.15){s.tag.style.opacity='0';continue;}
-items.push({tag:s.tag,x:(__leaderV.x*.5+.5)*innerWidth,y:(-__leaderV.y*.5+.5)*innerHeight,z:__leaderV.z});}
-items.sort(function(a,b){return a.z-b.z;});
-for(let i=0;i<items.length;i++){const it=items[i];let clash=false;
-for(let j=0;j<shown.length;j++){if(Math.abs(shown[j].x-it.x)<96&&Math.abs(shown[j].y-it.y)<26){clash=true;break;}}
-if(clash){it.tag.style.opacity='0';continue;}
-shown.push(it);it.tag.style.opacity='1';
-it.tag.style.left=it.x.toFixed(1)+'px';it.tag.style.top=it.y.toFixed(1)+'px';}}
-// Atmospheric motes, intentionally sparse and colored — no white wash.
-for(let i=0;i<78;i++){const c=i%4===0?0xe8b85b:(i%4===1?0x5edbd7:(i%4===2?0xe783a5:0x75c993));const p=glow(world,.032+(i%3)*.009,c,(Math.random()-.5)*27,1.7+Math.random()*10,(Math.random()-.5)*22,.38+Math.random()*.30);fireflies.push({p,phase:Math.random()*6,speed:.5+Math.random()*.9,baseY:p.position.y,baseX:p.position.x,baseZ:p.position.z})}
-// Constellation ribbons frame the world rather than cutting across the middle.
-for(let k=0;k<3;k++){const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-15+k,11+k*1.2,-7),new THREE.Vector3(-7,13+k*.7,-3),new THREE.Vector3(5,12+k,5),new THREE.Vector3(15-k,14+k*.7,2)]);const tube=new THREE.Mesh(new THREE.TubeGeometry(curve,90,.016+k*.004,5,false),ribbonMaterial(k===1?0xe5b65a:0x63dcd7,.13));world.add(tube)}
-// Distant rock fragments add depth without creating fake extra islands.
-for(let i=0;i<20;i++){const a=i/20*Math.PI*2,r=28+(i%5)*4;const rr=ico(world,.45+(i%3)*.18,i%2?0x1b2d49:0x273c59,Math.cos(a)*r,-.8+(i%4)*1.0,Math.sin(a)*r-7,0,{roughness:1});rr.scale.set(1.3,.75,1)}
-// Lighting: saturated and controlled, avoiding the old washed-out white look.
-scene.add(new THREE.HemisphereLight(0x77b6cf,0x101c31,.52));scene.add(new THREE.AmbientLight(0x4f607d,.12));const key=new THREE.DirectionalLight(0xffc07a,1.02);key.position.set(-12,24,12);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-32;key.shadow.camera.right=32;key.shadow.camera.top=32;key.shadow.camera.bottom=-32;scene.add(key);const fill=new THREE.DirectionalLight(0x43bfc9,.32);fill.position.set(16,11,-18);scene.add(fill);const pinkFill=new THREE.PointLight(0xe777a3,.26,18,2);pinkFill.position.set(-9,5,3);scene.add(pinkFill);const cyanFill=new THREE.PointLight(0x4ed8d2,.34,21,2);cyanFill.position.set(9,6,4);scene.add(cyanFill);const warmTree=new THREE.PointLight(0xf1bb55,.58,20,2);warmTree.position.set(0,9,2);scene.add(warmTree);
-// Optional subtle bloom. High threshold prevents pale surfaces from glowing.
-function initComposer(){try{if(!(THREE.EffectComposer&&THREE.RenderPass&&THREE.UnrealBloomPass))return;composer=new THREE.EffectComposer(renderer);composer.addPass(new THREE.RenderPass(scene,camera));bloomPass=new THREE.UnrealBloomPass(new THREE.Vector2(Math.max(512,innerWidth*.62),Math.max(320,innerHeight*.62)),.34,.42,.96);composer.addPass(bloomPass)}catch(e){console.warn('Bloom disabled',e);composer=null}}
-initComposer();
-// Camera controls.
-let yaw=.10,pitch=.48,dist=24,panX=0,panZ=-.8,targetYaw=yaw,targetPitch=pitch,targetDist=dist,targetPanX=panX,targetPanZ=panZ,drag=false,button=0,lastX=0,lastY=0;const look=new THREE.Vector3(0,2.5,-.8),smoothLook=look.clone();
-function baseDist(){var a=innerWidth/innerHeight,k=1.35/a;if(k<1)k=1;if(k>1.22)k=1.22;return 24*k}
-function resetView(){targetYaw=.12;targetPitch=.48;targetDist=baseDist();targetPanX=0;targetPanZ=-.8;autoTour=false;syncTour()}
-document.getElementById('bestView').onclick=resetView;renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0&&e.button!==2)return;drag=true;button=e.button;lastX=e.clientX;lastY=e.clientY;autoTour=false;syncTour();try{renderer.domElement.setPointerCapture(e.pointerId)}catch(_){}});renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;if(button===2){const rx=Math.cos(targetYaw),rz=-Math.sin(targetYaw),fx=-Math.sin(targetYaw),fz=-Math.cos(targetYaw),s=.032;targetPanX+=(-dx*rx+dy*fx)*s;targetPanZ+=(-dx*rz+dy*fz)*s}else{targetYaw-=dx*.0052;targetPitch=clamp(targetPitch-dy*.0038,.14,.76)}});renderer.domElement.addEventListener('pointerup',e=>{drag=false;try{renderer.domElement.releasePointerCapture(e.pointerId)}catch(_){}});renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();autoTour=false;syncTour();targetDist=clamp(targetDist*(e.deltaY>0?1.075:.925),22,55)},{passive:false});
-const tourBtn=document.getElementById('tourBtn');function syncTour(){tourBtn.textContent=autoTour?'◉ 巡航中':'◌ 電影巡航'}tourBtn.onclick=()=>{autoTour=!autoTour;if(autoTour)tourTime=0;syncTour()};syncTour();const fxBtn=document.getElementById('fxBtn');function syncFx(){fxBtn.textContent=fxEnabled?'✨ 電影光影':'◇ 基本光影'}fxBtn.onclick=()=>{fxEnabled=!fxEnabled;syncFx()};syncFx();
-function returnMain(){try{if(window.opener&&!window.opener.closed){window.opener.focus();window.close();return}}catch(_){}const params=new URLSearchParams(location.search),room=params.get('room');const back=params.get('from')==='gallery'?'emotion_gallery.html':'emotion_island.html';location.href=back+(room?'?room='+encodeURIComponent(room):'')}
-(function(){var q=new URLSearchParams(location.search);if(q.get('from')==='gallery'){var bb=document.getElementById('backBtn');if(bb)bb.textContent='↩ 返回群島';}})();document.getElementById('backBtn').onclick=returnMain;document.getElementById('collapseTitle').onclick=()=>{const c=document.getElementById('titleCard');c.classList.toggle('collapsed');document.getElementById('collapseTitle').textContent=c.classList.contains('collapsed')?'›':'‹'};
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);if(composer)composer.setSize(innerWidth,innerHeight)});
-resetView();let last=0;function frame(t){requestAnimationFrame(frame);const dt=Math.min(.05,Math.max(.001,last?(t-last)/1000:1/60));last=t;if(autoTour&&!drag){tourTime+=dt;const a=tourTime*.055;targetYaw=.06+a;targetPitch=.45+.05*Math.sin(a*.70);targetDist=baseDist()+3.0*Math.sin(a*.38);targetPanX=.65*Math.sin(a*.27);targetPanZ=-.8+.58*Math.cos(a*.31)}const e=1-Math.exp(-8.5*dt);yaw+=(targetYaw-yaw)*e;pitch+=(targetPitch-pitch)*e;dist+=(targetDist-dist)*e;panX+=(targetPanX-panX)*e;panZ+=(targetPanZ-panZ)*e;const target=look.clone().add(new THREE.Vector3(panX,0,panZ)),cp=Math.cos(pitch),desired=target.clone().add(new THREE.Vector3(Math.sin(yaw)*cp*dist,Math.sin(pitch)*dist,Math.cos(yaw)*cp*dist));camera.position.lerp(desired,.07);smoothLook.lerp(target,.07);camera.lookAt(smoothLook);if(waterMat)waterMat.uniforms.uTime.value=t*.001;animations.forEach(fn=>fn(t));swayers.forEach(s=>{s.g.rotation.z=Math.sin(t*.00055+s.phase)*s.amp;s.g.rotation.x=Math.cos(t*.00042+s.phase)*s.amp*.45});updateLeaders(t,dt);fireflies.forEach((f,i)=>{f.p.position.y=f.baseY+Math.sin(t*.0012*f.speed+f.phase)*.24;f.p.position.x=f.baseX+Math.sin(t*.00035*f.speed+f.phase)*.10;f.p.position.z=f.baseZ+Math.cos(t*.00031*f.speed+f.phase)*.10;f.p.material.opacity=.33+.42*(.5+.5*Math.sin(t*.002*f.speed+f.phase))});waterfalls.forEach((w,i)=>{w.material.opacity=.38+.10*Math.sin(t*.002+i);w.position.y+=Math.sin(t*.0015+i)*.0005});treeHalo.material.opacity=.72+.10*Math.sin(t*.0012);if(composer&&fxEnabled)composer.render();else renderer.render(scene,camera)}resetView();frame(0);
-}catch(err){console.error(err);document.getElementById('bootErrorText').textContent=String(err&&err.stack||err);document.getElementById('bootError').classList.add('show')}})();
-</script>
+  <main id="game" aria-label="森語島互動世界">
+    <div id="scene"></div>
+    <div class="scene-vignette" aria-hidden="true"></div>
+    <div id="labels" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="island-brand"><div class="brand-mark" data-icon="leaf"></div><div><p class="eyebrow">情緒不孤島 <span class="preview-tag">本機預覽 · 2027</span></p><button id="island-name" class="title-button" aria-label="修改小島名稱">森語島</button><span id="group-label">第三組的小世界</span></div></div>
+      <button id="time-button" class="weather-chip" aria-label="切換日夜"><span data-icon="sun"></span><span><b id="time-label">晴日</b><small id="location-label">溪光小徑</small></span><span class="weather-dot"></span></button>
+      <div class="top-actions"><button id="wallet-button" class="wallet" aria-label="查看點數與成長"><span class="coin-mark" data-icon="spark"></span><b id="wallet-count">1,000</b><small>點</small></button><button id="save-button" class="save-button" aria-label="儲存佈置" disabled><span data-icon="check"></span><span>已儲存</span></button><button id="photo-button" class="round-button" data-icon="camera" aria-label="拍攝小島照片" title="拍攝小島照片"></button></div>
+    </header>
+    <aside class="day-card collapsed" id="day-card"><button id="day-toggle" class="day-toggle" aria-expanded="false" aria-controls="day-card-details"><span data-icon="sprout"></span><b>島上日常</b><span id="day-count" class="day-count"></span><span data-icon="plus"></span></button><div id="day-card-details" hidden><div id="quest-peek"></div><button id="journal-mini" class="journal-link">打開生活手帳 <span data-icon="arrow"></span></button></div></aside>
+    <button id="ambient-greeting" class="ambient-greeting" hidden></button><div class="world-hint" id="world-hint"><span class="hint-dot"></span><span>點一下地面散步，點島民聊聊天</span></div>
+    <div class="camera-tools"><button id="zoom-in" data-icon="plus" aria-label="拉近鏡頭"></button><button id="zoom-out" data-icon="minus" aria-label="拉遠鏡頭"></button><span></span><button id="rotate-view" data-icon="rotate" aria-label="旋轉觀看角度"></button><button id="home-view" data-icon="focus" aria-label="回到最佳視角"></button></div>
+    <button id="avatar-button" class="avatar-chip"><img id="avatar-thumb" alt="團隊小精靈"><span><small>小島，因你們而熱鬧</small><b id="avatar-name">團隊夥伴</b></span><span data-icon="edit"></span></button>
+    <nav class="bottom-dock" aria-label="小島活動"><button data-mode="walk" class="dock-button active"><span data-icon="focus"></span><b>觀察</b></button><button data-mode="decorate" class="dock-button"><span data-icon="chair"></span><b>佈置</b></button><i></i><button id="residents-button" class="dock-button"><span data-icon="people"></span><b>島民</b></button><button id="journal-button" class="dock-button"><span data-icon="book"></span><b>手帳</b><em id="journal-dot"></em></button><button id="map-button" class="dock-button"><span data-icon="map"></span><b>地圖</b></button></nav>
+    <button id="mini-map-button" class="mini-map" aria-label="拜訪其他小島：唯讀切換"><canvas id="mini-map-canvas" width="320" height="240"></canvas><span>拜訪其他小島 <span data-icon="arrow"></span></span></button><nav id="gallery-switcher" class="gallery-switcher" aria-label="唯讀島嶼切換" hidden><a id="previous-island" aria-label="參觀上一座島">‹</a><button id="choose-island"></button><a id="next-island" aria-label="參觀下一座島">›</a></nav>
+    <button id="sound-button" class="sound-button" aria-label="開啟島嶼音樂" data-icon="sound-off"></button>
+    <section id="decor-tray" class="decor-tray" aria-label="家具收納" hidden><header class="tray-header"><div><span class="eyebrow">MAKE ROOM FOR YOU</span><h2>把喜歡的，放進生活裡。</h2></div><div class="tray-actions"><button id="undo-button" data-icon="undo" aria-label="復原佈置" disabled></button><button id="redo-button" data-icon="redo" aria-label="重做佈置" disabled></button><button id="close-tray" data-icon="close" aria-label="收起家具收納"></button></div></header><div class="tray-nav"><div class="collection-tabs" role="tablist" aria-label="物品來源"><button role="tab" aria-selected="true" data-collection="inventory">我的收納 <span id="inventory-count">4</span></button><button role="tab" aria-selected="false" data-collection="shop">島嶼商店</button><button role="tab" aria-selected="false" data-collection="placed">已佈置</button></div><div id="categories" class="categories" aria-label="家具分類"></div></div><div id="item-list" class="item-list"></div><p id="tray-help" class="tray-help">選一件家具，替小島添一點你的樣子。</p></section>
+    <section id="placement-toolbar" class="placement-toolbar" aria-label="放置家具" hidden><img id="placing-thumb" alt=""><div class="placing-status"><b id="placing-name"></b><small id="placing-status">點地面選位置</small></div><button id="snap-button" aria-pressed="true" title="切換格線吸附"><span data-icon="grid"></span><span>吸附</span></button><button id="rotate-item" title="旋轉 45°（R）"><span data-icon="rotate"></span><span>旋轉</span></button><button id="cancel-item" data-icon="close" aria-label="取消這次拿取"></button><button id="confirm-item" class="primary-button" disabled><span data-icon="check"></span>放在這裡</button></section>
+    <div id="dialogue" class="dialogue" hidden><img id="dialogue-portrait" alt=""><div class="dialogue-body"><div class="dialogue-name"><b id="npc-name"></b><span id="npc-role"></span></div><p id="npc-words"></p><div id="dialogue-actions"></div></div><button id="close-dialogue" class="dialog-close" data-icon="close" aria-label="結束對話"></button></div>
+    <dialog id="panel-dialog" class="panel-dialog"><header><div><p class="eyebrow" id="panel-kicker"></p><h2 id="panel-title"></h2></div><button id="close-panel" class="round-button" data-icon="close" aria-label="關閉視窗"></button></header><div id="panel-body"></div></dialog>
+    <div id="toast-region" role="status" aria-live="polite"></div>
+    <div id="loading" class="loading-screen"><div class="loading-leaf" data-icon="leaf"></div><h1>沿著風，回到小島。</h1><p>正在整理花園與今天的陽光</p><div class="loading-track"><i></i></div></div>
+    <section id="boot-error" class="boot-error" hidden><h1>小島暫時無法開啟</h1><p id="boot-error-message"></p><a href="">重新開啟本頁</a></section>
+  </main>
+  <script src="src/boot.js"></script>
+  <script type="module" src="src/app.js"></script>
 </body>
 </html>

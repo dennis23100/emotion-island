@@ -1,1 +1,41 @@
-<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>情緒不孤島｜群島參觀</title><style>html,body{margin:0;width:100%;height:100%;background:#07152d;color:#fff;font-family:"Microsoft JhengHei",system-ui,sans-serif;display:grid;place-items:center}</style></head><body><div>正在進入群島…</div><script>(()=>{const p=new URLSearchParams(location.search);p.set('mode','gallery');const room=p.get('room')||'';if(!p.get('group')&&!/^\d{4}0[1-8]$/.test(room))p.set('group','1');location.replace('emotion_my_world.html?'+p.toString())})()</script></body></html>
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src https://score-calculation-ef584-default-rtdb.firebaseio.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#24736b">
+  <meta name="description" content="情緒不孤島 佈置自己的小世界，看精靈與居民一起生活。">
+  <title>森語島 — 情緒不孤島・小島生活</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game" aria-label="森語島互動世界">
+    <div id="scene"></div>
+    <div class="scene-vignette" aria-hidden="true"></div>
+    <div id="labels" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="island-brand"><div class="brand-mark" data-icon="leaf"></div><div><p class="eyebrow">情緒不孤島 <span class="preview-tag">本機預覽 · 2027</span></p><button id="island-name" class="title-button" aria-label="修改小島名稱">森語島</button><span id="group-label">第三組的小世界</span></div></div>
+      <button id="time-button" class="weather-chip" aria-label="切換日夜"><span data-icon="sun"></span><span><b id="time-label">晴日</b><small id="location-label">溪光小徑</small></span><span class="weather-dot"></span></button>
+      <div class="top-actions"><button id="wallet-button" class="wallet" aria-label="查看點數與成長"><span class="coin-mark" data-icon="spark"></span><b id="wallet-count">1,000</b><small>點</small></button><button id="save-button" class="save-button" aria-label="儲存佈置" disabled><span data-icon="check"></span><span>已儲存</span></button><button id="photo-button" class="round-button" data-icon="camera" aria-label="拍攝小島照片" title="拍攝小島照片"></button></div>
+    </header>
+    <aside class="day-card collapsed" id="day-card"><button id="day-toggle" class="day-toggle" aria-expanded="false" aria-controls="day-card-details"><span data-icon="sprout"></span><b>島上日常</b><span id="day-count" class="day-count"></span><span data-icon="plus"></span></button><div id="day-card-details" hidden><div id="quest-peek"></div><button id="journal-mini" class="journal-link">打開生活手帳 <span data-icon="arrow"></span></button></div></aside>
+    <button id="ambient-greeting" class="ambient-greeting" hidden></button><div class="world-hint" id="world-hint"><span class="hint-dot"></span><span>點一下地面散步，點島民聊聊天</span></div>
+    <div class="camera-tools"><button id="zoom-in" data-icon="plus" aria-label="拉近鏡頭"></button><button id="zoom-out" data-icon="minus" aria-label="拉遠鏡頭"></button><span></span><button id="rotate-view" data-icon="rotate" aria-label="旋轉觀看角度"></button><button id="home-view" data-icon="focus" aria-label="回到最佳視角"></button></div>
+    <button id="avatar-button" class="avatar-chip"><img id="avatar-thumb" alt="團隊小精靈"><span><small>小島，因你們而熱鬧</small><b id="avatar-name">團隊夥伴</b></span><span data-icon="edit"></span></button>
+    <nav class="bottom-dock" aria-label="小島活動"><button data-mode="walk" class="dock-button active"><span data-icon="focus"></span><b>觀察</b></button><button data-mode="decorate" class="dock-button"><span data-icon="chair"></span><b>佈置</b></button><i></i><button id="residents-button" class="dock-button"><span data-icon="people"></span><b>島民</b></button><button id="journal-button" class="dock-button"><span data-icon="book"></span><b>手帳</b><em id="journal-dot"></em></button><button id="map-button" class="dock-button"><span data-icon="map"></span><b>地圖</b></button></nav>
+    <button id="mini-map-button" class="mini-map" aria-label="拜訪其他小島：唯讀切換"><canvas id="mini-map-canvas" width="320" height="240"></canvas><span>拜訪其他小島 <span data-icon="arrow"></span></span></button><nav id="gallery-switcher" class="gallery-switcher" aria-label="唯讀島嶼切換" hidden><a id="previous-island" aria-label="參觀上一座島">‹</a><button id="choose-island"></button><a id="next-island" aria-label="參觀下一座島">›</a></nav>
+    <button id="sound-button" class="sound-button" aria-label="開啟島嶼音樂" data-icon="sound-off"></button>
+    <section id="decor-tray" class="decor-tray" aria-label="家具收納" hidden><header class="tray-header"><div><span class="eyebrow">MAKE ROOM FOR YOU</span><h2>把喜歡的，放進生活裡。</h2></div><div class="tray-actions"><button id="undo-button" data-icon="undo" aria-label="復原佈置" disabled></button><button id="redo-button" data-icon="redo" aria-label="重做佈置" disabled></button><button id="close-tray" data-icon="close" aria-label="收起家具收納"></button></div></header><div class="tray-nav"><div class="collection-tabs" role="tablist" aria-label="物品來源"><button role="tab" aria-selected="true" data-collection="inventory">我的收納 <span id="inventory-count">4</span></button><button role="tab" aria-selected="false" data-collection="shop">島嶼商店</button><button role="tab" aria-selected="false" data-collection="placed">已佈置</button></div><div id="categories" class="categories" aria-label="家具分類"></div></div><div id="item-list" class="item-list"></div><p id="tray-help" class="tray-help">選一件家具，替小島添一點你的樣子。</p></section>
+    <section id="placement-toolbar" class="placement-toolbar" aria-label="放置家具" hidden><img id="placing-thumb" alt=""><div class="placing-status"><b id="placing-name"></b><small id="placing-status">點地面選位置</small></div><button id="snap-button" aria-pressed="true" title="切換格線吸附"><span data-icon="grid"></span><span>吸附</span></button><button id="rotate-item" title="旋轉 45°（R）"><span data-icon="rotate"></span><span>旋轉</span></button><button id="cancel-item" data-icon="close" aria-label="取消這次拿取"></button><button id="confirm-item" class="primary-button" disabled><span data-icon="check"></span>放在這裡</button></section>
+    <div id="dialogue" class="dialogue" hidden><img id="dialogue-portrait" alt=""><div class="dialogue-body"><div class="dialogue-name"><b id="npc-name"></b><span id="npc-role"></span></div><p id="npc-words"></p><div id="dialogue-actions"></div></div><button id="close-dialogue" class="dialog-close" data-icon="close" aria-label="結束對話"></button></div>
+    <dialog id="panel-dialog" class="panel-dialog"><header><div><p class="eyebrow" id="panel-kicker"></p><h2 id="panel-title"></h2></div><button id="close-panel" class="round-button" data-icon="close" aria-label="關閉視窗"></button></header><div id="panel-body"></div></dialog>
+    <div id="toast-region" role="status" aria-live="polite"></div>
+    <div id="loading" class="loading-screen"><div class="loading-leaf" data-icon="leaf"></div><h1>沿著風，回到小島。</h1><p>正在整理花園與今天的陽光</p><div class="loading-track"><i></i></div></div>
+    <section id="boot-error" class="boot-error" hidden><h1>小島暫時無法開啟</h1><p id="boot-error-message"></p><a href="">重新開啟本頁</a></section>
+  </main>
+  <script src="src/boot.js"></script>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

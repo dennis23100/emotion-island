@@ -1,0 +1,11 @@
+{
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
+  "headers": [
+    {"source": "/(.*)", "headers": [{"key":"X-Content-Type-Options","value":"nosniff"}]},
+    {"source": "/(.*).html", "headers": [{"key":"Cache-Control","value":"no-cache, must-revalidate"}]},
+    {"source": "/src/(.*)", "headers": [{"key":"Cache-Control","value":"no-cache, must-revalidate"}]},
+    {"source": "/", "headers": [{"key":"Cache-Control","value":"no-cache, must-revalidate"}]}
+  ]
+}
