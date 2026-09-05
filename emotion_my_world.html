@@ -67,7 +67,7 @@ window.addEventListener('unhandledrejection',function(ev){setTimeout(function(){
   const GROUP_COUNT = 8;
   const MAX_SCORE = 1600;
   const PERSON_STEP = 100;
-  const START_POINTS = 500;   // 開場先給的可用點數；不計入分數，也不解鎖小精靈
+  const START_POINTS = 1000;   // 開場先給的可用點數；不計入分數，也不解鎖小精靈
   const MAX_PLACEMENT_SLOT = 127;
   const STORAGE_KEY_PREFIX = 'emotionIslandV24:';
 
@@ -1110,10 +1110,26 @@ function switchGalleryGroup(id){
 }
 function initGallerySwitcher(){
   const sel=document.getElementById('gallerySelect');if(!sel)return;
-  sel.innerHTML=D.GROUPS.map(m=>'<option value="'+m.id+'">'+m.label+' · '+m.theme+'</option>').join('');
-  sel.onchange=()=>switchGalleryGroup(sel.value);
-  document.getElementById('galleryPrev').onclick=()=>switchGalleryGroup(String(((Number(gid||1)+6)%8)+1));
-  document.getElementById('galleryNext').onclick=()=>switchGalleryGroup(String((Number(gid||1)%8)+1));
+  sel.innerHTML=D.GROUPS.map(m=>'<option value="'+m.id+'">'+m.label+' · '+m.theme+'</option>').join('')+'<option value="leader">主領班 ・ 星願神境</option>';
+  const GAL_RING=['1','2','3','4','5','6','7','8','leader'];
+  function galGo(v){
+    if(v==='leader'){
+      const p=new URLSearchParams();
+      if(D.room)p.set('room',D.room);
+      p.set('from','gallery');
+      location.href='emotion_leader_world.html?'+p.toString();
+      return;
+    }
+    switchGalleryGroup(v);
+  }
+  function galStep(d){
+    const cur=GAL_RING.indexOf(String(gid||'1'));
+    const i=((cur<0?0:cur)+d+GAL_RING.length)%GAL_RING.length;
+    galGo(GAL_RING[i]);
+  }
+  sel.onchange=()=>galGo(sel.value);
+  document.getElementById('galleryPrev').onclick=()=>galStep(-1);
+  document.getElementById('galleryNext').onclick=()=>galStep(1);
   document.getElementById('galleryExit').onclick=()=>{
     const id=/^[1-8]$/.test(ownerGroup||'')?ownerGroup:'';
     if(id){const code=D.groupRoomCode(id),p=new URLSearchParams();if(code)p.set('room',code);else{if(D.room)p.set('room',D.room);p.set('group',id)}location.href='emotion_my_world.html?'+p.toString()}
